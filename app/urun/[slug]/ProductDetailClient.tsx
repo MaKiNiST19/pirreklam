@@ -131,8 +131,6 @@ export default function ProductDetailClient({
           selectedVariant={selectedVariant}
           exchangeRate={exchangeRate}
           bankAccounts={bankAccounts}
-          onMemberLogin={() => { setModalOpen(false); window.location.href = "/admin/giris"; }}
-          onContinueAsGuest={() => { setModalOpen(false); window.location.href = "/sepet"; }}
         />
       )}
     </div>

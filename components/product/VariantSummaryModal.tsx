@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { useCart, type CartItem } from "@/components/cart/CartProvider";
 import { getPriceDisplay } from "@/lib/price";
 import type { BankAccount } from "@/types/index";
 import type { VariantOption } from "@/lib/variants";
-import WhatsAppButton from "./WhatsAppButton";
 
 interface VariantSummaryModalProps {
   isOpen: boolean;
@@ -14,8 +14,6 @@ interface VariantSummaryModalProps {
   selectedVariant: VariantOption;
   exchangeRate: number;
   bankAccounts: BankAccount[];
-  onMemberLogin?: () => void;
-  onContinueAsGuest?: () => void;
 }
 
 export default function VariantSummaryModal({
@@ -24,131 +22,274 @@ export default function VariantSummaryModal({
   product,
   selectedVariant,
   exchangeRate,
-  bankAccounts,
-  onMemberLogin,
-  onContinueAsGuest,
 }: VariantSummaryModalProps) {
-  const [copiedIban, setCopiedIban] = useState<string | null>(null);
-  const [showBanks, setShowBanks] = useState(false);
+  const { addToCart } = useCart();
+  const [tab, setTab] = useState<"member" | "guest">("member");
+  const [email, setEmail] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [guestForm, setGuestForm] = useState({
+    name: "", email: "", tcNo: "", address: "", city: "", district: "", phone: "", taxOffice: "",
+  });
 
   if (!isOpen) return null;
 
   const price = getPriceDisplay(selectedVariant.priceUsd, selectedVariant.adet, exchangeRate);
-  const priceSummary = `KDV Dahil: ${price.totalPriceIncKdvFormatted}`;
 
-  const copyIban = async (iban: string) => {
-    await navigator.clipboard.writeText(iban);
-    setCopiedIban(iban);
-    setTimeout(() => setCopiedIban(null), 2000);
+  const handleGuestOrder = async () => {
+    if (!guestForm.name || !guestForm.email || !guestForm.tcNo || !guestForm.address || !guestForm.city) {
+      alert("Lütfen zorunlu alanları doldurunuz.");
+      return;
+    }
+    setSubmitting(true);
+    try {
+      // Add to cart first
+      const item: CartItem = {
+        productId: Number(product.id) || 0,
+        sku: selectedVariant.sku,
+        title: product.title,
+        image: product.image || "/placeholder.png",
+        baskiOption: selectedVariant.baskiOption || undefined,
+        renkOption: selectedVariant.renkOption || undefined,
+        desenOption: selectedVariant.desenOption || undefined,
+        adet: selectedVariant.adet,
+        priceUsd: selectedVariant.priceUsd,
+        quantity: 1,
+      };
+
+      const res = await fetch("/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          totalUsd: selectedVariant.priceUsd,
+          contactName: guestForm.name,
+          contactPhone: guestForm.phone || null,
+          contactEmail: guestForm.email,
+          notes: `TC: ${guestForm.tcNo}, Adres: ${guestForm.address}, ${guestForm.district} ${guestForm.city}, Vergi Dairesi: ${guestForm.taxOffice}`,
+          items: [{
+            productId: String(product.id),
+            sku: selectedVariant.sku,
+            title: product.title,
+            baskiOption: selectedVariant.baskiOption || null,
+            renkOption: selectedVariant.renkOption || null,
+            desenOption: selectedVariant.desenOption || null,
+            adet: selectedVariant.adet,
+            priceUsd: selectedVariant.priceUsd,
+          }],
+        }),
+      });
+
+      if (res.ok) {
+        onClose();
+        window.location.href = "/sepet?success=1";
+      } else {
+        alert("Sipariş oluşturulurken hata oluştu.");
+      }
+    } catch {
+      alert("Sipariş oluşturulurken hata oluştu.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
-      onClick={onClose}
-    >
-      <div
-        className="bg-white rounded-2xl max-w-md w-full max-h-[90vh] overflow-y-auto shadow-2xl"
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* Header */}
-        <div className="flex items-start gap-4 p-5 border-b border-gray-100">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={onClose}>
+      <div className="bg-white rounded-xl max-w-[420px] w-full max-h-[90vh] overflow-y-auto shadow-2xl" onClick={(e) => e.stopPropagation()}>
+
+        {/* Title bar */}
+        <div className="flex items-center justify-between px-5 pt-4 pb-2">
+          <h2 className="text-lg font-bold text-gray-900">Siparişi Onayla</h2>
+          <button type="button" onClick={onClose} className="text-gray-400 hover:text-gray-700 text-xl leading-none">&times;</button>
+        </div>
+
+        {/* Product info */}
+        <div className="flex items-start gap-3 px-5 pb-3">
           {product.image && (
-            <div className="relative w-20 h-20 shrink-0 rounded-xl overflow-hidden bg-gray-50 border border-gray-100">
+            <div className="relative w-14 h-14 shrink-0 rounded-lg overflow-hidden bg-gray-50 border border-gray-200">
               <Image src={product.image} alt={product.title} fill className="object-contain p-1" />
             </div>
           )}
           <div className="flex-1 min-w-0">
-            <h2 className="text-base font-bold text-gray-900 leading-tight pr-6">{product.title}</h2>
-            <div className="mt-1 space-y-0.5 text-xs text-gray-600">
-              {selectedVariant.baskiOption && <p><span className="font-semibold">Baskı:</span> {selectedVariant.baskiOption}</p>}
-              {selectedVariant.renkOption && <p><span className="font-semibold">Renk:</span> {selectedVariant.renkOption}</p>}
-              {selectedVariant.desenOption && <p><span className="font-semibold">Desen:</span> {selectedVariant.desenOption}</p>}
-              <p><span className="font-semibold">Adet:</span> {selectedVariant.adet.toLocaleString("tr-TR")}</p>
+            <h3 className="text-sm font-bold text-[#25497f] leading-tight">{product.title}</h3>
+            <p className="text-xs text-[#cc0636] font-medium mt-0.5">{selectedVariant.sku}</p>
+          </div>
+        </div>
+
+        {/* Variant details table */}
+        <div className="mx-5 border border-gray-200 rounded-lg overflow-hidden text-sm">
+          {selectedVariant.baskiOption && (
+            <div className="flex justify-between px-3 py-1.5 border-b border-gray-100">
+              <span className="text-gray-600">Baskı Seçenekleri</span>
+              <span className="font-medium text-gray-800">{selectedVariant.baskiOption}</span>
             </div>
-          </div>
-          <button
-            type="button"
-            onClick={onClose}
-            className="shrink-0 text-gray-400 hover:text-gray-700 text-2xl leading-none"
-          >
-            &times;
-          </button>
-        </div>
-
-        {/* Price summary */}
-        <div className="px-5 py-4 bg-gray-50 border-b border-gray-100 space-y-1">
-          <div className="flex justify-between text-sm">
-            <span className="text-gray-600">KDV Hariç Adet Fiyatı</span>
-            <span className="font-semibold" style={{ color: "#488602" }}>{price.unitPriceExKdvFormatted}</span>
-          </div>
-          <div className="flex justify-between text-sm">
-            <span className="text-gray-600">KDV Hariç Toplam</span>
-            <span className="font-semibold" style={{ color: "#488602" }}>{price.totalPriceExKdvFormatted}</span>
-          </div>
-          <div className="flex justify-between text-sm font-bold">
-            <span className="text-gray-800">KDV Dahil Toplam</span>
-            <span style={{ color: "#cc0636" }}>{price.totalPriceIncKdvFormatted}</span>
+          )}
+          {selectedVariant.renkOption && (
+            <div className="flex justify-between items-center px-3 py-1.5 border-b border-gray-100">
+              <span className="text-gray-600">Renk</span>
+              <span className="flex items-center gap-1.5 font-medium text-gray-800">
+                <span className="w-3 h-3 rounded-full bg-[#25497f] inline-block"></span>
+                {selectedVariant.renkOption}
+              </span>
+            </div>
+          )}
+          {selectedVariant.desenOption && (
+            <div className="flex justify-between px-3 py-1.5 border-b border-gray-100">
+              <span className="text-gray-600">Desen</span>
+              <span className="font-medium text-gray-800">{selectedVariant.desenOption}</span>
+            </div>
+          )}
+          <div className="flex justify-between px-3 py-1.5">
+            <span className="text-gray-600">Adet</span>
+            <span className="font-medium text-gray-800">{selectedVariant.adet.toLocaleString("tr-TR")}</span>
           </div>
         </div>
 
-        {/* Action buttons */}
-        <div className="p-5 space-y-3">
-          <p className="text-xs text-gray-500 text-center mb-1">Siparişinizi nasıl vermek istersiniz?</p>
+        {/* Price section */}
+        <div className="mx-5 mt-3 border border-gray-200 rounded-lg overflow-hidden text-sm">
+          <div className="flex justify-between px-3 py-1.5 border-b border-gray-100">
+            <span className="text-gray-600">Birim Fiyat (KDV Hariç)</span>
+            <span className="font-semibold text-gray-800">{price.unitPriceExKdvFormatted}</span>
+          </div>
+          <div className="flex justify-between px-3 py-1.5 border-b border-gray-100">
+            <span className="text-gray-600">Toplam (KDV Hariç)</span>
+            <span className="font-semibold text-gray-800">{price.totalPriceExKdvFormatted}</span>
+          </div>
+          <div className="flex justify-between px-3 py-2">
+            <span className="font-semibold text-gray-800">Toplam (KDV Dahil %20)</span>
+            <span className="font-bold text-[#cc0636] text-base">{price.totalPriceIncKdvFormatted}</span>
+          </div>
+        </div>
 
+        {/* Tabs: Üye Ol / Üye Olmadan Devam Et */}
+        <div className="flex mx-5 mt-4 gap-0">
           <button
             type="button"
-            onClick={onMemberLogin}
-            className="w-full py-3 rounded-xl font-semibold text-white text-sm transition-colors"
-            style={{ backgroundColor: "#25497f" }}
+            onClick={() => setTab("member")}
+            className={`flex-1 py-2.5 text-sm font-semibold rounded-l-lg border-2 transition-colors ${
+              tab === "member"
+                ? "bg-[#25497f] text-white border-[#25497f]"
+                : "bg-white text-gray-600 border-gray-300 hover:border-gray-400"
+            }`}
           >
-            Üye Ol / Giriş Yap
+            Üye Ol
           </button>
-
           <button
             type="button"
-            onClick={onContinueAsGuest}
-            className="w-full py-3 rounded-xl font-semibold text-sm border-2 border-gray-300 text-gray-700 hover:border-gray-400 hover:bg-gray-50 transition-colors"
+            onClick={() => setTab("guest")}
+            className={`flex-1 py-2.5 text-sm font-semibold rounded-r-lg border-2 border-l-0 transition-colors ${
+              tab === "guest"
+                ? "bg-[#25497f] text-white border-[#25497f]"
+                : "bg-white text-gray-600 border-gray-300 hover:border-gray-400"
+            }`}
           >
             Üye Olmadan Devam Et
           </button>
+        </div>
 
-          {/* WhatsApp */}
-          <div className="pt-1">
-            <WhatsAppButton product={product} variant={selectedVariant} priceSummary={priceSummary} />
-          </div>
-
-          {/* Bank accounts toggle */}
-          {bankAccounts.length > 0 && (
-            <div>
+        {/* Tab content */}
+        <div className="px-5 pt-3 pb-5">
+          {tab === "member" ? (
+            /* ===== ÜYE OL TAB ===== */
+            <div className="space-y-3">
+              <p className="text-xs text-gray-500">Üye olun, siparişlerinizi kolayca takip edin.</p>
+              <input
+                type="email"
+                placeholder="E-posta adresinize"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-full text-sm outline-none focus:border-[#25497f] focus:ring-1 focus:ring-[#25497f]"
+              />
               <button
                 type="button"
-                onClick={() => setShowBanks((s) => !s)}
-                className="w-full text-sm text-[#25497f] font-medium hover:underline"
+                onClick={() => {
+                  if (email) {
+                    alert("Kayıt bağlantısı e-posta adresinize gönderildi.");
+                  }
+                }}
+                className="w-full py-3 rounded-lg font-bold text-white text-sm"
+                style={{ backgroundColor: "#cc0636" }}
               >
-                {showBanks ? "Banka Hesaplarını Gizle ▲" : "Banka Hesaplarını Gör ▼"}
+                Bağlantı Gönder
               </button>
+            </div>
+          ) : (
+            /* ===== ÜYE OLMADAN DEVAM ET TAB ===== */
+            <div className="space-y-3">
+              <p className="text-xs text-gray-500">Fatura bilgilerinizi girerek üye olmadan sipariş verebilirsiniz.</p>
 
-              {showBanks && (
-                <div className="mt-2 space-y-2">
-                  {bankAccounts.map((bank) => (
-                    <div key={bank.iban} className="bg-gray-50 rounded-lg p-3 text-sm border border-gray-100">
-                      <p className="font-semibold text-gray-800">{bank.bankName}</p>
-                      <p className="text-gray-600 text-xs">{bank.accountHolder}</p>
-                      <div className="flex items-center gap-2 mt-1">
-                        <span className="text-xs text-gray-500 font-mono break-all">{bank.iban}</span>
-                        <button
-                          type="button"
-                          onClick={() => copyIban(bank.iban)}
-                          className="shrink-0 text-xs px-2 py-0.5 rounded bg-gray-200 hover:bg-gray-300 transition-colors"
-                        >
-                          {copiedIban === bank.iban ? "Kopyalandı!" : "Kopyala"}
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
+              <input
+                placeholder="Ad Soyad *"
+                value={guestForm.name}
+                onChange={(e) => setGuestForm((p) => ({ ...p, name: e.target.value }))}
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-full text-sm outline-none focus:border-[#25497f]"
+                required
+              />
+              <input
+                type="email"
+                placeholder="E-posta *"
+                value={guestForm.email}
+                onChange={(e) => setGuestForm((p) => ({ ...p, email: e.target.value }))}
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-full text-sm outline-none focus:border-[#25497f]"
+                required
+              />
+              <input
+                placeholder="TC Kimlik No * (11 hane)"
+                value={guestForm.tcNo}
+                onChange={(e) => setGuestForm((p) => ({ ...p, tcNo: e.target.value.replace(/\D/g, "").slice(0, 11) }))}
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-full text-sm outline-none focus:border-[#25497f]"
+                required
+              />
+              <input
+                placeholder="Adres *"
+                value={guestForm.address}
+                onChange={(e) => setGuestForm((p) => ({ ...p, address: e.target.value }))}
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-full text-sm outline-none focus:border-[#25497f]"
+                required
+              />
+              <input
+                placeholder="İl *"
+                value={guestForm.city}
+                onChange={(e) => setGuestForm((p) => ({ ...p, city: e.target.value }))}
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-full text-sm outline-none focus:border-[#25497f]"
+                required
+              />
+              <input
+                placeholder="İlçe"
+                value={guestForm.district}
+                onChange={(e) => setGuestForm((p) => ({ ...p, district: e.target.value }))}
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-full text-sm outline-none focus:border-[#25497f]"
+              />
+              <input
+                type="tel"
+                placeholder="Telefon"
+                value={guestForm.phone}
+                onChange={(e) => setGuestForm((p) => ({ ...p, phone: e.target.value }))}
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-full text-sm outline-none focus:border-[#25497f]"
+              />
+              <input
+                placeholder="Vergi Dairesi"
+                value={guestForm.taxOffice}
+                onChange={(e) => setGuestForm((p) => ({ ...p, taxOffice: e.target.value }))}
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-full text-sm outline-none focus:border-[#25497f]"
+              />
+
+              <div className="flex gap-3 pt-1">
+                <button
+                  type="button"
+                  onClick={onClose}
+                  className="flex-1 py-2.5 rounded-lg border-2 border-gray-300 text-gray-700 text-sm font-semibold hover:bg-gray-50 transition-colors"
+                >
+                  Vazgeç
+                </button>
+                <button
+                  type="button"
+                  onClick={handleGuestOrder}
+                  disabled={submitting}
+                  className="flex-1 py-2.5 rounded-lg text-white text-sm font-bold disabled:opacity-50 transition-colors"
+                  style={{ backgroundColor: "#cc0636" }}
+                >
+                  {submitting ? "Gönderiliyor..." : "Siparişi Oluştur"}
+                </button>
+              </div>
             </div>
           )}
         </div>
