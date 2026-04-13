@@ -5,6 +5,7 @@ import Breadcrumb from "@/components/category/Breadcrumb";
 import TopFilter from "@/components/category/TopFilter";
 import ProductGrid from "@/components/product/ProductGrid";
 import SubCategoryCarousel from "@/components/category/SubCategoryCarousel";
+import AnchorNav from "@/components/category/AnchorNav";
 import JsonLd from "@/components/seo/JsonLd";
 import type { BreadcrumbItem, ProductWithVariants } from "@/types/index";
 
@@ -131,19 +132,9 @@ export default async function CategoryPage({ params, searchParams }: Props) {
           )}
 
           {/* Anchor navigation for sub-categories */}
-          {sectionsWithProducts.length > 1 && (
-            <div className="flex flex-wrap gap-2 mb-4">
-              {sectionsWithProducts.map((child) => (
-                <a
-                  key={child.id}
-                  href={`#cat-${child.slug}`}
-                  className="px-3 py-1.5 rounded-md border border-[#cc0636] text-[#cc0636] text-sm font-medium hover:bg-[#cc0636] hover:text-white transition-colors"
-                >
-                  {child.name}
-                </a>
-              ))}
-            </div>
-          )}
+          <AnchorNav
+            sections={sectionsWithProducts.map((c) => ({ id: c.id, name: c.name, slug: c.slug }))}
+          />
 
           {/* Top filters */}
           {(baskiOptions.length > 0 || renkOptions.length > 0 || desenOptions.length > 0) && (
@@ -156,18 +147,6 @@ export default async function CategoryPage({ params, searchParams }: Props) {
 
           {/* Sub-category sections: red title + gray bordered box + carousel */}
           <div className="space-y-8">
-            {/* Products directly assigned to parent category */}
-            {parentDirectProducts.length > 0 && (
-              <section>
-                <h2 className="text-center font-bold text-lg md:text-xl mb-3" style={{ color: "#cc0636" }}>
-                  {category.name}
-                </h2>
-                <div className="border border-gray-200 rounded-lg bg-gray-50 px-6 py-5">
-                  <SubCategoryCarousel products={parentDirectProducts} />
-                </div>
-              </section>
-            )}
-
             {sectionsWithProducts.map((child) => {
               const products = byCategory.get(child.id) || [];
               return (
