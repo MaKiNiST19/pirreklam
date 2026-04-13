@@ -62,18 +62,14 @@ export default async function CategoryPage({ params, searchParams }: Props) {
 
   if (!category) notFound();
 
-  const isParent = !category.parentId;
+  const hasChildren = category.children && category.children.length > 0;
 
   // Breadcrumb
   const breadcrumbItems: BreadcrumbItem[] = [{ name: "Anasayfa", href: "/" }];
-  if (isParent) {
-    breadcrumbItems.push({ name: category.name, href: `/urun-kategori/${category.slug}/` });
-  } else {
-    if (category.parent) {
-      breadcrumbItems.push({ name: category.parent.name, href: `/urun-kategori/${category.parent.slug}/` });
-    }
-    breadcrumbItems.push({ name: category.name, href: `/urun-kategori/${slugs.join("/")}/` });
+  if (category.parent) {
+    breadcrumbItems.push({ name: category.parent.name, href: `/urun-kategori/${category.parent.slug}/` });
   }
+  breadcrumbItems.push({ name: category.name, href: `/urun-kategori/${slugs.join("/")}/` });
 
   // JSON-LD
   const collectionLd = {
@@ -84,8 +80,8 @@ export default async function CategoryPage({ params, searchParams }: Props) {
     description: category.description || category.name,
   };
 
-  // ===== PARENT CATEGORY VIEW =====
-  if (isParent && category.children.length > 0) {
+  // ===== CATEGORY WITH CHILDREN VIEW (sections with carousels) =====
+  if (hasChildren) {
     const childIds = category.children.map((c) => c.id);
     const allCategoryIds = [category.id, ...childIds];
 
