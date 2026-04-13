@@ -11,7 +11,7 @@ interface Product {
   images: string[];
   isPublished: boolean;
   menuOrder: number;
-  category?: { name: string } | null;
+  category?: { name: string; slug: string } | null;
 }
 
 export default function ProductsPage() {
@@ -168,11 +168,20 @@ export default function ProductsPage() {
                 </td>
                 <td className="px-4 py-2">
                   <div className="flex gap-2">
+                    <a
+                      href={`/urun/${product.slug}/`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-green-600 hover:underline text-xs"
+                      title="Ürünü yeni sekmede görüntüle"
+                    >
+                      Gör
+                    </a>
                     <Link
                       href={`/admin/urunler/${product.id}`}
                       className="text-[#25497f] hover:underline text-xs"
                     >
-                      Duzenle
+                      Düzenle
                     </Link>
                     <button
                       onClick={() => handleDelete(product.id)}

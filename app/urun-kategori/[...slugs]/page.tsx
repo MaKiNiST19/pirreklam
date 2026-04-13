@@ -87,9 +87,10 @@ export default async function CategoryPage({ params, searchParams }: Props) {
   // ===== PARENT CATEGORY VIEW =====
   if (isParent && category.children.length > 0) {
     const childIds = category.children.map((c) => c.id);
+    const allCategoryIds = [category.id, ...childIds];
 
     const allProducts = (await prisma.product.findMany({
-      where: { isPublished: true, categoryId: { in: childIds } },
+      where: { isPublished: true, categoryId: { in: allCategoryIds } },
       include: {
         variants: { orderBy: { sortOrder: "asc" } },
         category: { include: { parent: true } },
@@ -110,6 +111,9 @@ export default async function CategoryPage({ params, searchParams }: Props) {
     const baskiOptions = [...new Set(allVariants.map((v) => v.baskiOption).filter(Boolean))] as string[];
     const renkOptions = [...new Set(allVariants.map((v) => v.renkOption).filter(Boolean))] as string[];
     const desenOptions = [...new Set(allVariants.map((v) => v.desenOption).filter(Boolean))] as string[];
+
+    // Products directly on parent (not in any child)
+    const parentDirectProducts = byCategory.get(category.id) || [];
 
     // Only show sections that have products
     const sectionsWithProducts = category.children.filter(
@@ -156,6 +160,18 @@ export default async function CategoryPage({ params, searchParams }: Props) {
 
           {/* Sub-category sections: red title + gray bordered box + carousel */}
           <div className="space-y-8">
+            {/* Products directly assigned to parent category */}
+            {parentDirectProducts.length > 0 && (
+              <section>
+                <h2 className="text-center font-bold text-lg md:text-xl mb-3" style={{ color: "#cc0636" }}>
+                  {category.name}
+                </h2>
+                <div className="border border-gray-200 rounded-lg bg-gray-50 px-6 py-5">
+                  <SubCategoryCarousel products={parentDirectProducts} />
+                </div>
+              </section>
+            )}
+
             {sectionsWithProducts.map((child) => {
               const products = byCategory.get(child.id) || [];
               return (

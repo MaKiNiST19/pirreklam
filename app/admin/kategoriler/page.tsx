@@ -141,7 +141,19 @@ export default function CategoriesPage() {
             <span className="text-xs text-gray-400">({cat._count?.products ?? 0} urun)</span>
           </div>
           <div className="flex gap-2">
-            <button onClick={() => openEdit(cat)} className="text-[#25497f] hover:underline text-xs">Duzenle</button>
+            <a
+              href={cat.parentId
+                ? `/urun-kategori/${categories.find((c) => c.id === cat.parentId)?.slug || ""}/${cat.slug}/`
+                : `/urun-kategori/${cat.slug}/`
+              }
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-green-600 hover:underline text-xs"
+              title="Kategoriyi yeni sekmede görüntüle"
+            >
+              Gör
+            </a>
+            <button onClick={() => openEdit(cat)} className="text-[#25497f] hover:underline text-xs">Düzenle</button>
             <button onClick={() => handleDelete(cat.id)} className="text-red-500 hover:underline text-xs">Sil</button>
           </div>
         </div>

@@ -9,6 +9,7 @@ interface ProductCardProps {
 export default function ProductCard({ product }: ProductCardProps) {
   const firstImage = product.images?.[0] || "/placeholder.png";
 
+  // Collect unique baskı options
   const baskiOptions = [
     ...new Set(
       product.variants
@@ -17,62 +18,81 @@ export default function ProductCard({ product }: ProductCardProps) {
     ),
   ];
 
+  // Collect unique renk options
+  const renkOptions = [
+    ...new Set(
+      product.variants
+        .map((v) => v.renkOption)
+        .filter(Boolean) as string[]
+    ),
+  ];
+
+  // Build summary lines like WordPress: "1 Renk Boyu", "Gofre Kabartma", etc.
+  const summaryLines: string[] = [];
+  if (renkOptions.length > 0) {
+    summaryLines.push(`${renkOptions.length} Renk Boyu`);
+  }
+  // Show first few baskı options
+  baskiOptions.slice(0, 4).forEach((opt) => summaryLines.push(opt));
+
   return (
     <Link
       href={`/urun/${product.slug}/`}
-      className="group block max-w-[206px] mx-auto w-full rounded-xl bg-white overflow-hidden transition-transform duration-300 hover:scale-[1.08]"
-      style={{
-        borderRadius: 12,
-        boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
-      }}
+      className="group block mx-auto w-full rounded-sm bg-white overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow duration-200"
     >
-      <div className="relative w-full h-[200px] overflow-hidden">
+      {/* Image */}
+      <div className="relative w-full aspect-square overflow-hidden bg-white p-2">
         <Image
           src={firstImage}
           alt={product.title}
           fill
-          className="object-cover"
-          sizes="206px"
+          className="object-contain group-hover:scale-105 transition-transform duration-300"
+          sizes="(max-width: 768px) 50vw, 200px"
         />
-        <div className="absolute inset-0 bg-black/[0.64] opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center px-3">
-          <span className="text-white text-center text-sm font-bold leading-tight">
-            FİYAT BİLGİSİ İÇİN TIKLAYINIZ
-          </span>
-        </div>
       </div>
 
-      <div className="p-2">
+      {/* Info */}
+      <div className="px-2 pb-3 pt-1 text-center">
+        {/* Product name - red, bold */}
         <h3
-          className="text-center font-bold leading-tight mb-1"
-          style={{ fontSize: 13, color: "#cc0636" }}
+          className="font-bold leading-tight mb-1.5 line-clamp-2 min-h-[2.5em]"
+          style={{ fontSize: 12, color: "#cc0636" }}
         >
           {product.title}
         </h3>
 
-        {baskiOptions.length > 0 && (
-          <ul className="space-y-0.5">
-            {baskiOptions.map((opt) => (
-              <li
-                key={opt}
-                className="flex items-center gap-1 text-xs text-gray-600"
-              >
-                <svg
-                  className="w-3 h-3 text-green-600 shrink-0"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+        {/* BASKI SEÇENEKLERİ label */}
+        {(baskiOptions.length > 0 || renkOptions.length > 0) && (
+          <>
+            <p className="text-[10px] font-bold text-[#25497f] tracking-wide mb-1">
+              BASKI SEÇENEKLERİ
+            </p>
+
+            {/* Options with green checkmarks */}
+            <ul className="space-y-0 text-left">
+              {summaryLines.map((line) => (
+                <li
+                  key={line}
+                  className="flex items-start gap-1 text-[11px] text-gray-600 leading-tight"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={3}
-                    d="M5 13l4 4L19 7"
-                  />
-                </svg>
-                {opt}
-              </li>
-            ))}
-          </ul>
+                  <svg
+                    className="w-3 h-3 text-green-600 shrink-0 mt-[1px]"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={3}
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                  <span>{line}</span>
+                </li>
+              ))}
+            </ul>
+          </>
         )}
       </div>
     </Link>
