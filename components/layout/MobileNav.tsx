@@ -2,15 +2,20 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { categories } from "@/components/layout/MegaMenu";
+
+const categories = [
+  { name: "Ruhsat Kabı", slug: "ruhsat-kabi", children: [] },
+  { name: "Plakalık", slug: "plakalik", children: [] },
+  { name: "Pasaport Kılıfı", slug: "pasaport-kilifi", children: [] },
+  { name: "Vesikalık Kabı", slug: "vesikalik-kabi", children: [] },
+  { name: "Kredi Kartlık", slug: "kredi-kartlik", children: [] },
+  { name: "Döviz Kabı", slug: "doviz-kabi", children: [] },
+  { name: "Evlilik Cüzdanı Kılıfı", slug: "evlilik-cuzdani-kilifi", children: [] },
+  { name: "Veteriner Aşı Karnesi Kabı", slug: "veteriner-asi-karnesi-kabi", children: [] },
+];
 
 export default function MobileNav() {
   const [open, setOpen] = useState(false);
-  const [expandedIdx, setExpandedIdx] = useState<number | null>(null);
-
-  function toggle(idx: number) {
-    setExpandedIdx((prev) => (prev === idx ? null : idx));
-  }
 
   return (
     <>
@@ -67,41 +72,15 @@ export default function MobileNav() {
               Anasayfa
             </Link>
 
-            {categories.map((cat, idx) => (
-              <div key={cat.slug} className="border-b border-gray-border">
-                <button
-                  type="button"
-                  onClick={() => toggle(idx)}
-                  className="w-full flex items-center justify-between py-3 text-sm font-semibold text-secondary"
-                >
-                  {cat.name}
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className={`h-4 w-4 transition-transform ${expandedIdx === idx ? "rotate-180" : ""}`}
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                  </svg>
-                </button>
-
-                {expandedIdx === idx && (
-                  <div className="pl-4 pb-2">
-                    {cat.children.map((child) => (
-                      <Link
-                        key={child.slug}
-                        href={`/urun-kategori/${cat.slug}/${child.slug}/`}
-                        onClick={() => setOpen(false)}
-                        className="block py-2 text-sm text-gray-text hover:text-primary"
-                      >
-                        {child.name}
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </div>
+            {categories.map((cat) => (
+              <Link
+                key={cat.slug}
+                href={`/urun-kategori/${cat.slug}/`}
+                onClick={() => setOpen(false)}
+                className="block py-3 text-sm font-semibold text-secondary border-b border-gray-border"
+              >
+                {cat.name}
+              </Link>
             ))}
 
             <Link
