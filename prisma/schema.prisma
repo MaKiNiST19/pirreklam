@@ -1,0 +1,191 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  ADMIN
+  EDITOR
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  SHIPPED
+  COMPLETED
+  CANCELLED
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String   @map("password_hash")
+  name         String?
+  role         Role     @default(EDITOR)
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
+model Category {
+  id             String     @id @default(cuid())
+  name           String
+  slug           String     @unique
+  description    String?    @db.Text
+  image          String?
+  parentId       String?    @map("parent_id")
+  parent         Category?  @relation("CategoryTree", fields: [parentId], references: [id])
+  children       Category[] @relation("CategoryTree")
+  menuOrder      Int        @default(0) @map("menu_order")
+  seoTitle       String?    @map("seo_title")
+  seoDescription String?    @map("seo_description")
+  products       Product[]
+  createdAt      DateTime   @default(now()) @map("created_at")
+  updatedAt      DateTime   @updatedAt @map("updated_at")
+
+  @@map("categories")
+}
+
+model Product {
+  id             String           @id @default(cuid())
+  title          String
+  slug           String           @unique
+  description    String?          @db.Text
+  shortDesc      String?          @map("short_desc") @db.Text
+  images         String[]
+  categoryId     String?          @map("category_id")
+  category       Category?        @relation(fields: [categoryId], references: [id])
+  menuOrder      Int              @default(0) @map("menu_order")
+  productType    String?          @map("product_type")
+  isPublished    Boolean          @default(true) @map("is_published")
+  seoTitle       String?          @map("seo_title")
+  seoDescription String?          @map("seo_description")
+  variants       ProductVariant[]
+  orderItems     OrderItem[]
+  createdAt      DateTime         @default(now()) @map("created_at")
+  updatedAt      DateTime         @updatedAt @map("updated_at")
+
+  @@map("products")
+}
+
+model ProductVariant {
+  id           String     @id @default(cuid())
+  productId    String     @map("product_id")
+  product      Product    @relation(fields: [productId], references: [id], onDelete: Cascade)
+  sku          String     @unique
+  baskiOption  String?    @map("baski_option")
+  renkOption   String?    @map("renk_option")
+  desenOption  String?    @map("desen_option")
+  adet         Int
+  priceUsd     Decimal    @map("price_usd") @db.Decimal(10, 4)
+  isCompatible Boolean    @default(true) @map("is_compatible")
+  stockCode    String?    @map("stock_code")
+  sortOrder    Int        @default(0) @map("sort_order")
+  createdAt    DateTime   @default(now()) @map("created_at")
+
+  @@index([productId])
+  @@map("product_variants")
+}
+
+model Page {
+  id             String   @id @default(cuid())
+  title          String
+  slug           String   @unique
+  content        String   @db.Text
+  isPublished    Boolean  @default(true) @map("is_published")
+  menuOrder      Int      @default(0) @map("menu_order")
+  seoTitle       String?  @map("seo_title")
+  seoDescription String?  @map("seo_description")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  @@map("pages")
+}
+
+model Slider {
+  id        String   @id @default(cuid())
+  title     String?
+  imageUrl  String   @map("image_url")
+  mobileImageUrl String? @map("mobile_image_url")
+  link      String?
+  sortOrder Int      @default(0) @map("sort_order")
+  isActive  Boolean  @default(true) @map("is_active")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("sliders")
+}
+
+model Dealer {
+  id        String   @id @default(cuid())
+  name      String
+  company   String?
+  phone     String?
+  email     String?
+  notes     String?  @db.Text
+  orders    Order[]
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("dealers")
+}
+
+model Order {
+  id           String      @id @default(cuid())
+  dealerId     String?     @map("dealer_id")
+  dealer       Dealer?     @relation(fields: [dealerId], references: [id])
+  items        OrderItem[]
+  totalUsd     Decimal     @map("total_usd") @db.Decimal(10, 2)
+  status       OrderStatus @default(PENDING)
+  notes        String?     @db.Text
+  contactName  String?     @map("contact_name")
+  contactPhone String?     @map("contact_phone")
+  contactEmail String?     @map("contact_email")
+  createdAt    DateTime    @default(now()) @map("created_at")
+  updatedAt    DateTime    @updatedAt @map("updated_at")
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id         String  @id @default(cuid())
+  orderId    String  @map("order_id")
+  order      Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId  String  @map("product_id")
+  product    Product @relation(fields: [productId], references: [id])
+  sku        String
+  title      String
+  baskiOption String? @map("baski_option")
+  renkOption  String? @map("renk_option")
+  desenOption String? @map("desen_option")
+  adet       Int
+  priceUsd   Decimal @map("price_usd") @db.Decimal(10, 4)
+
+  @@map("order_items")
+}
+
+model CompanyInfo {
+  id           String   @id @default("singleton")
+  bankAccounts Json     @default("[]") @map("bank_accounts")
+  phone        String?
+  whatsapp     String?
+  email        String?
+  address      String?  @db.Text
+  socialLinks  Json?    @default("{}") @map("social_links")
+  footerText   String?  @map("footer_text") @db.Text
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@map("company_info")
+}
+
+model Setting {
+  key       String   @id
+  value     String   @db.Text
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("settings")
+}

@@ -1,0 +1,233 @@
+"use client";
+
+import { useState, useEffect, useCallback } from "react";
+
+interface Category {
+  id: string;
+  name: string;
+  slug: string;
+  description: string | null;
+  image: string | null;
+  parentId: string | null;
+  menuOrder: number;
+  seoTitle: string | null;
+  seoDescription: string | null;
+  children?: Category[];
+  _count?: { products: number };
+}
+
+const emptyForm = {
+  name: "",
+  slug: "",
+  description: "",
+  parentId: "",
+  image: "",
+  seoTitle: "",
+  seoDescription: "",
+};
+
+export default function CategoriesPage() {
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [form, setForm] = useState(emptyForm);
+  const [saving, setSaving] = useState(false);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+
+  const load = useCallback(async () => {
+    try {
+      const res = await fetch("/api/categories");
+      const data = await res.json();
+      setCategories(Array.isArray(data) ? data : []);
+    } catch {
+      setCategories([]);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => { load(); }, [load]);
+
+  function buildTree(cats: Category[]): Category[] {
+    const map = new Map<string, Category>();
+    const roots: Category[] = [];
+    cats.forEach((c) => map.set(c.id, { ...c, children: [] }));
+    map.forEach((c) => {
+      if (c.parentId && map.has(c.parentId)) {
+        map.get(c.parentId)!.children!.push(c);
+      } else {
+        roots.push(c);
+      }
+    });
+    return roots.sort((a, b) => a.menuOrder - b.menuOrder);
+  }
+
+  function openNew() {
+    setEditingId(null);
+    setForm(emptyForm);
+    setImageFile(null);
+    setModalOpen(true);
+  }
+
+  function openEdit(cat: Category) {
+    setEditingId(cat.id);
+    setForm({
+      name: cat.name,
+      slug: cat.slug,
+      description: cat.description || "",
+      parentId: cat.parentId || "",
+      image: cat.image || "",
+      seoTitle: cat.seoTitle || "",
+      seoDescription: cat.seoDescription || "",
+    });
+    setImageFile(null);
+    setModalOpen(true);
+  }
+
+  async function handleSave(e: React.FormEvent) {
+    e.preventDefault();
+    setSaving(true);
+    try {
+      let imageUrl = form.image;
+      if (imageFile) {
+        const fd = new FormData();
+        fd.append("file", imageFile);
+        const res = await fetch("/api/upload", { method: "POST", body: fd });
+        const data = await res.json();
+        if (data.url) imageUrl = data.url;
+      }
+
+      const body = { ...form, image: imageUrl, parentId: form.parentId || null };
+      if (editingId) {
+        await fetch(`/api/categories/${editingId}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        });
+      } else {
+        await fetch("/api/categories", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        });
+      }
+      setModalOpen(false);
+      load();
+    } catch {
+      alert("Kaydetme hatasi.");
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  async function handleDelete(id: string) {
+    if (!confirm("Bu kategoriyi silmek istediginize emin misiniz?")) return;
+    await fetch(`/api/categories/${id}`, { method: "DELETE" });
+    load();
+  }
+
+  function generateSlug(name: string) {
+    return name.toLowerCase().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, "-").replace(/-+/g, "-").trim();
+  }
+
+  function renderTree(nodes: Category[], depth = 0): React.ReactNode {
+    return nodes.map((cat) => (
+      <div key={cat.id}>
+        <div className={`flex items-center justify-between py-2 px-4 hover:bg-gray-50 border-b ${depth > 0 ? "pl-" + (4 + depth * 6) : ""}`} style={{ paddingLeft: `${16 + depth * 24}px` }}>
+          <div className="flex items-center gap-3">
+            <span className="text-sm font-medium">{cat.name}</span>
+            <span className="text-xs text-gray-400">/{cat.slug}</span>
+            <span className="text-xs text-gray-400">({cat._count?.products ?? 0} urun)</span>
+          </div>
+          <div className="flex gap-2">
+            <button onClick={() => openEdit(cat)} className="text-[#25497f] hover:underline text-xs">Duzenle</button>
+            <button onClick={() => handleDelete(cat.id)} className="text-red-500 hover:underline text-xs">Sil</button>
+          </div>
+        </div>
+        {cat.children && cat.children.length > 0 && renderTree(cat.children.sort((a, b) => a.menuOrder - b.menuOrder), depth + 1)}
+      </div>
+    ));
+  }
+
+  if (loading)
+    return <div className="flex items-center justify-center h-64"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#25497f]" /></div>;
+
+  const tree = buildTree(categories);
+
+  return (
+    <div>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold text-gray-800">Kategoriler</h1>
+        <button onClick={openNew} className="px-4 py-2 bg-[#cc0636] text-white rounded-lg text-sm font-medium hover:bg-[#a80530]">
+          + Yeni Kategori
+        </button>
+      </div>
+
+      <div className="bg-white rounded-xl shadow">
+        {tree.length === 0 ? (
+          <p className="p-8 text-center text-gray-500">Henuz kategori yok.</p>
+        ) : (
+          renderTree(tree)
+        )}
+      </div>
+
+      {/* Modal */}
+      {modalOpen && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-xl shadow-xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-6">
+            <h2 className="text-lg font-semibold mb-4">{editingId ? "Kategori Duzenle" : "Yeni Kategori"}</h2>
+            <form onSubmit={handleSave} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Ad *</label>
+                <input
+                  value={form.name}
+                  onChange={(e) => setForm((p) => ({ ...p, name: e.target.value, slug: editingId ? p.slug : generateSlug(e.target.value) }))}
+                  required
+                  className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#25497f] outline-none"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Slug</label>
+                <input value={form.slug} onChange={(e) => setForm((p) => ({ ...p, slug: e.target.value }))} className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#25497f] outline-none" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Ust Kategori</label>
+                <select value={form.parentId} onChange={(e) => setForm((p) => ({ ...p, parentId: e.target.value }))} className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#25497f] outline-none">
+                  <option value="">Yok (Ana Kategori)</option>
+                  {categories.filter((c) => c.id !== editingId).map((c) => (
+                    <option key={c.id} value={c.id}>{c.name}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Aciklama</label>
+                <textarea value={form.description} onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))} rows={3} className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#25497f] outline-none" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Gorsel</label>
+                <input type="file" accept="image/*" onChange={(e) => setImageFile(e.target.files?.[0] || null)} className="text-sm" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">SEO Baslik</label>
+                <input value={form.seoTitle} onChange={(e) => setForm((p) => ({ ...p, seoTitle: e.target.value }))} className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#25497f] outline-none" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">SEO Aciklama</label>
+                <textarea value={form.seoDescription} onChange={(e) => setForm((p) => ({ ...p, seoDescription: e.target.value }))} rows={2} className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#25497f] outline-none" />
+              </div>
+              <div className="flex gap-3 pt-2">
+                <button type="submit" disabled={saving} className="px-4 py-2 bg-[#cc0636] text-white rounded-lg text-sm font-medium hover:bg-[#a80530] disabled:opacity-50">
+                  {saving ? "Kaydediliyor..." : "Kaydet"}
+                </button>
+                <button type="button" onClick={() => setModalOpen(false)} className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg text-sm hover:bg-gray-50">
+                  Iptal
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
