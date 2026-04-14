@@ -1,102 +1,90 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 
 interface CategoryItem {
+  id: string;
   name: string;
   slug: string;
-  children?: { name: string; slug: string }[];
+  parentId: string | null;
+  children: CategoryItem[];
 }
 
-const categories: CategoryItem[] = [
-  {
-    name: "Ruhsat Kabı", slug: "ruhsat-kabi",
-    children: [
-      { name: "Biala Pvc Ruhsat Kabı", slug: "biala-pvc-ruhsat-kabi" },
-      { name: "Dikişli Suni Deri Ruhsat Kabı", slug: "dikisli-suni-deri-ruhsat-kabi" },
-      { name: "Dikişli Termo Deri Ruhsat Kabı", slug: "dikisli-termo-deri-ruhsat-kabi" },
-      { name: "Dikişli Oval Kenar Ruhsat Kabı", slug: "dikisli-oval-kenar-ruhsat-kabi" },
-      { name: "Kapaklı Ruhsat Kabı", slug: "kapakli-ruhsat-kabi" },
-      { name: "Ofset Baskılı Ruhsat Kabı", slug: "ofset-baskili-ruhsat-kabi" },
-      { name: "İş Makinası Ruhsat Kabı (Kartonsuz)", slug: "is-makinasi-ruhsat-kabi" },
-      { name: "Filo Çok Amaçlı Ruhsat Kabı", slug: "filo-cok-amacli-ruhsat-kabi" },
-      { name: "Hakiki Deri Ruhsat Kabı", slug: "hakiki-deri-ruhsat-kabi" },
-      { name: "Kişiye Özel Ruhsat Kabı", slug: "kisiye-ozel-ruhsat-kabi" },
-    ],
-  },
-  {
-    name: "Plakalık", slug: "plakalik",
-    children: [
-      { name: "Plastik Plakalık", slug: "plastik-plakalik" },
-      { name: "Metal Plakalık", slug: "metal-plakalik" },
-      { name: "Krom Plakalık", slug: "krom-plakalik" },
-    ],
-  },
-  {
-    name: "Pasaport Kılıfı", slug: "pasaport-kilifi",
-    children: [
-      { name: "Şeffaf Pvc Pasaport Kılıfı", slug: "seffaf-pvc-pasaport-kilifi" },
-      { name: "Biala Pvc Pasaport Kılıfı", slug: "biala-pvc-pasaport-kilifi" },
-      { name: "Dikişli Suni Deri Pasaport Kılıfı", slug: "dikisli-suni-deri-pasaport-kilifi" },
-      { name: "Dikişli Termo Deri Pasaport Kılıfı", slug: "dikisli-termo-deri-pasaport-kilifi" },
-    ],
-  },
-  {
-    name: "Vesikalık Kabı", slug: "vesikalik-kabi",
-    children: [
-      { name: "Tekli Vesikalık Kabı", slug: "tekli-vesikalik-kabi" },
-      { name: "Çiftli Vesikalık Kabı", slug: "ciftli-vesikalik-kabi" },
-    ],
-  },
-  { name: "Kredi Kartlık", slug: "kredi-kartlik" },
-  { name: "Döviz Kabı", slug: "doviz-kabi" },
-  { name: "Evlilik Cüzdanı Kılıfı", slug: "evlilik-cuzdani-kilifi" },
-  { name: "Veteriner Aşı Karnesi Kabı", slug: "veteriner-asi-karnesi-kabi" },
-];
-
 export default function CategoryBar() {
-  const [openIdx, setOpenIdx] = useState<number | null>(null);
+  const [categories, setCategories] = useState<CategoryItem[]>([]);
+  const [topLevel, setTopLevel] = useState<CategoryItem[]>([]);
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await fetch("/api/categories");
+        if (!res.ok) throw new Error("Failed to fetch categories");
+        const data = await res.json();
+        setCategories(data);
+        // Filter for top-level categories only (parentId === null)
+        const topLevelCats = data.filter((c: CategoryItem) => !c.parentId && c.children.length > 0);
+        setTopLevel(topLevelCats);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="bg-[#25497f] text-white">
+        <div className="max-w-[1320px] mx-auto px-4 py-2 text-sm">Kategoriler yükleniyor...</div>
+      </div>
+    );
+  }
 
   return (
-    <nav className="hidden md:block bg-[#25497f]">
-      <div className="max-w-[1320px] mx-auto flex items-center justify-center">
-        {categories.map((cat, idx) => (
-          <div
-            key={cat.slug}
-            className="relative"
-            onMouseEnter={() => cat.children && cat.children.length > 0 ? setOpenIdx(idx) : setOpenIdx(null)}
-            onMouseLeave={() => setOpenIdx(null)}
-          >
-            <Link
-              href={`/urun-kategori/${cat.slug}/`}
-              className="flex items-center gap-1 px-3 lg:px-4 py-2.5 text-[12px] lg:text-[13px] font-semibold text-white hover:bg-white/10 transition-colors whitespace-nowrap"
+    <div className="bg-[#25497f] text-white sticky top-16 z-40 hidden md:block">
+      <div className="max-w-[1320px] mx-auto px-4">
+        <div className="flex items-center gap-0">
+          {topLevel.map((category) => (
+            <div
+              key={category.id}
+              className="relative group"
+              onMouseEnter={() => setHoveredId(category.id)}
+              onMouseLeave={() => setHoveredId(null)}
             >
-              {cat.name}
-              {cat.children && cat.children.length > 0 && (
-                <svg className="w-2.5 h-2.5 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                </svg>
-              )}
-            </Link>
+              {/* Main category button */}
+              <Link
+                href={`/urun-kategori/${category.slug}/`}
+                className="block py-3 px-4 font-medium text-sm hover:bg-white/10 transition-colors"
+              >
+                {category.name}
+              </Link>
 
-            {/* Dropdown */}
-            {openIdx === idx && cat.children && cat.children.length > 0 && (
-              <div className="absolute left-0 top-full min-w-[260px] bg-white z-50 py-1 rounded-b shadow-xl border border-gray-100">
-                {cat.children.map((child) => (
-                  <Link
-                    key={child.slug}
-                    href={`/urun-kategori/${cat.slug}/${child.slug}/`}
-                    className="block px-4 py-2 text-[13px] text-gray-700 hover:text-[#cc0636] hover:bg-gray-50 transition-colors"
-                  >
-                    {child.name}
-                  </Link>
-                ))}
-              </div>
-            )}
-          </div>
-        ))}
+              {/* Mega dropdown - shows on hover */}
+              {hoveredId === category.id && category.children.length > 0 && (
+                <div className="absolute left-0 top-full w-max bg-white text-gray-900 shadow-lg rounded-lg overflow-hidden z-50 animate-in fade-in slide-in-from-top-2">
+                  {/* 2-column layout for children */}
+                  <div className="grid grid-cols-2 gap-0">
+                    {category.children.map((child) => (
+                      <Link
+                        key={child.id}
+                        href={`/urun-kategori/${category.slug}/${child.slug}/`}
+                        className="block px-6 py-3 text-sm hover:bg-gray-50 border-r border-b border-gray-200 last:border-r-0 hover:text-[#cc0636] transition-colors"
+                      >
+                        {child.name}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
-    </nav>
+    </div>
   );
 }
