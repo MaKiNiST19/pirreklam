@@ -64,7 +64,9 @@ export default async function CategoryPage({ params, searchParams }: Props) {
 
   if (!category) notFound();
 
-  const hasChildren = category.children && category.children.length > 0;
+  type ChildCategory = { id: string; name: string; slug: string; menuOrder: number };
+  const children: ChildCategory[] = (category.children || []) as ChildCategory[];
+  const hasChildren = children.length > 0;
 
   // Breadcrumb
   const breadcrumbItems: BreadcrumbItem[] = [{ name: "Anasayfa", href: "/" }];
@@ -84,7 +86,7 @@ export default async function CategoryPage({ params, searchParams }: Props) {
 
   // ===== CATEGORY WITH CHILDREN VIEW (sections with carousels) =====
   if (hasChildren) {
-    const childIds = category.children.map((c) => c.id);
+    const childIds = children.map((c) => c.id);
     const allCategoryIds = [category.id, ...childIds];
 
     const allProducts = (await prisma.product.findMany({
@@ -120,7 +122,7 @@ export default async function CategoryPage({ params, searchParams }: Props) {
     const parentDirectProducts = byCategory.get(category.id) || [];
 
     // Only show sections that have products
-    const sectionsWithProducts = category.children.filter(
+    const sectionsWithProducts = children.filter(
       (c) => (byCategory.get(c.id)?.length ?? 0) > 0
     );
 
