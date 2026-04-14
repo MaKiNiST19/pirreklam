@@ -25,12 +25,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="tr" className={`${openSans.variable} h-full antialiased`}>
-      <body className="min-h-full bg-[#e8e8e8]">
-        <div className="max-w-[1320px] mx-auto min-h-screen flex flex-col bg-white shadow-[0_0_40px_rgba(0,0,0,0.15)] overflow-x-hidden">
-          <CartProvider>
-            <LayoutShell>{children}</LayoutShell>
-          </CartProvider>
-        </div>
+      <body className="min-h-full flex flex-col">
+        <CartProvider>
+          <LayoutShell>{children}</LayoutShell>
+        </CartProvider>
       </body>
     </html>
   );

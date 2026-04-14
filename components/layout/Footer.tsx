@@ -89,7 +89,7 @@ const socialLinks = [
 export default function Footer() {
   return (
     <footer className="bg-gray-light mt-auto">
-      <div className="max-w-[1320px] mx-auto px-4 py-10">
+      <div className="max-w-[1200px] mx-auto px-4 py-10">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Col 1: Popular products */}
           <div>
@@ -194,7 +194,7 @@ export default function Footer() {
 
       {/* Bottom bar */}
       <div className="border-t border-gray-border">
-        <div className="max-w-[1320px] mx-auto px-4 py-4 text-center text-xs text-gray-text">
+        <div className="max-w-[1200px] mx-auto px-4 py-4 text-center text-xs text-gray-text">
           Tüm Hakları Saklıdır.
         </div>
       </div>
