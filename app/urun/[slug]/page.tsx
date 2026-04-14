@@ -84,7 +84,8 @@ export default async function ProductDetailPage({ params }: Props) {
   });
 
   // Variants as VariantOption[]
-  const variants: VariantOption[] = product.variants.map((v) => ({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const variants: VariantOption[] = product.variants.map((v: any) => ({
     id: v.id,
     sku: v.sku,
     baskiOption: v.baskiOption,

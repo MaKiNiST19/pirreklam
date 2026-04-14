@@ -54,7 +54,7 @@ const SECTORS: SectorSection[] = [
 ];
 
 export default async function HomePage() {
-  const [sliders, allProducts, categories] = await Promise.all([
+  const [slidersRaw, allProductsRaw, categoriesRaw] = await Promise.all([
     prisma.slider
       .findMany({ where: { isActive: true }, orderBy: { sortOrder: "asc" } })
       .catch(() => []),
@@ -77,8 +77,14 @@ export default async function HomePage() {
       .catch(() => []),
   ]);
 
+  // Explicit types to avoid implicit any on Vercel builds
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  const sliders = slidersRaw as any[];
+  const allProducts = allProductsRaw as any[];
+  const categories = categoriesRaw as any[];
+
   function getProductsForKeywords(keywords: string[]) {
-    return allProducts.filter((p: { title: string; category?: { name: string } | null }) =>
+    return allProducts.filter((p) =>
       keywords.some(
         (kw) =>
           p.title.toLowerCase().includes(kw.toLowerCase()) ||
@@ -144,7 +150,7 @@ export default async function HomePage() {
             Urun Kategorileri
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {categories.map((cat: { id: string; slug: string; name: string; image?: string | null; children?: unknown[] }) => (
+            {categories.map((cat) => (
               <Link
                 key={cat.id}
                 href={`/urun-kategori/${cat.slug}/`}

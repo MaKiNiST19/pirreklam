@@ -96,9 +96,10 @@ export default async function CategoryPage({ params, searchParams }: Props) {
         category: { include: { parent: true } },
       },
       orderBy: { menuOrder: "asc" },
-    })).map((p) => ({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    })).map((p: any) => ({
       ...p,
-      variants: p.variants.map((v) => ({
+      variants: p.variants.map((v: any) => ({
         ...v,
         priceUsd: Number(v.priceUsd),
       })),
@@ -202,9 +203,10 @@ export default async function CategoryPage({ params, searchParams }: Props) {
       category: { include: { parent: true } },
     },
     orderBy: { menuOrder: "asc" },
-  })).map((p) => ({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  })).map((p: any) => ({
     ...p,
-    variants: p.variants.map((v) => ({
+    variants: p.variants.map((v: any) => ({
       ...v,
       priceUsd: Number(v.priceUsd),
     })),
