@@ -78,11 +78,12 @@ export default function NewProductPage() {
       // Upload images first
       const uploadedUrls: string[] = [];
       for (const file of images) {
-        const fd = new FormData();
-        fd.append("file", file);
-        const res = await fetch("/api/upload", { method: "POST", body: fd });
+        const res = await fetch(`/api/upload?filename=${encodeURIComponent(file.name)}`, {
+          method: "POST",
+          body: file
+        });
         const data = await res.json();
-        if (data.url) uploadedUrls.push(data.url);
+        if (res.ok && data.url) uploadedUrls.push(data.url);
       }
 
       const body = { ...form, images: uploadedUrls };

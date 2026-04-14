@@ -49,10 +49,16 @@ export default function SlidersPage() {
     if (!imageFile) { alert("Gorsel secin."); return; }
     setSaving(true);
     try {
-      const fd = new FormData();
-      fd.append("file", imageFile);
-      const uploadRes = await fetch("/api/upload", { method: "POST", body: fd });
+      const uploadRes = await fetch(`/api/upload?filename=${encodeURIComponent(imageFile.name)}`, {
+        method: "POST",
+        body: imageFile
+      });
       const uploadData = await uploadRes.json();
+
+      if (!uploadRes.ok) {
+        alert("Gorsel yuklemesi basarisiz: " + (uploadData.error || "Bilinmeyen hata"));
+        return;
+      }
 
       await fetch("/api/sliders", {
         method: "POST",
@@ -64,7 +70,10 @@ export default function SlidersPage() {
       setImageFile(null);
       setPreview("");
       load();
-    } catch { alert("Ekleme hatasi."); }
+    } catch (e) {
+      console.error("Upload error:", e);
+      alert("Ekleme hatasi.");
+    }
     finally { setSaving(false); }
   }
 

@@ -213,11 +213,12 @@ export default function CategoriesPage() {
     try {
       let imageUrl = form.image;
       if (imageFile) {
-        const fd = new FormData();
-        fd.append("file", imageFile);
-        const res = await fetch("/api/upload", { method: "POST", body: fd });
+        const res = await fetch(`/api/upload?filename=${encodeURIComponent(imageFile.name)}`, {
+          method: "POST",
+          body: imageFile
+        });
         const data = await res.json();
-        if (data.url) imageUrl = data.url;
+        if (res.ok && data.url) imageUrl = data.url;
       }
 
       const body = { ...form, image: imageUrl, parentId: form.parentId || null };

@@ -7,20 +7,21 @@ export async function POST(request: NextRequest) {
     const session = await auth();
     if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-    const formData = await request.formData();
-    const file = formData.get("file") as File | null;
-
-    if (!file) {
-      return NextResponse.json({ error: "No file provided" }, { status: 400 });
+    const filename = request.nextUrl.searchParams.get("filename");
+    if (!filename) {
+      return NextResponse.json({ error: "Filename required" }, { status: 400 });
     }
 
-    const blob = await put(file.name, file, {
+    // Convert request body (ReadableStream) to Buffer
+    const buffer = await request.arrayBuffer();
+
+    const blob = await put(filename, buffer, {
       access: "public",
     });
 
-    return NextResponse.json({ url: blob.url });
+    return NextResponse.json(blob);
   } catch (error) {
     console.error("POST /api/upload error:", error);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json({ error: "Upload failed", details: String(error) }, { status: 500 });
   }
 }
