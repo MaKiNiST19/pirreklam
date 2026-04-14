@@ -37,11 +37,19 @@ export default function ProductDetailClient({
     setSelectedVariant(variant);
   }, []);
 
-  // When a variant with its own image is selected, show it first
+  // When a variant with its own image is selected, show ONLY that variant's image
+  // Other variant images should not appear in the gallery
+  const variantImagesSet = new Set(
+    variants.map((v) => v.image).filter((img): img is string => !!img)
+  );
+  const baseImages = product.images.filter((img) => !variantImagesSet.has(img));
+
   const displayImages =
     selectedVariant?.image
-      ? [selectedVariant.image, ...product.images.filter((img) => img !== selectedVariant.image)]
-      : product.images;
+      ? [selectedVariant.image, ...baseImages]
+      : baseImages.length > 0
+        ? baseImages
+        : product.images;
 
   const handleAddToCart = () => {
     if (!selectedVariant) return;

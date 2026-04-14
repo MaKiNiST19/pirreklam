@@ -29,7 +29,7 @@ export default async function CorporatePage() {
       </h1>
       <div
         className="prose prose-lg max-w-none"
-        dangerouslySetInnerHTML={{ __html: page.content }}
+        dangerouslySetInnerHTML={{ __html: page.content ?? "" }}
       />
     </div>
   );

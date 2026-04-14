@@ -172,7 +172,8 @@ export default function VariantSelector({
             {labels.renk}
             {selected.renk && <span className="font-normal normal-case text-[#cc0636] tracking-normal">· {selected.renk}</span>}
           </h4>
-          <div className="flex flex-wrap gap-2">
+          {/* 9 per row on mobile, 18 per row on desktop */}
+          <div className="grid grid-cols-9 gap-1.5 md:[grid-template-columns:repeat(18,1fr)]">
             {renkOptions.map((opt) => {
               const isAvail = available.availableRenk.includes(opt);
               const cssColor = COLOR_MAP[opt.toLowerCase()] ?? "#cccccc";
@@ -184,7 +185,7 @@ export default function VariantSelector({
                   title={opt}
                   disabled={!isAvail}
                   onClick={() => isAvail && handleSelect("renk", opt)}
-                  className={`w-7 h-7 rounded-sm transition-all select-none shrink-0 ${
+                  className={`aspect-square w-full rounded-sm transition-all select-none ${
                     isAvail ? "cursor-pointer" : "opacity-35 cursor-not-allowed"
                   } ${isSelected ? "ring-2 ring-offset-1 ring-[#cc0636]" : "ring-1 ring-gray-300"}`}
                   style={{ backgroundColor: cssColor }}
