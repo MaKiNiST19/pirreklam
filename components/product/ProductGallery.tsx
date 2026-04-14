@@ -18,20 +18,19 @@ export default function ProductGallery({ images, title }: ProductGalleryProps) {
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current || !isHovering) return;
-
     const rect = containerRef.current.getBoundingClientRect();
     const x = ((e.clientX - rect.left) / rect.width) * 100;
     const y = ((e.clientY - rect.top) / rect.height) * 100;
-
     setZoomOrigin(`${x}% ${y}%`);
   };
 
   return (
     <div className="w-full">
-      <div className="bg-white p-4 rounded-lg shadow-md">
-        <div
-          ref={containerRef}
-          className="relative w-full aspect-square rounded-lg overflow-hidden bg-gray-100 cursor-zoom-in"
+      {/* Main image — full bleed, no padding, shadow on container */}
+      <div
+        ref={containerRef}
+        className="relative w-full aspect-square rounded-xl overflow-hidden cursor-zoom-in"
+        style={{ boxShadow: "0 8px 30px rgba(0,0,0,0.12)" }}
         onMouseMove={handleMouseMove}
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => {
@@ -53,6 +52,7 @@ export default function ProductGallery({ images, title }: ProductGalleryProps) {
         />
       </div>
 
+      {/* Thumbnails */}
       {displayImages.length > 1 && (
         <div className="mt-3 flex gap-2 overflow-x-auto pb-2">
           {displayImages.map((img, i) => (
@@ -77,7 +77,6 @@ export default function ProductGallery({ images, title }: ProductGalleryProps) {
           ))}
         </div>
       )}
-      </div>
     </div>
   );
 }
