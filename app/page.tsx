@@ -78,7 +78,7 @@ export default async function HomePage() {
   ]);
 
   function getProductsForKeywords(keywords: string[]) {
-    return allProducts.filter((p) =>
+    return allProducts.filter((p: { title: string; category?: { name: string } | null }) =>
       keywords.some(
         (kw) =>
           p.title.toLowerCase().includes(kw.toLowerCase()) ||
