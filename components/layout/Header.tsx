@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import SearchBar from "@/components/layout/SearchBar";
+import LiveSearchBar from "@/components/layout/LiveSearchBar";
 import MobileNav from "@/components/layout/MobileNav";
 import CartButton from "@/components/layout/CartButton";
 import CategoryBar from "@/components/layout/CategoryBar";
@@ -46,8 +46,8 @@ export default function Header() {
       <div className="bg-white border-b border-gray-100">
         <div className="max-w-[1320px] mx-auto flex items-center justify-between px-4 py-1.5 gap-2">
           {/* Search (small) */}
-          <div className="hidden md:block shrink-0">
-            <SearchBar />
+          <div className="hidden md:block shrink-0 w-64">
+            <LiveSearchBar />
           </div>
 
           {/* Phone */}
@@ -112,7 +112,7 @@ export default function Header() {
 
       {/* Mobile search */}
       <div className="md:hidden bg-white border-b border-gray-100 px-4 py-1.5">
-        <SearchBar />
+        <LiveSearchBar />
       </div>
 
       {/* ===== CATEGORY BAR: Dark blue/red gradient with product categories ===== */}
