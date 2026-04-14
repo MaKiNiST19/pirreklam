@@ -66,7 +66,7 @@ export default async function CmsPage({ params }: Props) {
       </h1>
       <div
         className="prose prose-lg max-w-none"
-        dangerouslySetInnerHTML={{ __html: page.content }}
+        dangerouslySetInnerHTML={{ __html: page.content ?? "" }}
       />
     </div>
   );

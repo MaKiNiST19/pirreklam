@@ -6,7 +6,7 @@ const SECRET = new TextEncoder().encode(
   process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET || "fallback-secret"
 );
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const isAdminRoute = request.nextUrl.pathname.startsWith("/admin");
   const isLoginPage = request.nextUrl.pathname === "/admin/giris";
 
