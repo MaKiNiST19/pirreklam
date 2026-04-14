@@ -44,6 +44,7 @@ export interface VariantOption {
   priceUsd: number;
   isCompatible: boolean;
   stockCode: string | null;
+  image: string | null;
 }
 
 export function getDistinctOptions(variants: VariantOption[]) {

@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
 import { getUsdTryRate } from "@/lib/exchange-rate";
 import Breadcrumb from "@/components/category/Breadcrumb";
-import ProductGallery from "@/components/product/ProductGallery";
 import ProductGrid from "@/components/product/ProductGrid";
 import JsonLd from "@/components/seo/JsonLd";
 import ProductDetailClient from "./ProductDetailClient";
@@ -95,6 +94,7 @@ export default async function ProductDetailPage({ params }: Props) {
     priceUsd: Number(v.priceUsd),
     isCompatible: v.isCompatible,
     stockCode: v.stockCode,
+    image: v.image ?? null,
   }));
 
   // Related products
@@ -144,38 +144,32 @@ export default async function ProductDetailPage({ params }: Props) {
       <div className="container mx-auto px-4 py-6">
         <Breadcrumb items={breadcrumbItems} />
 
-        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Left: Gallery */}
-          <ProductGallery images={product.images} title={product.title} />
-
-          {/* Right: Info */}
-          <div>
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
-              {product.title}
-            </h1>
-
-            {/* STOK KODU */}
-            {variants.length > 0 && (
-              <div className="mb-4 inline-flex items-center gap-1.5 bg-gray-100 rounded px-2.5 py-1">
-                <span className="text-[11px] font-semibold text-gray-600">Stok Kodu :</span>
-                <span className="text-xs font-bold text-[#cc0636]">{variants[0].sku}</span>
-              </div>
-            )}
-
-            <ProductDetailClient
-              product={{
-                id: product.id,
-                title: product.title,
-                slug: product.slug,
-                images: product.images,
-                productType: product.productType,
-              }}
-              variants={variants}
-              exchangeRate={exchangeRate}
-              bankAccounts={bankAccounts}
-            />
-          </div>
+        {/* Title + SKU above the two-column layout */}
+        <div className="mt-6">
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+            {product.title}
+          </h1>
+          {variants.length > 0 && (
+            <div className="mb-4 inline-flex items-center gap-1.5 bg-gray-100 rounded px-2.5 py-1">
+              <span className="text-[11px] font-semibold text-gray-600">Stok Kodu :</span>
+              <span className="text-xs font-bold text-[#cc0636]">{variants[0].sku}</span>
+            </div>
+          )}
         </div>
+
+        {/* Two-column layout (gallery + variants) is now managed inside ProductDetailClient */}
+        <ProductDetailClient
+          product={{
+            id: product.id,
+            title: product.title,
+            slug: product.slug,
+            images: product.images,
+            productType: product.productType,
+          }}
+          variants={variants}
+          exchangeRate={exchangeRate}
+          bankAccounts={bankAccounts}
+        />
 
         {/* Description */}
         {product.description && (
