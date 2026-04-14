@@ -15,7 +15,11 @@ export async function POST(request: Request): Promise<NextResponse> {
   }
 
   try {
-    const blob = await put(filename, request.body, {
+    if (!request.body) {
+      return NextResponse.json({ error: "Empty body" }, { status: 400 });
+    }
+
+    const blob = await put(filename, request.body as ReadableStream, {
       access: "public",
     });
 
