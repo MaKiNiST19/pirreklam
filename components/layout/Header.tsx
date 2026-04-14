@@ -3,7 +3,7 @@ import Image from "next/image";
 import LiveSearchBar from "@/components/layout/LiveSearchBar";
 import MobileNav from "@/components/layout/MobileNav";
 import CartButton from "@/components/layout/CartButton";
-import CategoryBar from "@/components/layout/CategoryBar";
+import CategoryBar, { type CategoryTreeItem } from "@/components/layout/CategoryBar";
 
 const socialLinks = [
   { href: "http://www.facebook.com/pirreklampromosyon", label: "Facebook", icon: FacebookIcon },
@@ -13,7 +13,11 @@ const socialLinks = [
   { href: "https://www.youtube.com/@pirreklampromosyon", label: "YouTube", icon: YoutubeIcon },
 ];
 
-export default function Header() {
+interface HeaderProps {
+  categoryTree?: CategoryTreeItem[];
+}
+
+export default function Header({ categoryTree }: HeaderProps) {
   return (
     <header className="sticky top-0 z-50">
       {/* Wrapper for logo overlap positioning */}
@@ -110,7 +114,7 @@ export default function Header() {
         </div>
 
         {/* ===== CATEGORY BAR (navy) ===== */}
-        <CategoryBar />
+        <CategoryBar tree={categoryTree} />
 
         {/* ===== OVERLAPPING LOGO — centered, slogan aligned to bottom of navy bar ===== */}
         <div

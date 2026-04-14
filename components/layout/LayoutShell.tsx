@@ -6,8 +6,14 @@ import Footer from "./Footer";
 import WhatsAppButton from "./WhatsAppButton";
 import ScrollToTop from "./ScrollToTop";
 import { type ReactNode } from "react";
+import { type CategoryTreeItem } from "./CategoryBar";
 
-export default function LayoutShell({ children }: { children: ReactNode }) {
+interface Props {
+  children: ReactNode;
+  categoryTree?: CategoryTreeItem[];
+}
+
+export default function LayoutShell({ children, categoryTree }: Props) {
   const pathname = usePathname();
   const isAdmin = pathname.startsWith("/admin");
 
@@ -17,7 +23,7 @@ export default function LayoutShell({ children }: { children: ReactNode }) {
 
   return (
     <>
-      <Header />
+      <Header categoryTree={categoryTree} />
       <main className="flex-1">{children}</main>
       <Footer />
       <WhatsAppButton />
