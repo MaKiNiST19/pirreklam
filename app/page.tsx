@@ -144,7 +144,7 @@ export default async function HomePage() {
             Urun Kategorileri
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {categories.map((cat) => (
+            {categories.map((cat: { id: string; slug: string; name: string; image?: string | null; children?: unknown[] }) => (
               <Link
                 key={cat.id}
                 href={`/urun-kategori/${cat.slug}/`}
