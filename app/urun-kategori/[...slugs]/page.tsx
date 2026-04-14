@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
 import Breadcrumb from "@/components/category/Breadcrumb";
@@ -93,6 +94,12 @@ export default async function CategoryPage({ params, searchParams }: Props) {
         category: { include: { parent: true } },
       },
       orderBy: { menuOrder: "asc" },
+    })).map((p) => ({
+      ...p,
+      variants: p.variants.map((v) => ({
+        ...v,
+        priceUsd: Number(v.priceUsd),
+      })),
     })) as ProductWithVariants[];
 
     // Group by categoryId
@@ -151,12 +158,15 @@ export default async function CategoryPage({ params, searchParams }: Props) {
               const products = byCategory.get(child.id) || [];
               return (
                 <section key={child.id} id={`cat-${child.slug}`} className="scroll-mt-24">
-                  {/* Red centered title */}
-                  <h2
-                    className="text-center font-bold text-lg md:text-xl mb-3"
-                    style={{ color: "#cc0636" }}
-                  >
-                    {child.name}
+                  {/* Red centered title — links to child category page */}
+                  <h2 className="text-center font-bold text-lg md:text-xl mb-3">
+                    <Link
+                      href={`/urun-kategori/${slugs.join("/")}/${child.slug}/`}
+                      className="hover:underline"
+                      style={{ color: "#cc0636" }}
+                    >
+                      {child.name}
+                    </Link>
                   </h2>
 
                   {/* Gray bordered box with products */}
@@ -190,6 +200,12 @@ export default async function CategoryPage({ params, searchParams }: Props) {
       category: { include: { parent: true } },
     },
     orderBy: { menuOrder: "asc" },
+  })).map((p) => ({
+    ...p,
+    variants: p.variants.map((v) => ({
+      ...v,
+      priceUsd: Number(v.priceUsd),
+    })),
   })) as ProductWithVariants[];
 
   const allVariants = products.flatMap((p) => p.variants);

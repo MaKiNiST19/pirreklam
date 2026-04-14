@@ -9,7 +9,6 @@ interface ProductCardProps {
 export default function ProductCard({ product }: ProductCardProps) {
   const firstImage = product.images?.[0] || "/placeholder.png";
 
-  // Collect unique baskı options
   const baskiOptions = [
     ...new Set(
       product.variants
@@ -25,22 +24,18 @@ export default function ProductCard({ product }: ProductCardProps) {
       href={`/urun/${product.slug}/`}
       className="group block w-full h-full hover:[box-shadow:0px_20px_15px_-3px_rgba(0,0,0,0.1)]"
       style={{
-        minHeight: "280px",
-        maxHeight: "280px",
         border: "2px solid rgba(66,66,66,0.06)",
         borderRadius: "10px",
-        padding: "10px",
+        padding: "8px",
         display: "flex",
         flexDirection: "column",
-        alignItems: "center",
-        rowGap: "2px",
         backgroundColor: "#ffffff",
         overflow: "hidden",
         transition: "box-shadow 0.2s ease",
       }}
     >
-      {/* Image area — takes available space */}
-      <div className="relative w-full flex-1 min-h-0">
+      {/* Image — fixed height so all images align */}
+      <div className="relative w-full shrink-0" style={{ height: "160px" }}>
         <Image
           src={firstImage}
           alt={product.title}
@@ -50,19 +45,19 @@ export default function ProductCard({ product }: ProductCardProps) {
         />
       </div>
 
-      {/* Info */}
-      <div className="w-full text-center shrink-0 pt-1">
-        {/* Product name */}
+      {/* Info — sits below image, titles all aligned */}
+      <div className="w-full text-center flex-1 flex flex-col pt-1">
+        {/* Product name — fixed 2-line area */}
         <h3
-          className="font-bold leading-tight mb-1 line-clamp-2"
-          style={{ fontSize: 11, color: "#cc0636" }}
+          className="font-bold leading-tight line-clamp-2 shrink-0"
+          style={{ fontSize: 11, color: "#cc0636", minHeight: "28px" }}
         >
           {product.title}
         </h3>
 
         {/* BASKI SEÇENEKLERİ */}
         {hasBaski && (
-          <>
+          <div className="mt-auto pt-0.5">
             <p className="font-bold text-[#25497f] tracking-wide mb-0.5" style={{ fontSize: 9 }}>
               BASKI SEÇENEKLERİ
             </p>
@@ -85,7 +80,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                 </li>
               ))}
             </ul>
-          </>
+          </div>
         )}
       </div>
     </Link>

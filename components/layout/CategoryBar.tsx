@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 
 interface FlatCategory {
@@ -42,6 +42,7 @@ export default function CategoryBar() {
   const [topLevel, setTopLevel] = useState<CategoryNode[]>([]);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const barRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     fetch("/api/categories")
@@ -105,11 +106,14 @@ export default function CategoryBar() {
           )}
         </Link>
 
-        {/* Full-width mega dropdown */}
+        {/* Full-width mega dropdown — drops below nav bar */}
         {hoveredId === category.id && allChildren.length > 0 && (
           <div
             className="fixed left-0 right-0 bg-white text-gray-800 z-[100]"
-            style={{ boxShadow: "0 15px 50px 5px rgba(207,207,207,1)", top: "auto" }}
+            style={{
+              boxShadow: "0 15px 50px 5px rgba(207,207,207,1)",
+              top: barRef.current ? `${barRef.current.getBoundingClientRect().bottom}px` : "auto",
+            }}
           >
             <div className="max-w-[1320px] mx-auto px-6 py-5">
               {/* Show children grouped by second-level parent */}
@@ -163,7 +167,7 @@ export default function CategoryBar() {
   };
 
   return (
-    <div className="bg-[#25497f] text-white hidden md:block">
+    <div ref={barRef} className="bg-[#25497f] text-white hidden md:block">
       <div className="max-w-[1320px] mx-auto px-4">
         {isLoading ? (
           <div className="py-2.5 text-sm opacity-60 text-center">Yükleniyor...</div>
@@ -175,7 +179,7 @@ export default function CategoryBar() {
             </div>
 
             {/* CENTER spacer for logo overlap */}
-            <div className="w-[140px] shrink-0" />
+            <div className="w-[160px] shrink-0" />
 
             {/* RIGHT categories */}
             <div className="flex items-stretch">

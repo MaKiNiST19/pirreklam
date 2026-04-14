@@ -66,7 +66,7 @@ export default function Header() {
             </div>
 
             {/* Center: Logo placeholder (space reserved, actual logo is absolutely positioned) */}
-            <div className="flex items-center justify-center shrink-0 w-[120px] md:w-[140px]">
+            <div className="flex items-center justify-center shrink-0 w-[120px] md:w-[160px]">
               <MobileNav />
               {/* Invisible spacer for mobile */}
               <div className="md:hidden w-[70px]" />
@@ -112,22 +112,23 @@ export default function Header() {
         {/* ===== CATEGORY BAR (navy) ===== */}
         <CategoryBar />
 
-        {/* ===== OVERLAPPING LOGO — absolutely positioned, centered, spans all 3 bars ===== */}
-        <div className="hidden md:flex flex-col items-center absolute left-1/2 -translate-x-1/2 top-0 z-[60] pointer-events-none"
-          style={{ width: "140px" }}
+        {/* ===== OVERLAPPING LOGO — starts from white bar, overlaps into navy bar ===== */}
+        <div
+          className="hidden md:flex flex-col items-center absolute left-1/2 -translate-x-1/2 z-[60] pointer-events-none"
+          style={{ width: "160px", top: "8px" }}
         >
           <Link href="/" className="pointer-events-auto flex flex-col items-center">
             <Image
               src="/logo.webp"
               alt="Pir Reklam"
-              width={110}
-              height={110}
-              className="w-[100px] h-auto drop-shadow-lg"
+              width={130}
+              height={130}
+              className="w-[120px] h-auto drop-shadow-lg"
               priority
             />
             <span
-              className="text-[9px] font-bold text-[#25497f] whitespace-nowrap -mt-0.5 tracking-wide"
-              style={{ textShadow: "0 0 4px rgba(255,255,255,0.9)" }}
+              className="text-[10px] font-bold whitespace-nowrap -mt-1 tracking-wide"
+              style={{ color: "#cc0636" }}
             >
               {"1961'den Beri , Sektörün Pir'i..."}
             </span>

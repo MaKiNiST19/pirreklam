@@ -1,6 +1,23 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
 interface Category {
   id: string;
@@ -26,6 +43,62 @@ const emptyForm = {
   seoDescription: "",
 };
 
+/* ── Sortable Row ── */
+function SortableRow({
+  cat,
+  depth,
+  categories,
+  onEdit,
+  onDelete,
+}: {
+  cat: Category;
+  depth: number;
+  categories: Category[];
+  onEdit: (c: Category) => void;
+  onDelete: (id: string) => void;
+}) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: cat.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    paddingLeft: `${16 + depth * 24}px`,
+    opacity: isDragging ? 0.5 : 1,
+  };
+
+  return (
+    <div ref={setNodeRef} style={style} {...attributes} className={`flex items-center justify-between py-2 px-4 hover:bg-gray-50 border-b bg-white`}>
+      <div className="flex items-center gap-3">
+        {/* Drag handle */}
+        <button {...listeners} className="cursor-grab active:cursor-grabbing text-gray-400 hover:text-gray-600 touch-none" title="Sürükle">
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M4 8h16M4 16h16" />
+          </svg>
+        </button>
+        <span className="text-sm font-medium">{cat.name}</span>
+        <span className="text-xs text-gray-400">/{cat.slug}</span>
+        <span className="text-xs text-gray-400">({cat._count?.products ?? 0} urun)</span>
+      </div>
+      <div className="flex gap-2">
+        <a
+          href={cat.parentId
+            ? `/urun-kategori/${categories.find((c) => c.id === cat.parentId)?.slug || ""}/${cat.slug}/`
+            : `/urun-kategori/${cat.slug}/`
+          }
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-green-600 hover:underline text-xs"
+          title="Kategoriyi yeni sekmede görüntüle"
+        >
+          Gör
+        </a>
+        <button onClick={() => onEdit(cat)} className="text-[#25497f] hover:underline text-xs">Düzenle</button>
+        <button onClick={() => onDelete(cat.id)} className="text-red-500 hover:underline text-xs">Sil</button>
+      </div>
+    </div>
+  );
+}
+
 export default function CategoriesPage() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
@@ -34,6 +107,11 @@ export default function CategoriesPage() {
   const [form, setForm] = useState(emptyForm);
   const [saving, setSaving] = useState(false);
   const [imageFile, setImageFile] = useState<File | null>(null);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
+  );
 
   const load = useCallback(async () => {
     try {
@@ -60,7 +138,51 @@ export default function CategoriesPage() {
         roots.push(c);
       }
     });
-    return roots.sort((a, b) => a.menuOrder - b.menuOrder);
+    roots.sort((a, b) => a.menuOrder - b.menuOrder);
+    roots.forEach((r) => r.children!.sort((a, b) => a.menuOrder - b.menuOrder));
+    return roots;
+  }
+
+  /* ── Get siblings (same parentId), sorted ── */
+  function getSiblings(parentId: string | null): Category[] {
+    return categories
+      .filter((c) => c.parentId === parentId)
+      .sort((a, b) => a.menuOrder - b.menuOrder);
+  }
+
+  async function handleDragEnd(event: DragEndEvent) {
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
+
+    const draggedCat = categories.find((c) => c.id === active.id);
+    if (!draggedCat) return;
+
+    const siblings = getSiblings(draggedCat.parentId);
+    const oldIndex = siblings.findIndex((c) => c.id === active.id);
+    const newIndex = siblings.findIndex((c) => c.id === over.id);
+    if (oldIndex === -1 || newIndex === -1) return;
+
+    const reordered = arrayMove(siblings, oldIndex, newIndex);
+    const updates = reordered.map((c, i) => ({ id: c.id, menuOrder: i }));
+
+    // Optimistic update
+    setCategories((prev) =>
+      prev.map((c) => {
+        const upd = updates.find((u) => u.id === c.id);
+        return upd ? { ...c, menuOrder: upd.menuOrder } : c;
+      })
+    );
+
+    // Save to server
+    try {
+      await fetch("/api/categories/reorder", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ items: updates }),
+      });
+    } catch {
+      load(); // rollback
+    }
   }
 
   function openNew() {
@@ -131,35 +253,27 @@ export default function CategoriesPage() {
     return name.toLowerCase().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, "-").replace(/-+/g, "-").trim();
   }
 
-  function renderTree(nodes: Category[], depth = 0): React.ReactNode {
-    return nodes.map((cat) => (
-      <div key={cat.id}>
-        <div className={`flex items-center justify-between py-2 px-4 hover:bg-gray-50 border-b ${depth > 0 ? "pl-" + (4 + depth * 6) : ""}`} style={{ paddingLeft: `${16 + depth * 24}px` }}>
-          <div className="flex items-center gap-3">
-            <span className="text-sm font-medium">{cat.name}</span>
-            <span className="text-xs text-gray-400">/{cat.slug}</span>
-            <span className="text-xs text-gray-400">({cat._count?.products ?? 0} urun)</span>
+  function renderSortableGroup(nodes: Category[], depth = 0): React.ReactNode {
+    const ids = nodes.map((n) => n.id);
+    return (
+      <SortableContext items={ids} strategy={verticalListSortingStrategy}>
+        {nodes.map((cat) => (
+          <div key={cat.id}>
+            <SortableRow
+              cat={cat}
+              depth={depth}
+              categories={categories}
+              onEdit={openEdit}
+              onDelete={handleDelete}
+            />
+            {cat.children && cat.children.length > 0 && renderSortableGroup(
+              cat.children.sort((a, b) => a.menuOrder - b.menuOrder),
+              depth + 1
+            )}
           </div>
-          <div className="flex gap-2">
-            <a
-              href={cat.parentId
-                ? `/urun-kategori/${categories.find((c) => c.id === cat.parentId)?.slug || ""}/${cat.slug}/`
-                : `/urun-kategori/${cat.slug}/`
-              }
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-green-600 hover:underline text-xs"
-              title="Kategoriyi yeni sekmede görüntüle"
-            >
-              Gör
-            </a>
-            <button onClick={() => openEdit(cat)} className="text-[#25497f] hover:underline text-xs">Düzenle</button>
-            <button onClick={() => handleDelete(cat.id)} className="text-red-500 hover:underline text-xs">Sil</button>
-          </div>
-        </div>
-        {cat.children && cat.children.length > 0 && renderTree(cat.children.sort((a, b) => a.menuOrder - b.menuOrder), depth + 1)}
-      </div>
-    ));
+        ))}
+      </SortableContext>
+    );
   }
 
   if (loading)
@@ -176,11 +290,15 @@ export default function CategoriesPage() {
         </button>
       </div>
 
+      <p className="text-xs text-gray-500 mb-2">Sıralamayı değiştirmek için kategorileri sürükleyip bırakın.</p>
+
       <div className="bg-white rounded-xl shadow">
         {tree.length === 0 ? (
           <p className="p-8 text-center text-gray-500">Henuz kategori yok.</p>
         ) : (
-          renderTree(tree)
+          <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+            {renderSortableGroup(tree)}
+          </DndContext>
         )}
       </div>
 
