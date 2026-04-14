@@ -150,9 +150,17 @@ export default async function ProductDetailPage({ params }: Props) {
 
           {/* Right: Info */}
           <div>
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
               {product.title}
             </h1>
+
+            {/* STOK KODU */}
+            {variants.length > 0 && (
+              <div className="mb-4 inline-flex items-center gap-1.5 bg-gray-100 rounded px-2.5 py-1">
+                <span className="text-[11px] font-semibold text-gray-600">Stok Kodu :</span>
+                <span className="text-xs font-bold text-[#cc0636]">{variants[0].sku}</span>
+              </div>
+            )}
 
             <ProductDetailClient
               product={{
