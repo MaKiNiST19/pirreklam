@@ -16,27 +16,23 @@ interface Props {
 }
 
 async function resolveCategory(slugs: string[]) {
-  if (slugs.length === 1) {
-    return prisma.category.findUnique({
-      where: { slug: slugs[0] },
-      include: {
-        children: { orderBy: { menuOrder: "asc" } },
-        parent: true,
-      },
-    });
-  }
+  // Last slug is the category we want to resolve
+  const targetSlug = slugs[slugs.length - 1];
 
-  if (slugs.length === 2) {
-    const child = await prisma.category.findUnique({
-      where: { slug: slugs[1] },
-      include: {
-        children: { orderBy: { menuOrder: "asc" } },
-        parent: true,
-      },
-    });
-    if (child && child.parent?.slug === slugs[0]) return child;
-    return null;
-  }
+  const category = await prisma.category.findUnique({
+    where: { slug: targetSlug },
+    include: {
+      children: { orderBy: { menuOrder: "asc" } },
+      parent: { include: { parent: true } },
+    },
+  });
+
+  if (!category) return null;
+
+  // Validate slug path matches parent chain
+  if (slugs.length === 1 && !category.parentId) return category;
+  if (slugs.length === 2 && category.parent?.slug === slugs[0]) return category;
+  if (slugs.length === 3 && category.parent?.slug === slugs[1] && category.parent?.parent?.slug === slugs[0]) return category;
 
   return null;
 }
@@ -70,8 +66,16 @@ export default async function CategoryPage({ params, searchParams }: Props) {
 
   // Breadcrumb
   const breadcrumbItems: BreadcrumbItem[] = [{ name: "Anasayfa", href: "/" }];
-  if (category.parent) {
-    breadcrumbItems.push({ name: category.parent.name, href: `/urun-kategori/${category.parent.slug}/` });
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const parentCat = category.parent as any;
+  if (parentCat?.parent) {
+    breadcrumbItems.push({ name: parentCat.parent.name, href: `/urun-kategori/${parentCat.parent.slug}/` });
+  }
+  if (parentCat) {
+    const parentPath = parentCat.parent
+      ? `/urun-kategori/${parentCat.parent.slug}/${parentCat.slug}/`
+      : `/urun-kategori/${parentCat.slug}/`;
+    breadcrumbItems.push({ name: parentCat.name, href: parentPath });
   }
   breadcrumbItems.push({ name: category.name, href: `/urun-kategori/${slugs.join("/")}/` });
 

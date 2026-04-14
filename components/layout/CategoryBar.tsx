@@ -29,12 +29,7 @@ function buildTree(flat: FlatCategory[]): CategoryNode[] {
   });
 
   roots.sort((a, b) => a.menuOrder - b.menuOrder);
-  roots.forEach((r) => {
-    r.children.sort((a, b) => a.menuOrder - b.menuOrder);
-    // Also sort grandchildren
-    r.children.forEach((c) => c.children.sort((a, b) => a.menuOrder - b.menuOrder));
-  });
-
+  roots.forEach((r) => r.children.sort((a, b) => a.menuOrder - b.menuOrder));
   return roots;
 }
 
@@ -55,35 +50,18 @@ export default function CategoryBar() {
       .finally(() => setIsLoading(false));
   }, []);
 
-  // Split categories: first half left, second half right
+  // Split: first half left, second half right
   const midpoint = Math.ceil(topLevel.length / 2);
   const leftCats = topLevel.slice(0, midpoint);
   const rightCats = topLevel.slice(midpoint);
 
-  const renderCategoryItem = (category: CategoryNode) => {
-    // Flatten all children + grandchildren for mega menu
-    const allChildren: { name: string; slug: string; parentSlug: string }[] = [];
+  // Categories with many children get 2-column mega menu
+  // Categories with few children get simple dropdown
+  const MEGA_THRESHOLD = 6;
 
-    // Direct children (second-level)
-    category.children.forEach((child) => {
-      if (child.children.length > 0) {
-        // This child has its own children (third-level) — show them
-        child.children.forEach((grandchild) => {
-          allChildren.push({
-            name: grandchild.name,
-            slug: grandchild.slug,
-            parentSlug: `${category.slug}/${child.slug}`,
-          });
-        });
-      } else {
-        // Leaf child
-        allChildren.push({
-          name: child.name,
-          slug: child.slug,
-          parentSlug: category.slug,
-        });
-      }
-    });
+  const renderCategoryItem = (category: CategoryNode) => {
+    const hasChildren = category.children.length > 0;
+    const isMega = category.children.length >= MEGA_THRESHOLD;
 
     return (
       <div
@@ -99,68 +77,60 @@ export default function CategoryBar() {
           }`}
         >
           {category.name}
-          {allChildren.length > 0 && (
+          {hasChildren && (
             <svg className="w-3 h-3 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
             </svg>
           )}
         </Link>
 
-        {/* Full-width mega dropdown — drops below nav bar */}
-        {hoveredId === category.id && allChildren.length > 0 && (
-          <div
-            className="fixed left-0 right-0 bg-white text-gray-800 z-[100]"
-            style={{
-              boxShadow: "0 15px 50px 5px rgba(207,207,207,1)",
-              top: barRef.current ? `${barRef.current.getBoundingClientRect().bottom}px` : "auto",
-            }}
-          >
-            <div className="max-w-[1320px] mx-auto px-6 py-5">
-              {/* Show children grouped by second-level parent */}
-              {category.children.length > 0 && (
-                <div
-                  className="grid gap-x-8 gap-y-1"
-                  style={{
-                    gridTemplateColumns: `repeat(${Math.min(category.children.length, 4)}, minmax(0, 1fr))`,
-                  }}
-                >
+        {/* Dropdown */}
+        {hoveredId === category.id && hasChildren && (
+          isMega ? (
+            /* ── MEGA MENU: 2-column, full-width ── */
+            <div
+              className="fixed left-0 right-0 bg-white text-gray-800 z-[100]"
+              style={{
+                boxShadow: "0 15px 50px 5px rgba(207,207,207,1)",
+                top: barRef.current ? `${barRef.current.getBoundingClientRect().bottom}px` : "auto",
+              }}
+            >
+              <div className="max-w-[700px] mx-auto px-6 py-5">
+                <div className="grid grid-cols-2 gap-x-10 gap-y-1">
                   {category.children.map((child) => (
-                    <div key={child.id}>
-                      {/* Second-level heading */}
-                      <Link
-                        href={`/urun-kategori/${category.slug}/${child.slug}/`}
-                        className="block text-[13px] font-bold text-[#cc0636] mb-2 pb-1.5 border-b border-gray-200 hover:text-[#a9042d] transition-colors"
-                      >
-                        {child.name}
-                      </Link>
-                      {/* Third-level items */}
-                      {child.children.length > 0 ? (
-                        <ul className="space-y-0.5">
-                          {child.children.map((gc) => (
-                            <li key={gc.id}>
-                              <Link
-                                href={`/urun-kategori/${category.slug}/${child.slug}/${gc.slug}/`}
-                                className="block text-[12px] text-gray-600 py-1 hover:text-[#cc0636] hover:pl-1 transition-all"
-                              >
-                                {gc.name}
-                              </Link>
-                            </li>
-                          ))}
-                        </ul>
-                      ) : (
-                        <Link
-                          href={`/urun-kategori/${category.slug}/${child.slug}/`}
-                          className="block text-[12px] text-gray-600 py-1 hover:text-[#cc0636] hover:pl-1 transition-all"
-                        >
-                          Tüm Ürünler →
-                        </Link>
-                      )}
-                    </div>
+                    <Link
+                      key={child.id}
+                      href={`/urun-kategori/${category.slug}/${child.slug}/`}
+                      className="block text-[13px] text-gray-700 py-1.5 border-b border-gray-100 hover:text-[#cc0636] hover:pl-1 transition-all font-medium"
+                    >
+                      {child.name}
+                    </Link>
                   ))}
                 </div>
-              )}
+              </div>
             </div>
-          </div>
+          ) : (
+            /* ── SIMPLE DROPDOWN ── */
+            <div
+              className="absolute left-0 bg-white text-gray-800 z-[100] min-w-[220px] rounded-b-lg"
+              style={{
+                boxShadow: "0 10px 30px rgba(0,0,0,0.15)",
+                top: "100%",
+              }}
+            >
+              <div className="py-2">
+                {category.children.map((child) => (
+                  <Link
+                    key={child.id}
+                    href={`/urun-kategori/${category.slug}/${child.slug}/`}
+                    className="block text-[13px] text-gray-700 px-5 py-2 hover:text-[#cc0636] hover:bg-gray-50 transition-all font-medium"
+                  >
+                    {child.name}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )
         )}
       </div>
     );
@@ -179,7 +149,7 @@ export default function CategoryBar() {
             </div>
 
             {/* CENTER spacer for logo overlap */}
-            <div className="w-[160px] shrink-0" />
+            <div className="w-[140px] shrink-0" />
 
             {/* RIGHT categories */}
             <div className="flex items-stretch">
