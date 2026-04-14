@@ -8,7 +8,13 @@ export async function middleware(request: NextRequest) {
 
   if (!isAdminRoute) return NextResponse.next();
 
-  const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
+  // NextAuth v5 uses AUTH_SECRET, fallback to NEXTAUTH_SECRET
+  const secret = process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET;
+  const token = await getToken({ req: request, secret });
+
+  // Pass pathname to layout via header
+  const response = NextResponse.next();
+  response.headers.set("x-next-pathname", request.nextUrl.pathname);
 
   if (!isLoginPage && !token) {
     return NextResponse.redirect(new URL("/admin/giris", request.url));
@@ -18,7 +24,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/admin", request.url));
   }
 
-  return NextResponse.next();
+  return response;
 }
 
 export const config = {

@@ -10,14 +10,18 @@ export default async function AdminLayout({
   children: React.ReactNode;
 }) {
   const headerList = await headers();
-  const pathname = headerList.get("x-next-pathname") || headerList.get("x-invoke-path") || "";
-  const isLoginPage = pathname.includes("/admin/giris");
+  const pathname = headerList.get("x-next-pathname") || "";
+  const isLoginPage = pathname === "/admin/giris" || pathname.endsWith("/admin/giris");
 
   const session = await auth();
 
-  // Login page renders without sidebar
-  if (!session?.user || isLoginPage) {
-    return <>{children}</>;
+  // Login page or no session → render without sidebar
+  if (isLoginPage || !session?.user) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        {children}
+      </div>
+    );
   }
 
   return (
