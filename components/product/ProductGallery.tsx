@@ -28,9 +28,10 @@ export default function ProductGallery({ images, title }: ProductGalleryProps) {
 
   return (
     <div className="w-full">
-      <div
-        ref={containerRef}
-        className="relative w-full aspect-square rounded-lg overflow-hidden bg-gray-100 cursor-zoom-in"
+      <div className="bg-white p-4 rounded-lg shadow-md">
+        <div
+          ref={containerRef}
+          className="relative w-full aspect-square rounded-lg overflow-hidden bg-gray-100 cursor-zoom-in"
         onMouseMove={handleMouseMove}
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => {
@@ -76,6 +77,7 @@ export default function ProductGallery({ images, title }: ProductGalleryProps) {
           ))}
         </div>
       )}
+      </div>
     </div>
   );
 }
