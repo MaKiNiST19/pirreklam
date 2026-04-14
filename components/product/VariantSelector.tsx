@@ -108,21 +108,17 @@ export default function VariantSelector({
   }, [selected, variants, onVariantChange]);
 
   const optionBoxClass = (isSelected: boolean, isAvailable: boolean) =>
-    `px-3 py-1.5 rounded-md text-sm cursor-pointer border-2 transition-all select-none ${
+    `px-2 py-0.5 rounded text-[12px] font-medium cursor-pointer border transition-all select-none ${
       isSelected
-        ? "border-[#cc0636] shadow-[0_0_0_1.5px_#cc0636]"
-        : "border-gray-200"
-    } ${
-      isAvailable
-        ? "hover:border-gray-400"
-        : "opacity-40 cursor-not-allowed"
-    }`;
+        ? "border-[#cc0636] text-[#cc0636] bg-red-50"
+        : "border-gray-300 text-gray-700 bg-white hover:border-gray-500"
+    } ${!isAvailable ? "opacity-35 cursor-not-allowed" : ""}`;
 
   return (
     <div className="space-y-3">
       {baskiOptions.length > 0 && (
-        <div className="bg-white rounded-lg p-3">
-          <h4 className="text-xs font-bold text-gray-700 mb-2">
+        <div className="bg-white rounded px-3 pt-2 pb-3">
+          <h4 className="text-[11px] font-bold text-gray-800 uppercase tracking-wide mb-1.5 pb-1 border-b border-gray-100">
             {labels.baski}
           </h4>
           <div className="flex flex-wrap gap-2">
@@ -145,8 +141,8 @@ export default function VariantSelector({
       )}
 
       {desenOptions.length > 0 && labels.desen && (
-        <div className="bg-white rounded-lg p-3">
-          <h4 className="text-xs font-bold text-gray-700 mb-2">
+        <div className="bg-white rounded px-3 pt-2 pb-3">
+          <h4 className="text-[11px] font-bold text-gray-800 uppercase tracking-wide mb-1.5 pb-1 border-b border-gray-100">
             {labels.desen}
           </h4>
           <div className="flex flex-wrap gap-2">
@@ -169,8 +165,8 @@ export default function VariantSelector({
       )}
 
       {renkOptions.length > 0 && (
-        <div className="bg-white rounded-lg p-3">
-          <h4 className="text-xs font-bold text-gray-700 mb-2">
+        <div className="bg-white rounded px-3 pt-2 pb-3">
+          <h4 className="text-[11px] font-bold text-gray-800 uppercase tracking-wide mb-1.5 pb-1 border-b border-gray-100">
             {labels.renk}
           </h4>
           <div className="flex flex-wrap gap-2">
@@ -199,8 +195,8 @@ export default function VariantSelector({
       )}
 
       {adetOptions.length > 0 && (
-        <div className="bg-white rounded-lg p-3">
-          <h4 className="text-xs font-bold text-gray-700 mb-2">
+        <div className="bg-white rounded px-3 pt-2 pb-3">
+          <h4 className="text-[11px] font-bold text-gray-800 uppercase tracking-wide mb-1.5 pb-1 border-b border-gray-100">
             {labels.adet}
           </h4>
           <div className="flex flex-wrap gap-2">
