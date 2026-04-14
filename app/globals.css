@@ -39,6 +39,12 @@ body {
   line-height: 1.5;
 }
 
+/* Override container to match header width (1320px) */
+@utility container {
+  margin-inline: auto;
+  max-width: 1320px;
+}
+
 /* Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
