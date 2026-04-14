@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
 import { getUsdTryRate } from "@/lib/exchange-rate";
+
+export const revalidate = 60; // ISR: revalidate every 60 seconds
 import Breadcrumb from "@/components/category/Breadcrumb";
 import ProductGrid from "@/components/product/ProductGrid";
 import JsonLd from "@/components/seo/JsonLd";

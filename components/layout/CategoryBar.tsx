@@ -57,7 +57,7 @@ export default function CategoryBar() {
 
   // Categories with many children get 2-column mega menu
   // Categories with few children get simple dropdown
-  const MEGA_THRESHOLD = 6;
+  const MEGA_THRESHOLD = 8; // Plastik(13) and Promosyon(10) get mega, Matbaa(6) and Çanta(4) get dropdown
 
   const renderCategoryItem = (category: CategoryNode) => {
     const hasChildren = category.children.length > 0;
@@ -87,16 +87,17 @@ export default function CategoryBar() {
         {/* Dropdown */}
         {hoveredId === category.id && hasChildren && (
           isMega ? (
-            /* ── MEGA MENU: 2-column, full-width ── */
+            /* ── MEGA MENU: 2-column, positioned below item ── */
             <div
-              className="fixed left-0 right-0 bg-white text-gray-800 z-[100]"
+              className="absolute left-0 bg-white text-gray-800 z-[100] rounded-b-lg"
               style={{
                 boxShadow: "0 15px 50px 5px rgba(207,207,207,1)",
-                top: barRef.current ? `${barRef.current.getBoundingClientRect().bottom}px` : "auto",
+                top: "100%",
+                width: "420px",
               }}
             >
-              <div className="max-w-[700px] mx-auto px-6 py-5">
-                <div className="grid grid-cols-2 gap-x-10 gap-y-1">
+              <div className="px-5 py-4">
+                <div className="grid grid-cols-2 gap-x-6 gap-y-0.5">
                   {category.children.map((child) => (
                     <Link
                       key={child.id}

@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
+
+export const revalidate = 60; // ISR: revalidate every 60 seconds
 import Breadcrumb from "@/components/category/Breadcrumb";
 import TopFilter from "@/components/category/TopFilter";
 import ProductGrid from "@/components/product/ProductGrid";

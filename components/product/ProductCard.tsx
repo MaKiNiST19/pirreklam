@@ -35,7 +35,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       }}
     >
       {/* Image — fixed height so all images align */}
-      <div className="relative w-full shrink-0" style={{ height: "160px" }}>
+      <div className="relative w-full shrink-0" style={{ height: "130px" }}>
         <Image
           src={firstImage}
           alt={product.title}
@@ -45,44 +45,41 @@ export default function ProductCard({ product }: ProductCardProps) {
         />
       </div>
 
-      {/* Info — sits below image, titles all aligned */}
-      <div className="w-full text-center flex-1 flex flex-col pt-1">
-        {/* Product name — fixed 2-line area */}
-        <h3
-          className="font-bold leading-tight line-clamp-2 shrink-0"
-          style={{ fontSize: 11, color: "#cc0636", minHeight: "28px" }}
-        >
-          {product.title}
-        </h3>
+      {/* Product name — fixed 2-line area */}
+      <h3
+        className="font-bold leading-tight line-clamp-2 text-center shrink-0"
+        style={{ fontSize: 11, color: "#cc0636", minHeight: "28px", marginTop: "4px" }}
+      >
+        {product.title}
+      </h3>
 
-        {/* BASKI SEÇENEKLERİ */}
-        {hasBaski && (
-          <div className="mt-auto pt-0.5">
-            <p className="font-bold text-[#25497f] tracking-wide mb-0.5" style={{ fontSize: 9 }}>
-              BASKI SEÇENEKLERİ
-            </p>
-            <ul>
-              {baskiOptions.map((opt) => (
-                <li
-                  key={opt}
-                  className="flex items-start gap-0.5 text-gray-600 leading-tight justify-center"
-                  style={{ fontSize: 10 }}
+      {/* BASKI SEÇENEKLERİ — always at same position, top-aligned */}
+      {hasBaski && (
+        <div className="shrink-0 mt-1">
+          <p className="font-bold text-[#25497f] tracking-wide mb-0.5 text-center" style={{ fontSize: 9 }}>
+            BASKI SEÇENEKLERİ
+          </p>
+          <ul className="flex flex-col items-center">
+            {baskiOptions.map((opt) => (
+              <li
+                key={opt}
+                className="flex items-start gap-0.5 text-gray-600 leading-tight"
+                style={{ fontSize: 10 }}
+              >
+                <svg
+                  className="w-2.5 h-2.5 text-green-600 shrink-0 mt-[1px]"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
                 >
-                  <svg
-                    className="w-2.5 h-2.5 text-green-600 shrink-0 mt-[1px]"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                  </svg>
-                  <span>{opt}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-      </div>
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                </svg>
+                <span>{opt}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </Link>
   );
 }
