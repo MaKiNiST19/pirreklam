@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { getToken } from "next-auth/jwt";
+import { jwtVerify } from "jose";
+
+const SECRET = new TextEncoder().encode(
+  process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET || "fallback-secret"
+);
 
 export async function middleware(request: NextRequest) {
   const isAdminRoute = request.nextUrl.pathname.startsWith("/admin");
@@ -8,19 +12,26 @@ export async function middleware(request: NextRequest) {
 
   if (!isAdminRoute) return NextResponse.next();
 
-  // NextAuth v5 uses AUTH_SECRET, fallback to NEXTAUTH_SECRET
-  const secret = process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET;
-  const token = await getToken({ req: request, secret });
+  const token = request.cookies.get("auth-token")?.value;
+  let isAuthenticated = false;
 
-  // Pass pathname to layout via header
+  if (token) {
+    try {
+      await jwtVerify(token, SECRET);
+      isAuthenticated = true;
+    } catch {
+      // Invalid token
+    }
+  }
+
   const response = NextResponse.next();
   response.headers.set("x-next-pathname", request.nextUrl.pathname);
 
-  if (!isLoginPage && !token) {
+  if (!isLoginPage && !isAuthenticated) {
     return NextResponse.redirect(new URL("/admin/giris", request.url));
   }
 
-  if (isLoginPage && token) {
+  if (isLoginPage && isAuthenticated) {
     return NextResponse.redirect(new URL("/admin", request.url));
   }
 

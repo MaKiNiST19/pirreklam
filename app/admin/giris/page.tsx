@@ -1,6 +1,5 @@
 "use client";
 
-import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -16,26 +15,21 @@ export default function LoginPage() {
     setError("");
     setLoading(true);
     try {
-      console.log("[LOGIN] Attempting sign in for:", email);
-      const res = await signIn("credentials", {
-        email,
-        password,
-        redirect: false,
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
       });
-      console.log("[LOGIN] signIn result:", JSON.stringify(res));
-      if (res?.error) {
-        console.error("[LOGIN] Error:", res.error, "Status:", res.status);
-        setError("E-posta veya sifre hatali. (" + res.error + ")");
-      } else if (res?.ok) {
-        console.log("[LOGIN] Success, redirecting to /admin");
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.error || "Giriş başarısız.");
+      } else {
         router.push("/admin");
         router.refresh();
-      } else {
-        console.error("[LOGIN] Unexpected result:", res);
-        setError("Beklenmeyen bir hata olustu.");
       }
-    } catch (err) {
-      console.error("[LOGIN] Exception:", err);
+    } catch {
       setError("Bir hata olustu. Tekrar deneyin.");
     } finally {
       setLoading(false);

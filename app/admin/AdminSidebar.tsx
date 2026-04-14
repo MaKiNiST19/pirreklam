@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const navItems = [
   { href: "/admin", label: "Dashboard", icon: HomeIcon },
@@ -90,7 +90,10 @@ export default function AdminSidebar({
             <p className="text-xs text-white/60 uppercase tracking-wide">{user.role}</p>
           </div>
           <button
-            onClick={() => signOut({ callbackUrl: "/admin/giris" })}
+            onClick={async () => {
+              await fetch("/api/auth/logout", { method: "POST" });
+              window.location.href = "/admin/giris";
+            }}
             className="w-full text-left text-sm text-white/80 hover:text-white flex items-center gap-2"
           >
             <LogoutIcon />
