@@ -117,9 +117,10 @@ export default function VariantSelector({
   return (
     <div className="space-y-3">
       {baskiOptions.length > 0 && (
-        <div className="bg-white rounded px-3 pt-2 pb-3">
-          <h4 className="text-[11px] font-bold text-gray-800 uppercase tracking-wide mb-1.5 pb-1 border-b border-gray-100">
+        <div className="bg-white rounded-lg px-3 pt-2 pb-3 shadow-sm border border-gray-100">
+          <h4 className="text-[11px] font-bold text-gray-800 uppercase tracking-wide mb-1.5 pb-1 border-b border-gray-100 flex items-center gap-1">
             {labels.baski}
+            {selected.baski && <span className="font-normal normal-case text-[#cc0636] tracking-normal">· {selected.baski}</span>}
           </h4>
           <div className="flex flex-wrap gap-2">
             {baskiOptions.map((opt) => {
@@ -141,9 +142,10 @@ export default function VariantSelector({
       )}
 
       {desenOptions.length > 0 && labels.desen && (
-        <div className="bg-white rounded px-3 pt-2 pb-3">
-          <h4 className="text-[11px] font-bold text-gray-800 uppercase tracking-wide mb-1.5 pb-1 border-b border-gray-100">
+        <div className="bg-white rounded-lg px-3 pt-2 pb-3 shadow-sm border border-gray-100">
+          <h4 className="text-[11px] font-bold text-gray-800 uppercase tracking-wide mb-1.5 pb-1 border-b border-gray-100 flex items-center gap-1">
             {labels.desen}
+            {selected.desen && <span className="font-normal normal-case text-[#cc0636] tracking-normal">· {selected.desen}</span>}
           </h4>
           <div className="flex flex-wrap gap-2">
             {desenOptions.map((opt) => {
@@ -165,9 +167,10 @@ export default function VariantSelector({
       )}
 
       {renkOptions.length > 0 && (
-        <div className="bg-white rounded px-3 pt-2 pb-3">
-          <h4 className="text-[11px] font-bold text-gray-800 uppercase tracking-wide mb-1.5 pb-1 border-b border-gray-100">
+        <div className="bg-white rounded-lg px-3 pt-2 pb-3 shadow-sm border border-gray-100">
+          <h4 className="text-[11px] font-bold text-gray-800 uppercase tracking-wide mb-1.5 pb-1 border-b border-gray-100 flex items-center gap-1">
             {labels.renk}
+            {selected.renk && <span className="font-normal normal-case text-[#cc0636] tracking-normal">· {selected.renk}</span>}
           </h4>
           <div className="flex flex-wrap gap-2">
             {renkOptions.map((opt) => {
@@ -195,9 +198,10 @@ export default function VariantSelector({
       )}
 
       {adetOptions.length > 0 && (
-        <div className="bg-white rounded px-3 pt-2 pb-3">
-          <h4 className="text-[11px] font-bold text-gray-800 uppercase tracking-wide mb-1.5 pb-1 border-b border-gray-100">
+        <div className="bg-white rounded-lg px-3 pt-2 pb-3 shadow-sm border border-gray-100">
+          <h4 className="text-[11px] font-bold text-gray-800 uppercase tracking-wide mb-1.5 pb-1 border-b border-gray-100 flex items-center gap-1">
             {labels.adet}
+            {selected.adet && <span className="font-normal normal-case text-[#cc0636] tracking-normal">· {selected.adet.toLocaleString("tr-TR")} Adet</span>}
           </h4>
           <div className="flex flex-wrap gap-2">
             {adetOptions.map((opt) => {

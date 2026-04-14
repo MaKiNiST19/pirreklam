@@ -164,7 +164,7 @@ export default function VariantSummaryModal({
           <button
             type="button"
             onClick={() => setTab("member")}
-            className={`flex-1 py-2.5 text-sm font-semibold rounded-l-lg border-2 transition-colors ${
+            className={`flex-1 py-1.5 text-sm font-semibold rounded-l-lg border-2 transition-colors ${
               tab === "member"
                 ? "bg-[#25497f] text-white border-[#25497f]"
                 : "bg-white text-gray-600 border-gray-300 hover:border-gray-400"
@@ -175,7 +175,7 @@ export default function VariantSummaryModal({
           <button
             type="button"
             onClick={() => setTab("guest")}
-            className={`flex-1 py-2.5 text-sm font-semibold rounded-r-lg border-2 border-l-0 transition-colors ${
+            className={`flex-1 py-1.5 text-sm font-semibold rounded-r-lg border-2 border-l-0 transition-colors ${
               tab === "guest"
                 ? "bg-[#25497f] text-white border-[#25497f]"
                 : "bg-white text-gray-600 border-gray-300 hover:border-gray-400"

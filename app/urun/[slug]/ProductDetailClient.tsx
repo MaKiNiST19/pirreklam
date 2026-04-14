@@ -79,49 +79,35 @@ export default function ProductDetailClient({
         />
       )}
 
-      <button
-        onClick={handleAddToCart}
-        disabled={!selectedVariant}
-        className="w-full flex items-center justify-center gap-2 py-3 px-6 rounded-lg text-white font-semibold text-lg transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
-        style={{ backgroundColor: "#cc0636" }}
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-5 w-5"
-          viewBox="0 0 20 20"
-          fill="currentColor"
+      {/* Sepete Ekle + WhatsApp yan yana */}
+      <div className="flex gap-2">
+        <button
+          onClick={handleAddToCart}
+          disabled={!selectedVariant}
+          className="flex-1 flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg text-white font-semibold text-sm transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+          style={{ backgroundColor: "#cc0636" }}
         >
-          <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
-        </svg>
-        Sepete Ekle
-      </button>
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
+          </svg>
+          Sepete Ekle
+        </button>
 
-      <div
-        className="text-sm p-3 rounded-lg border"
-        style={{ borderColor: "#cc0636", color: "#cc0636", backgroundColor: "#fff5f7" }}
-      >
-        <p className="font-semibold mb-1">Sepete Eklemeden Once !</p>
-        <p>
-          Siparis detayi, Faturalandirma, Odeme vb. farkli talepleriniz icin;
-          <br />
-          <strong>0544 233 80 03</strong> arayiniz.
-        </p>
+        <WhatsAppButton
+          product={{ title: product.title, slug: product.slug }}
+          variant={
+            selectedVariant
+              ? {
+                  baskiOption: selectedVariant.baskiOption,
+                  renkOption: selectedVariant.renkOption,
+                  desenOption: selectedVariant.desenOption,
+                  adet: selectedVariant.adet,
+                  sku: selectedVariant.sku,
+                }
+              : {}
+          }
+        />
       </div>
-
-      <WhatsAppButton
-        product={{ title: product.title, slug: product.slug }}
-        variant={
-          selectedVariant
-            ? {
-                baskiOption: selectedVariant.baskiOption,
-                renkOption: selectedVariant.renkOption,
-                desenOption: selectedVariant.desenOption,
-                adet: selectedVariant.adet,
-                sku: selectedVariant.sku,
-              }
-            : {}
-        }
-      />
 
       {selectedVariant && (
         <VariantSummaryModal
