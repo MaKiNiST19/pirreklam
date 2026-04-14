@@ -93,18 +93,46 @@ model ProductVariant {
 }
 
 model Page {
-  id             String   @id @default(cuid())
+  id             String       @id @default(cuid())
   title          String
-  slug           String   @unique
-  content        String   @db.Text
-  isPublished    Boolean  @default(true) @map("is_published")
-  menuOrder      Int      @default(0) @map("menu_order")
-  seoTitle       String?  @map("seo_title")
-  seoDescription String?  @map("seo_description")
-  createdAt      DateTime @default(now()) @map("created_at")
-  updatedAt      DateTime @updatedAt @map("updated_at")
+  slug           String       @unique
+  content        String?      @db.Text
+  isPublished    Boolean      @default(true) @map("is_published")
+  menuOrder      Int          @default(0) @map("menu_order")
+  seoTitle       String?      @map("seo_title")
+  seoDescription String?      @map("seo_description")
+  modules        PageModule[]
+  createdAt      DateTime     @default(now()) @map("created_at")
+  updatedAt      DateTime     @updatedAt @map("updated_at")
 
   @@map("pages")
+}
+
+// slider | banner4 | product-carousel | product-grid | about | text | tabs | accordion | reviews
+model PageModule {
+  id        String   @id @default(cuid())
+  pageId    String   @map("page_id")
+  page      Page     @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  type      String
+  label     String?
+  sortOrder Int      @default(0) @map("sort_order")
+  isActive  Boolean  @default(true) @map("is_active")
+  data      Json     @default("{}")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("page_modules")
+}
+
+model MediaFile {
+  id        String   @id @default(cuid())
+  url       String
+  pathname  String
+  filename  String
+  mimeType  String?  @map("mime_type")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("media_files")
 }
 
 model Slider {

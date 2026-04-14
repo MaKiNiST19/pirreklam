@@ -108,7 +108,8 @@ export default function PagesPage() {
                 </td>
                 <td className="px-4 py-2">
                   <div className="flex gap-2">
-                    <button onClick={() => openEdit(page)} className="text-[#25497f] hover:underline text-xs">Duzenle</button>
+                    <a href={`/admin/sayfalar/${page.id}`} className="text-[#25497f] hover:underline text-xs font-medium">Modüller</a>
+                    <button onClick={() => openEdit(page)} className="text-gray-600 hover:underline text-xs">Ayarlar</button>
                     <button onClick={() => handleDelete(page.id)} className="text-red-500 hover:underline text-xs">Sil</button>
                   </div>
                 </td>

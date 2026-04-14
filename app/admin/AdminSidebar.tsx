@@ -7,12 +7,13 @@ import { useRouter } from "next/navigation";
 
 const navItems = [
   { href: "/admin", label: "Dashboard", icon: HomeIcon },
-  { href: "/admin/urunler", label: "Urunler", icon: BoxIcon },
+  { href: "/admin/urunler", label: "Ürünler", icon: BoxIcon },
   { href: "/admin/kategoriler", label: "Kategoriler", icon: FolderIcon },
   { href: "/admin/sayfalar", label: "Sayfalar", icon: FileIcon },
+  { href: "/admin/medya", label: "Medya", icon: ImageIcon },
   { href: "/admin/sliderlar", label: "Slider/Banner", icon: ImageIcon },
   { href: "/admin/bayiler", label: "Bayiler", icon: UsersIcon },
-  { href: "/admin/siparisler", label: "Siparisler", icon: ShoppingBagIcon },
+  { href: "/admin/siparisler", label: "Siparişler", icon: ShoppingBagIcon },
   { href: "/admin/sirket-bilgileri", label: "Firma Bilgileri", icon: BuildingIcon },
   { href: "/admin/ayarlar", label: "Ayarlar", icon: SettingsIcon },
 ];
