@@ -48,7 +48,7 @@ export default function LiveSearchBar() {
         const res = await fetch(`/api/products?search=${encodeURIComponent(query)}&limit=3`);
         if (!res.ok) throw new Error("Search failed");
         const data = await res.json();
-        setResults(data || []);
+        setResults(data.products || []);
       } catch {
         setResults([]);
       } finally {
