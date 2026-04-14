@@ -28,8 +28,8 @@ export async function generateStaticParams() {
     .catch(() => []);
 
   return pages
-    .filter((p) => !RESERVED_SLUGS.includes(p.slug) && p.slug !== "kurumsal")
-    .map((p) => ({ slug: p.slug }));
+    .filter((p: { slug: string }) => !RESERVED_SLUGS.includes(p.slug) && p.slug !== "kurumsal")
+    .map((p: { slug: string }) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
