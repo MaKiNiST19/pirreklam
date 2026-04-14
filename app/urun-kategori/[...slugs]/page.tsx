@@ -160,7 +160,7 @@ export default async function CategoryPage({ params, searchParams }: Props) {
                   </h2>
 
                   {/* Gray bordered box with products */}
-                  <div className="border border-gray-200 rounded-lg bg-gray-50 px-6 py-5">
+                  <div className="border-0 bg-transparent p-0">
                     <SubCategoryCarousel products={products} />
                   </div>
                 </section>
