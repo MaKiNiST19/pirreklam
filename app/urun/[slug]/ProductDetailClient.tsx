@@ -148,7 +148,7 @@ export default function ProductDetailClient({
           <svg
             viewBox="0 0 90 30"
             className="absolute"
-            style={{ left: "10%", top: "-18px", width: "70px", height: "44px", overflow: "visible" }}
+            style={{ left: "10%", top: "-6px", width: "80px", height: "44px", overflow: "visible" }}
             fill="none"
           >
             <path
