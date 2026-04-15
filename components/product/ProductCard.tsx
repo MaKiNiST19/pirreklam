@@ -89,7 +89,10 @@ export default function ProductCard({ product }: ProductCardProps) {
           >
             BASKI SEÇENEKLERİ
           </p>
-          <ul className="flex flex-col items-start mx-auto w-fit" style={{ margin: 0, padding: 0 }}>
+          <ul
+            className="flex flex-col items-start w-fit"
+            style={{ marginLeft: "auto", marginRight: "auto", marginTop: 0, marginBottom: 0, padding: 0 }}
+          >
             {baskiOptions.slice(0, 4).map((opt) => (
               <li
                 key={opt}

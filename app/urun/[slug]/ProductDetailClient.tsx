@@ -114,8 +114,7 @@ export default function ProductDetailClient({
           <button
             onClick={handleAddToCart}
             disabled={!selectedVariant}
-            className="flex-1 flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg text-white font-semibold text-sm transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
-            style={{ backgroundColor: "#cc0636" }}
+            className="flex-1 flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg bg-[#cc0636] hover:bg-[#a80530] active:bg-[#8a0426] text-white font-semibold text-sm transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-[#cc0636]"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
               <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
@@ -136,6 +135,32 @@ export default function ProductDetailClient({
                 : {}
             }
           />
+        </div>
+
+        {/* Curved dashed arrow pointing from Sepete Ekle button down to the OrderNotice */}
+        <div className="relative h-6 -my-1 pointer-events-none" aria-hidden>
+          <svg
+            viewBox="0 0 90 30"
+            className="absolute"
+            style={{ left: "10%", width: "70px", height: "30px", overflow: "visible" }}
+            fill="none"
+          >
+            <path
+              d="M 8 0 C 8 18, 30 22, 60 24"
+              stroke="#cc0636"
+              strokeWidth="1.6"
+              strokeDasharray="3 3"
+              strokeLinecap="round"
+            />
+            {/* Arrowhead */}
+            <path
+              d="M 60 24 L 53 20 M 60 24 L 55 30"
+              stroke="#cc0636"
+              strokeWidth="1.6"
+              strokeLinecap="round"
+              fill="none"
+            />
+          </svg>
         </div>
 
         {/* Pre-add-to-cart notice */}

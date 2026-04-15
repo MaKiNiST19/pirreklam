@@ -98,7 +98,7 @@ export default function CategoryBarClient({ tree }: { tree: ParentCat[] }) {
   };
 
   return (
-    <div className="bg-[#25497f] text-white hidden md:block">
+    <div className="bg-[#cc0636] text-white hidden md:block">
       <div className="max-w-[1320px] mx-auto px-4">
         <div className="flex items-stretch justify-between">
           {/* First item has no left padding → text flush with container left edge */}

@@ -8,7 +8,6 @@ export const revalidate = 300; // ISR: revalidate every 5 minutes
 export const dynamicParams = true;
 export const fetchCache = "force-cache";
 import Breadcrumb from "@/components/category/Breadcrumb";
-import ProductGrid from "@/components/product/ProductGrid";
 import SubCategoryCarousel from "@/components/category/SubCategoryCarousel";
 import JsonLd from "@/components/seo/JsonLd";
 import type { BreadcrumbItem, ProductWithVariants } from "@/types/index";
@@ -253,7 +252,7 @@ export default async function CategoryPage({ params }: Props) {
         )}
 
         {products.length > 0 ? (
-          <ProductGrid products={products} />
+          <SubCategoryCarousel products={products} />
         ) : (
           <p className="text-gray-500 text-center py-12">
             Bu kategoride ürün bulunamadı.

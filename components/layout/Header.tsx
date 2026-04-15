@@ -22,8 +22,8 @@ export default function Header({ categoryTree }: HeaderProps) {
     <header className="sticky top-0 z-50">
       {/* Wrapper for logo overlap positioning */}
       <div className="relative">
-        {/* ===== TOP BAR: Red ===== */}
-        <div className="bg-[#cc0636] text-white">
+        {/* ===== TOP BAR: Navy ===== */}
+        <div className="bg-[#25497f] text-white">
           <div className="max-w-[1320px] mx-auto flex items-center justify-between px-4 h-[32px]">
             {/* -ml-3 so first link's visual edge aligns with container's px-4 (= search box edge below) */}
             <nav className="hidden md:flex items-center gap-0 -ml-3">
