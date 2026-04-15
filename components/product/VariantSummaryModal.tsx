@@ -4,23 +4,9 @@ import { useState } from "react";
 import Image from "next/image";
 import { useCart, type CartItem } from "@/components/cart/CartProvider";
 import { getPriceDisplay } from "@/lib/price";
+import { getColorCss } from "@/lib/colors";
 import type { BankAccount } from "@/types/index";
 import type { VariantOption } from "@/lib/variants";
-
-const COLOR_MAP: Record<string, string> = {
-  siyah: "#1a1a1a", beyaz: "#ffffff", kırmızı: "#e02020", kirmizi: "#e02020",
-  mavi: "#1e6bb8", lacivert: "#1b2f6e", yeşil: "#2e7d32", yesil: "#2e7d32",
-  sarı: "#f9c400", sari: "#f9c400", turuncu: "#f57c00", mor: "#7b1fa2",
-  pembe: "#e91e8c", gri: "#9e9e9e", kahverengi: "#6d4c41", kahve: "#6d4c41",
-  bej: "#d7ccc8", krem: "#f5f0e8", bordo: "#880e4f", haki: "#8d8d3a",
-  füme: "#607d8b", fume: "#607d8b", altın: "#c8960c", altin: "#c8960c",
-  gümüş: "#bdbdbd", gumus: "#bdbdbd", bronz: "#cd7f32", krom: "#c0c0c0",
-  şeffaf: "rgba(200,200,200,0.25)", seffaf: "rgba(200,200,200,0.25)",
-  "açık gri": "#d4d4d4", "acik gri": "#d4d4d4",
-  "koyu gri": "#616161",
-  "siyah deri": "#1a1a1a", "kahve deri": "#6d4c41",
-  "lacivert deri": "#1b2f6e", "bordo deri": "#880e4f",
-};
 
 interface VariantSummaryModalProps {
   isOpen: boolean;
@@ -143,7 +129,7 @@ export default function VariantSummaryModal({
               <span className="flex items-center gap-1.5 font-medium text-gray-800">
                 <span
                   className="w-3 h-3 rounded-full inline-block border border-gray-300"
-                  style={{ backgroundColor: COLOR_MAP[selectedVariant.renkOption.toLowerCase()] ?? "#cccccc" }}
+                  style={{ backgroundColor: getColorCss(selectedVariant.renkOption) }}
                 />
                 {selectedVariant.renkOption}
               </span>

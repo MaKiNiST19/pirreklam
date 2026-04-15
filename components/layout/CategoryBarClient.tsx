@@ -97,7 +97,7 @@ export default function CategoryBarClient({ tree }: { tree: ParentCat[] }) {
 
   return (
     <div className="bg-[#25497f] text-white hidden md:block">
-      <div className="max-w-[1320px] mx-auto px-4">
+      <div className="w-full px-6">
         <div className="flex items-stretch justify-between">
           {/* Left items hugging the left edge */}
           <div className="flex items-stretch">

@@ -45,7 +45,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         />
       </div>
 
-      {/* Product name — fixed 2-line area */}
+      {/* Product name — tight to image, fixed 2-line area */}
       <h3
         className="font-bold line-clamp-2 text-center shrink-0"
         style={{ fontSize: 12, lineHeight: "15px", color: "#cc0636", minHeight: "30px", marginTop: "2px" }}
@@ -53,17 +53,17 @@ export default function ProductCard({ product }: ProductCardProps) {
         {product.title}
       </h3>
 
-      {/* BASKI SEÇENEKLERİ — center-aligned items, max 4 visible */}
+      {/* BASKI SEÇENEKLERİ — left-aligned items (centered within card via auto margins), max 4 visible */}
       {hasBaski && (
-        <div className="shrink-0 mt-0.5">
-          <p className="font-bold text-[#25497f] tracking-wide mb-0.5 text-center" style={{ fontSize: 10, lineHeight: "13px" }}>
+        <div className="shrink-0" style={{ marginTop: "2px" }}>
+          <p className="font-bold text-[#25497f] tracking-wide text-center" style={{ fontSize: 10, lineHeight: "13px", marginBottom: "2px" }}>
             BASKI SEÇENEKLERİ
           </p>
-          <ul className="flex flex-col items-center">
+          <ul className="flex flex-col items-start mx-auto w-fit">
             {baskiOptions.slice(0, 4).map((opt) => (
               <li
                 key={opt}
-                className="flex items-center gap-1 text-gray-600 justify-center"
+                className="flex items-center gap-1 text-gray-600"
                 style={{ fontSize: 11, lineHeight: "15px" }}
               >
                 <svg

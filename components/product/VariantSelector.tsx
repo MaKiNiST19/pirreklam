@@ -8,52 +8,7 @@ import {
   getCompatibleVariants,
   type VariantOption,
 } from "@/lib/variants";
-
-const COLOR_MAP: Record<string, string> = {
-  // Basic
-  siyah: "#1a1a1a",
-  beyaz: "#ffffff",
-  kırmızı: "#e02020",
-  kirmizi: "#e02020",
-  mavi: "#1e6bb8",
-  lacivert: "#1b2f6e",
-  yeşil: "#2e7d32",
-  yesil: "#2e7d32",
-  sarı: "#f9c400",
-  sari: "#f9c400",
-  turuncu: "#f57c00",
-  mor: "#7b1fa2",
-  pembe: "#e91e8c",
-  gri: "#9e9e9e",
-  açık_gri: "#d4d4d4",
-  "açık gri": "#d4d4d4",
-  acik_gri: "#d4d4d4",
-  "acik gri": "#d4d4d4",
-  koyu_gri: "#616161",
-  "koyu gri": "#616161",
-  koyu: "#424242",
-  kahverengi: "#6d4c41",
-  kahve: "#6d4c41",
-  bej: "#d7ccc8",
-  krem: "#f5f0e8",
-  bordo: "#880e4f",
-  haki: "#8d8d3a",
-  füme: "#607d8b",
-  fume: "#607d8b",
-  altın: "#c8960c",
-  altin: "#c8960c",
-  gümüş: "#bdbdbd",
-  gumus: "#bdbdbd",
-  bronz: "#cd7f32",
-  krom: "#c0c0c0",
-  şeffaf: "rgba(200,200,200,0.25)",
-  seffaf: "rgba(200,200,200,0.25)",
-  // Leather tones
-  "siyah deri": "#1a1a1a",
-  "kahve deri": "#6d4c41",
-  "lacivert deri": "#1b2f6e",
-  "bordo deri": "#880e4f",
-};
+import { getColorCss } from "@/lib/colors";
 
 interface VariantSelectorProps {
   variants: VariantOption[];
@@ -180,7 +135,7 @@ export default function VariantSelector({
           <div className="grid grid-cols-9 gap-1.5 md:[grid-template-columns:repeat(18,1fr)]">
             {renkOptions.map((opt) => {
               const isAvail = available.availableRenk.includes(opt);
-              const cssColor = COLOR_MAP[opt.toLowerCase()] ?? "#cccccc";
+              const cssColor = getColorCss(opt);
               const isSelected = selected.renk === opt;
               return (
                 <button

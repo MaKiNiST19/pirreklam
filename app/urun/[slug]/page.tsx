@@ -6,6 +6,7 @@ import { getUsdTryRate } from "@/lib/exchange-rate";
 
 export const revalidate = 300; // ISR: revalidate every 5 minutes
 export const dynamicParams = true;
+export const fetchCache = "force-cache";
 import Breadcrumb from "@/components/category/Breadcrumb";
 import ProductGrid from "@/components/product/ProductGrid";
 import JsonLd from "@/components/seo/JsonLd";

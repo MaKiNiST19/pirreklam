@@ -6,6 +6,7 @@ import { prisma } from "@/lib/db";
 
 export const revalidate = 300; // ISR: revalidate every 5 minutes
 export const dynamicParams = true;
+export const fetchCache = "force-cache";
 import Breadcrumb from "@/components/category/Breadcrumb";
 import TopFilter from "@/components/category/TopFilter";
 import ProductGrid from "@/components/product/ProductGrid";
