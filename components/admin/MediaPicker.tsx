@@ -52,6 +52,8 @@ export default function MediaPicker({ onSelect, onClose, currentUrl }: Props) {
         await loadFiles();
         setSelected(data.url);
         setTab("library");
+      } else {
+        alert("Yükleme başarısız: " + (data.details || data.error || "Bilinmeyen hata"));
       }
     } catch {
       alert("Yükleme hatası.");
