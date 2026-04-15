@@ -22,44 +22,64 @@ export default function ProductCard({ product }: ProductCardProps) {
   return (
     <Link
       href={`/urun/${product.slug}/`}
-      className="group block w-full h-full hover:[box-shadow:0px_20px_15px_-3px_rgba(0,0,0,0.1)]"
+      className="group block w-full h-full"
       style={{
-        border: "2px solid rgba(66,66,66,0.06)",
-        borderRadius: "10px",
-        padding: "8px",
         display: "flex",
         flexDirection: "column",
-        backgroundColor: "#ffffff",
         overflow: "hidden",
-        transition: "box-shadow 0.2s ease",
+        border: "2px solid rgba(66, 66, 66, 0.06)",
+        borderRadius: "10px",
+        padding: "4px 4px 5px 2px",
+        boxShadow: "0px 20px 15px -3px rgba(0, 0, 0, 0.1)",
+        background: "rgba(255, 255, 255, 0.05)",
+        transition: "all 0.3s ease",
       }}
     >
-      {/* Image — enlarged, fills available width */}
-      <div className="relative w-full shrink-0" style={{ height: "165px" }}>
+      {/* Image area with hover price-CTA overlay */}
+      <div className="relative w-full shrink-0 overflow-hidden rounded" style={{ height: "210px" }}>
         <Image
           src={firstImage}
           alt={product.title}
           fill
-          className="object-contain group-hover:scale-105 transition-transform duration-300"
+          className="object-contain transition-transform duration-300 group-hover:scale-105"
           sizes="(max-width: 640px) 45vw, (max-width: 1024px) 23vw, 15vw"
         />
+        {/* Black opacity overlay with centered CTA text (appears on hover) */}
+        <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+          <span
+            className="text-white font-bold uppercase text-center leading-tight tracking-wide px-4"
+            style={{ fontSize: 12, lineHeight: "15px" }}
+          >
+            Fiyat Bilgisi<br />İçin Tıklayınız
+          </span>
+        </div>
       </div>
 
       {/* Product name */}
       <h3
         className="font-bold line-clamp-2 text-center shrink-0"
-        style={{ fontSize: 12, lineHeight: "15px", color: "#cc0636", minHeight: "30px", marginTop: "2px" }}
+        style={{
+          fontSize: 12,
+          lineHeight: "15px",
+          color: "#cc0636",
+          minHeight: "30px",
+          margin: 0,
+          padding: 0,
+        }}
       >
         {product.title}
       </h3>
 
-      {/* BASKI SEÇENEKLERİ */}
+      {/* BASKI SEÇENEKLERİ — only 2px gap from title above */}
       {hasBaski && (
-        <div className="shrink-0" style={{ marginTop: "2px" }}>
-          <p className="font-bold text-[#25497f] tracking-wide text-center" style={{ fontSize: 10, lineHeight: "13px", marginBottom: "2px" }}>
+        <div className="shrink-0" style={{ marginTop: "2px", padding: 0 }}>
+          <p
+            className="font-bold text-[#25497f] tracking-wide text-center"
+            style={{ fontSize: 10, lineHeight: "13px", margin: 0, padding: 0, marginBottom: "2px" }}
+          >
             BASKI SEÇENEKLERİ
           </p>
-          <ul className="flex flex-col items-start mx-auto w-fit">
+          <ul className="flex flex-col items-start mx-auto w-fit" style={{ margin: 0, padding: 0, marginLeft: "auto", marginRight: "auto" }}>
             {baskiOptions.slice(0, 4).map((opt) => (
               <li
                 key={opt}

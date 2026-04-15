@@ -44,9 +44,7 @@ export default function CategoryBarClient({ tree }: { tree: ParentCat[] }) {
         <button
           type="button"
           tabIndex={0}
-          className={`flex items-center gap-1.5 h-[32px] ${padL} ${padR} text-[12px] font-bold uppercase tracking-wide whitespace-nowrap transition-colors cursor-default ${
-            hoveredId === cat.id ? "bg-white/15 text-white" : "hover:bg-white/10"
-          }`}
+          className={`flex items-center gap-1.5 h-[32px] ${padL} ${padR} text-[12px] font-bold uppercase tracking-wide whitespace-nowrap cursor-default text-white`}
         >
           {cat.name}
           {hasChildren && (

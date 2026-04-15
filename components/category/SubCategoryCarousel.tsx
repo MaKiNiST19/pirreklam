@@ -57,11 +57,11 @@ export default function SubCategoryCarousel({ products }: Props) {
         </button>
       )}
 
-      {/* WP-matching container: bg #f1f1f1, 288px tall, 4px padding, 10px radius */}
+      {/* WP-matching container: bg #f1f1f1, 330px tall, 4px padding, 10px radius */}
       <div
         style={{
           backgroundColor: "#f1f1f1",
-          height: "288px",
+          height: "330px",
           padding: `${GAP}px`,
           borderRadius: "10px",
           overflow: "hidden",

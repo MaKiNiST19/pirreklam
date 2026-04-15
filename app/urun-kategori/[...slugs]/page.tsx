@@ -37,14 +37,26 @@ export async function generateStaticParams() {
   return paths;
 }
 
-// Cached so generateMetadata + Page share the same query
+// Cached so generateMetadata + Page share the same query.
+// For L1 categories, we also need grandchildren (L3) to build carousels per L2 with
+// products that live under L3.
 const resolveCategory = cache(async (slugs: string[]) => {
   const targetSlug = slugs[slugs.length - 1];
 
   const category = await prisma.category.findUnique({
     where: { slug: targetSlug },
     include: {
-      children: { orderBy: { menuOrder: "asc" }, select: { id: true, name: true, slug: true, menuOrder: true } },
+      // Direct children + their children (grandchildren) for L1 archive carousels
+      children: {
+        orderBy: { menuOrder: "asc" },
+        select: {
+          id: true, name: true, slug: true, menuOrder: true,
+          children: {
+            orderBy: { menuOrder: "asc" },
+            select: { id: true, name: true, slug: true, menuOrder: true },
+          },
+        },
+      },
       parent: { include: { parent: true } },
     },
   });
@@ -80,7 +92,8 @@ export default async function CategoryPage({ params }: Props) {
 
   if (!category) notFound();
 
-  type ChildCategory = { id: string; name: string; slug: string; menuOrder: number };
+  type GrandChild = { id: string; name: string; slug: string; menuOrder: number };
+  type ChildCategory = { id: string; name: string; slug: string; menuOrder: number; children?: GrandChild[] };
   const children: ChildCategory[] = (category.children || []) as ChildCategory[];
   const hasChildren = children.length > 0;
 
@@ -113,8 +126,10 @@ export default async function CategoryPage({ params }: Props) {
 
   // ===== CATEGORY WITH CHILDREN VIEW (sections with carousels) =====
   if (hasChildren) {
-    const childIds = children.map((c) => c.id);
-    const allCategoryIds = [category.id, ...childIds];
+    // Collect IDs of the current category, its direct children (L2) AND grandchildren (L3)
+    const grandChildIds: string[] = [];
+    children.forEach((c) => (c.children || []).forEach((gc) => grandChildIds.push(gc.id)));
+    const allCategoryIds = [category.id, ...children.map((c) => c.id), ...grandChildIds];
 
     const allProducts = (await prisma.product.findMany({
       where: { isPublished: true, categoryId: { in: allCategoryIds } },
@@ -136,17 +151,23 @@ export default async function CategoryPage({ params }: Props) {
       })),
     })) as ProductWithVariants[];
 
-    // Group by categoryId
-    const byCategory = new Map<string, ProductWithVariants[]>();
+    // Build a map: grandchild.id -> its parent child.id, so we can bucket L3 products under their L2
+    const grandChildToChild = new Map<string, string>();
+    children.forEach((c) => (c.children || []).forEach((gc) => grandChildToChild.set(gc.id, c.id)));
+
+    // Group products by the L2 child bucket
+    const byChild = new Map<string, ProductWithVariants[]>();
     for (const p of allProducts) {
       const cid = p.categoryId || "";
-      if (!byCategory.has(cid)) byCategory.set(cid, []);
-      byCategory.get(cid)!.push(p);
+      // If product is directly under a child (L2), use cid. If under a grandchild (L3), remap to its L2.
+      const bucket = grandChildToChild.get(cid) || cid;
+      if (!byChild.has(bucket)) byChild.set(bucket, []);
+      byChild.get(bucket)!.push(p);
     }
 
     // Only show sections that have products
     const sectionsWithProducts = children.filter(
-      (c) => (byCategory.get(c.id)?.length ?? 0) > 0
+      (c) => (byChild.get(c.id)?.length ?? 0) > 0
     );
 
     return (
@@ -166,7 +187,7 @@ export default async function CategoryPage({ params }: Props) {
           {/* Sub-category sections: red title + gray bordered box + carousel */}
           <div className="space-y-8">
             {sectionsWithProducts.map((child) => {
-              const products = byCategory.get(child.id) || [];
+              const products = byChild.get(child.id) || [];
               return (
                 <section key={child.id} id={`cat-${child.slug}`} className="scroll-mt-24">
                   {/* Red centered title — links to child category page */}
