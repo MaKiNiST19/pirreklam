@@ -8,7 +8,6 @@ export const revalidate = 300; // ISR: revalidate every 5 minutes
 export const dynamicParams = true;
 export const fetchCache = "force-cache";
 import Breadcrumb from "@/components/category/Breadcrumb";
-import TopFilter from "@/components/category/TopFilter";
 import ProductGrid from "@/components/product/ProductGrid";
 import SubCategoryCarousel from "@/components/category/SubCategoryCarousel";
 import JsonLd from "@/components/seo/JsonLd";
@@ -16,7 +15,6 @@ import type { BreadcrumbItem, ProductWithVariants } from "@/types/index";
 
 interface Props {
   params: Promise<{ slugs: string[] }>;
-  searchParams: Promise<{ baski?: string; renk?: string; desen?: string }>;
 }
 
 // Pre-build all known category slug paths at deploy time
@@ -76,9 +74,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function CategoryPage({ params, searchParams }: Props) {
+export default async function CategoryPage({ params }: Props) {
   const { slugs } = await params;
-  const filters = await searchParams;
   const category = await resolveCategory(slugs);
 
   if (!category) notFound();
@@ -147,15 +144,6 @@ export default async function CategoryPage({ params, searchParams }: Props) {
       byCategory.get(cid)!.push(p);
     }
 
-    // Collect filter options from ALL products
-    const allVariants = allProducts.flatMap((p) => p.variants);
-    const baskiOptions = [...new Set(allVariants.map((v) => v.baskiOption).filter(Boolean))] as string[];
-    const renkOptions = [...new Set(allVariants.map((v) => v.renkOption).filter(Boolean))] as string[];
-    const desenOptions = [...new Set(allVariants.map((v) => v.desenOption).filter(Boolean))] as string[];
-
-    // Products directly on parent (not in any child)
-    const parentDirectProducts = byCategory.get(category.id) || [];
-
     // Only show sections that have products
     const sectionsWithProducts = children.filter(
       (c) => (byCategory.get(c.id)?.length ?? 0) > 0
@@ -173,15 +161,6 @@ export default async function CategoryPage({ params, searchParams }: Props) {
 
           {category.description && (
             <p className="text-gray-600 mb-4">{category.description}</p>
-          )}
-
-          {/* Top filters */}
-          {(baskiOptions.length > 0 || renkOptions.length > 0 || desenOptions.length > 0) && (
-            <TopFilter
-              baskiOptions={baskiOptions}
-              renkOptions={renkOptions}
-              desenOptions={desenOptions}
-            />
           )}
 
           {/* Sub-category sections: red title + gray bordered box + carousel */}
@@ -215,22 +194,10 @@ export default async function CategoryPage({ params, searchParams }: Props) {
   }
 
   // ===== CHILD CATEGORY VIEW =====
-  const parseMulti = (v?: string) => v ? v.split(",").filter(Boolean) : [];
-  const baskiFilter = parseMulti(filters.baski);
-  const renkFilter = parseMulti(filters.renk);
-  const desenFilter = parseMulti(filters.desen);
-
-  const variantWhere: Record<string, unknown> = {};
-  if (baskiFilter.length > 0) variantWhere.baskiOption = { in: baskiFilter };
-  if (renkFilter.length > 0) variantWhere.renkOption = { in: renkFilter };
-  if (desenFilter.length > 0) variantWhere.desenOption = { in: desenFilter };
-  const hasFilters = Object.keys(variantWhere).length > 0;
-
   const products = (await prisma.product.findMany({
     where: {
       isPublished: true,
       categoryId: category.id,
-      ...(hasFilters ? { variants: { some: variantWhere } } : {}),
     },
     select: {
       id: true, title: true, slug: true, images: true, categoryId: true,
@@ -250,11 +217,6 @@ export default async function CategoryPage({ params, searchParams }: Props) {
     })),
   })) as ProductWithVariants[];
 
-  const allVariants = products.flatMap((p) => p.variants);
-  const baskiOptions = [...new Set(allVariants.map((v) => v.baskiOption).filter(Boolean))] as string[];
-  const renkOptions = [...new Set(allVariants.map((v) => v.renkOption).filter(Boolean))] as string[];
-  const desenOptions = [...new Set(allVariants.map((v) => v.desenOption).filter(Boolean))] as string[];
-
   return (
     <>
       <JsonLd data={collectionLd} />
@@ -267,15 +229,6 @@ export default async function CategoryPage({ params, searchParams }: Props) {
 
         {category.description && (
           <p className="text-gray-600 mb-4">{category.description}</p>
-        )}
-
-        {/* Top collapsible filters */}
-        {(baskiOptions.length > 0 || renkOptions.length > 0 || desenOptions.length > 0) && (
-          <TopFilter
-            baskiOptions={baskiOptions}
-            renkOptions={renkOptions}
-            desenOptions={desenOptions}
-          />
         )}
 
         {products.length > 0 ? (

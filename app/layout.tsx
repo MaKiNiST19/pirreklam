@@ -23,6 +23,7 @@ export const metadata: Metadata = {
     "Pir Reklam | Kurumsal Promosyon Ürünleri ve Reklam Promosyonları",
   icons: {
     icon: "/logo.webp",
+    shortcut: "/logo.webp",
     apple: "/logo.webp",
   },
 };

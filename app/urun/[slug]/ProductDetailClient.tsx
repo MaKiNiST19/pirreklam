@@ -7,6 +7,7 @@ import PriceDisplay from "@/components/product/PriceDisplay";
 import WhatsAppButton from "@/components/product/WhatsAppButton";
 import VariantSummaryModal from "@/components/product/VariantSummaryModal";
 import ProductGallery from "@/components/product/ProductGallery";
+import OrderNotice from "@/components/product/OrderNotice";
 import type { VariantOption } from "@/lib/variants";
 import type { BankAccount } from "@/types/index";
 
@@ -135,6 +136,9 @@ export default function ProductDetailClient({
             }
           />
         </div>
+
+        {/* Pre-add-to-cart notice */}
+        <OrderNotice />
 
         {selectedVariant && (
           <VariantSummaryModal

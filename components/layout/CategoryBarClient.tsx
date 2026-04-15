@@ -25,9 +25,13 @@ export default function CategoryBarClient({ tree }: { tree: ParentCat[] }) {
   const leftCats = tree.slice(0, midpoint);
   const rightCats = tree.slice(midpoint);
 
-  const renderItem = (cat: ParentCat) => {
+  const renderItem = (cat: ParentCat, options: { isFirst?: boolean; isLast?: boolean } = {}) => {
     const hasChildren = cat.children.length > 0;
     const isMega = cat.children.length >= MEGA_THRESHOLD;
+
+    // First item: no left padding. Last item: no right padding. Otherwise normal px-5.
+    const padL = options.isFirst ? "pl-0" : "pl-5";
+    const padR = options.isLast ? "pr-0" : "pr-5";
 
     return (
       <div
@@ -36,11 +40,11 @@ export default function CategoryBarClient({ tree }: { tree: ParentCat[] }) {
         onMouseEnter={() => setHoveredId(cat.id)}
         onMouseLeave={() => setHoveredId(null)}
       >
-        {/* L1 categories are NOT clickable — just hover trigger */}
+        {/* L1 categories are NOT clickable — just hover trigger. Height fixed to 32px to match top bar. */}
         <button
           type="button"
           tabIndex={0}
-          className={`flex items-center gap-1.5 py-3 px-5 text-[13px] font-bold uppercase tracking-wide whitespace-nowrap transition-colors cursor-default ${
+          className={`flex items-center gap-1.5 h-[32px] ${padL} ${padR} text-[12px] font-bold uppercase tracking-wide whitespace-nowrap transition-colors cursor-default ${
             hoveredId === cat.id ? "bg-white/15 text-white" : "hover:bg-white/10"
           }`}
         >
@@ -99,13 +103,13 @@ export default function CategoryBarClient({ tree }: { tree: ParentCat[] }) {
     <div className="bg-[#25497f] text-white hidden md:block">
       <div className="max-w-[1320px] mx-auto px-4">
         <div className="flex items-stretch justify-between">
-          {/* Left items hugging the left edge */}
+          {/* First item has no left padding → text flush with container left edge */}
           <div className="flex items-stretch">
-            {leftCats.map(renderItem)}
+            {leftCats.map((c, i) => renderItem(c, { isFirst: i === 0 }))}
           </div>
-          {/* Right items hugging the right edge — logo (absolutely positioned in Header) sits in the empty middle */}
+          {/* Last item has no right padding → arrow flush with container right edge */}
           <div className="flex items-stretch">
-            {rightCats.map(renderItem)}
+            {rightCats.map((c, i) => renderItem(c, { isLast: i === rightCats.length - 1 }))}
           </div>
         </div>
       </div>

@@ -11,6 +11,7 @@ import Breadcrumb from "@/components/category/Breadcrumb";
 import ProductGrid from "@/components/product/ProductGrid";
 import JsonLd from "@/components/seo/JsonLd";
 import ProductDetailClient from "./ProductDetailClient";
+import ProductAccordion from "@/components/product/ProductAccordion";
 import type { BreadcrumbItem, BankAccount, ProductWithVariants } from "@/types/index";
 import type { VariantOption } from "@/lib/variants";
 
@@ -186,6 +187,9 @@ export default async function ProductDetailPage({ params }: Props) {
           exchangeRate={exchangeRate}
           bankAccounts={bankAccounts}
         />
+
+        {/* Accordion: Baskı açıklaması, sipariş detayları, video, yorumlar */}
+        <ProductAccordion />
 
         {/* Description */}
         {product.description && (

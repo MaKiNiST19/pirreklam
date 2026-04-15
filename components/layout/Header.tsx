@@ -25,7 +25,8 @@ export default function Header({ categoryTree }: HeaderProps) {
         {/* ===== TOP BAR: Red ===== */}
         <div className="bg-[#cc0636] text-white">
           <div className="max-w-[1320px] mx-auto flex items-center justify-between px-4 h-[32px]">
-            <nav className="hidden md:flex items-center gap-0">
+            {/* -ml-3 so first link's visual edge aligns with container's px-4 (= search box edge below) */}
+            <nav className="hidden md:flex items-center gap-0 -ml-3">
               <Link href="/" className="px-3 py-1 text-[12px] font-semibold hover:bg-white/10 transition-colors">ANASAYFA</Link>
               <Link href="/kurumsal/" className="px-3 py-1 text-[12px] font-semibold hover:bg-white/10 transition-colors">KURUMSAL</Link>
               <Link href="/iletisim/" className="px-3 py-1 text-[12px] font-semibold hover:bg-white/10 transition-colors">İLETİŞİM</Link>
