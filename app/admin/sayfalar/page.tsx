@@ -26,7 +26,22 @@ export default function PagesPage() {
     try {
       const res = await fetch("/api/pages");
       const data = await res.json();
-      setPages(Array.isArray(data) ? data : []);
+      const list: Page[] = Array.isArray(data) ? data : [];
+
+      // Auto-create "Ana Sayfa" if it doesn't exist
+      if (!list.find((p) => p.slug === "anasayfa")) {
+        const createRes = await fetch("/api/pages", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ title: "Ana Sayfa", slug: "anasayfa", content: "", isPublished: true, menuOrder: -1 }),
+        });
+        if (createRes.ok) {
+          const newPage = await createRes.json();
+          list.unshift(newPage);
+        }
+      }
+
+      setPages(list);
     } catch { setPages([]); }
     finally { setLoading(false); }
   }, []);

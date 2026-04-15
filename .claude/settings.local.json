@@ -27,7 +27,8 @@
       "Bash(node -e \"const {PrismaClient} = require\\('@prisma/client'\\); console.log\\(typeof PrismaClient\\)\")",
       "Bash(ls E:/pirreklam/app/favicon.ico E:/pirreklam/public/logo.webp E:/pirreklam/public/favicon*)",
       "Bash(rm E:/pirreklam/app/api/auth/\\\\[...nextauth\\\\]/route.ts)",
-      "Bash(rmdir E:/pirreklam/app/api/auth/\\\\[...nextauth\\\\])"
+      "Bash(rmdir E:/pirreklam/app/api/auth/\\\\[...nextauth\\\\])",
+      "Bash(set \"DATABASE_URL=postgresql://neondb_owner:npg_Qyt8lFxKE7Go@ep-lively-breeze-alyb5pcw-pooler.c-3.eu-central-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require\")"
     ]
   }
 }
