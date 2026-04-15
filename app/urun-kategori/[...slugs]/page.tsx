@@ -172,7 +172,7 @@ export default async function CategoryPage({ params }: Props) {
     return (
       <>
         <JsonLd data={collectionLd} />
-        <div className="container mx-auto px-4 py-6">
+        <div className="container mx-auto px-4 pt-2 pb-6">
           <Breadcrumb items={breadcrumbItems} />
 
           <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mt-4 mb-4">
@@ -240,7 +240,7 @@ export default async function CategoryPage({ params }: Props) {
   return (
     <>
       <JsonLd data={collectionLd} />
-      <div className="container mx-auto px-4 py-6">
+      <div className="container mx-auto px-4 pt-2 pb-6">
         <Breadcrumb items={breadcrumbItems} />
 
         <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mt-4 mb-4">

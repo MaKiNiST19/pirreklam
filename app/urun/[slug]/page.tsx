@@ -169,7 +169,7 @@ export default async function ProductDetailPage({ params }: Props) {
     <>
       <JsonLd data={productLd} />
 
-      <div className="container mx-auto px-4 py-6">
+      <div className="container mx-auto px-4 pt-2 pb-6">
         {/* Breadcrumb at the very top */}
         <Breadcrumb items={breadcrumbItems} />
 

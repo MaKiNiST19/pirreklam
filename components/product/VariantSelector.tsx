@@ -144,7 +144,7 @@ export default function VariantSelector({
                   title={opt}
                   disabled={!isAvail}
                   onClick={() => isAvail && handleSelect("renk", opt)}
-                  className={`aspect-square w-full rounded-sm transition-all select-none ${
+                  className={`aspect-square w-full rounded-full transition-all select-none ${
                     isAvail ? "cursor-pointer" : "opacity-35 cursor-not-allowed"
                   } ${isSelected ? "ring-2 ring-offset-1 ring-[#cc0636]" : "ring-1 ring-gray-300"}`}
                   style={{ backgroundColor: cssColor }}

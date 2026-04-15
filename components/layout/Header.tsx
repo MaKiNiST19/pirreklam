@@ -128,11 +128,11 @@ export default function Header({ categoryTree }: HeaderProps) {
               alt="Pir Reklam"
               width={95}
               height={95}
-              className="w-[95px] h-auto drop-shadow-lg"
+              className="w-[95px] h-auto drop-shadow-lg bg-white rounded-full p-[3px]"
               priority
             />
             <span
-              className="text-[10px] font-bold whitespace-nowrap tracking-wide text-white"
+              className="text-[12px] font-bold whitespace-nowrap tracking-wide text-white"
               style={{ marginTop: "2px", textShadow: "0 1px 2px rgba(0,0,0,0.5)" }}
             >
               {"1961'den Beri , Sektörün Pir'i..."}
