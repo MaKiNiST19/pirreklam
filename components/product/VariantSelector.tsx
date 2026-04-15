@@ -75,9 +75,9 @@ export default function VariantSelector({
     <div className="space-y-3">
       {baskiOptions.length > 0 && (
         <div className="bg-white rounded-lg px-3 pt-2 pb-3 shadow-sm border border-gray-100">
-          <h4 className="text-[11px] font-bold text-gray-800 uppercase tracking-wide mb-1.5 pb-1 border-b border-gray-100 flex items-center gap-1">
+          <h4 className="text-[11px] font-medium text-gray-800 uppercase tracking-wide mb-1.5 pb-1 border-b border-gray-100 flex items-center gap-1">
             {labels.baski}
-            {selected.baski && <span className="font-normal normal-case text-[#cc0636] tracking-normal">· {selected.baski}</span>}
+            {selected.baski && <span className="font-medium uppercase text-[#cc0636] tracking-wide">· {selected.baski}</span>}
           </h4>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-1.5">
             {baskiOptions.map((opt) => {
@@ -101,9 +101,9 @@ export default function VariantSelector({
 
       {desenOptions.length > 0 && labels.desen && (
         <div className="bg-white rounded-lg px-3 pt-2 pb-3 shadow-sm border border-gray-100">
-          <h4 className="text-[11px] font-bold text-gray-800 uppercase tracking-wide mb-1.5 pb-1 border-b border-gray-100 flex items-center gap-1">
+          <h4 className="text-[11px] font-medium text-gray-800 uppercase tracking-wide mb-1.5 pb-1 border-b border-gray-100 flex items-center gap-1">
             {labels.desen}
-            {selected.desen && <span className="font-normal normal-case text-[#cc0636] tracking-normal">· {selected.desen}</span>}
+            {selected.desen && <span className="font-medium uppercase text-[#cc0636] tracking-wide">· {selected.desen}</span>}
           </h4>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-1.5">
             {desenOptions.map((opt) => {
@@ -127,9 +127,9 @@ export default function VariantSelector({
 
       {renkOptions.length > 0 && (
         <div className="bg-white rounded-lg px-3 pt-2 pb-3 shadow-sm border border-gray-100">
-          <h4 className="text-[11px] font-bold text-gray-800 uppercase tracking-wide mb-1.5 pb-1 border-b border-gray-100 flex items-center gap-1">
+          <h4 className="text-[11px] font-medium text-gray-800 uppercase tracking-wide mb-1.5 pb-1 border-b border-gray-100 flex items-center gap-1">
             {labels.renk}
-            {selected.renk && <span className="font-normal normal-case text-[#cc0636] tracking-normal">· {selected.renk}</span>}
+            {selected.renk && <span className="font-medium uppercase text-[#cc0636] tracking-wide">· {selected.renk}</span>}
           </h4>
           {/* 9 per row on mobile, 18 per row on desktop */}
           <div className="grid grid-cols-9 gap-1.5 md:[grid-template-columns:repeat(18,1fr)]">
@@ -159,9 +159,9 @@ export default function VariantSelector({
 
       {adetOptions.length > 0 && (
         <div className="bg-white rounded-lg px-3 pt-2 pb-3 shadow-sm border border-gray-100">
-          <h4 className="text-[11px] font-bold text-gray-800 uppercase tracking-wide mb-1.5 pb-1 border-b border-gray-100 flex items-center gap-1">
+          <h4 className="text-[11px] font-medium text-gray-800 uppercase tracking-wide mb-1.5 pb-1 border-b border-gray-100 flex items-center gap-1">
             {labels.adet}
-            {selected.adet && <span className="font-normal normal-case text-[#cc0636] tracking-normal">· {selected.adet.toLocaleString("tr-TR")} Adet</span>}
+            {selected.adet && <span className="font-medium uppercase text-[#cc0636] tracking-wide">· {selected.adet.toLocaleString("tr-TR")} ADET</span>}
           </h4>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-1.5">
             {adetOptions.map((opt) => {

@@ -33,7 +33,7 @@ const getProduct = cache(async (slug: string) => {
     where: { slug, isPublished: true },
     include: {
       variants: { orderBy: { sortOrder: "asc" } },
-      category: { include: { parent: true } },
+      category: { include: { parent: { include: { parent: true } } } },
     },
   });
 });
@@ -75,26 +75,25 @@ export default async function ProductDetailPage({ params }: Props) {
     ? (companyInfo.bankAccounts as unknown as BankAccount[])
     : [];
 
-  // Breadcrumb (L1 categories non-clickable)
-  const breadcrumbItems: BreadcrumbItem[] = [
-    { name: "Anasayfa", href: "/" },
-  ];
+  // Breadcrumb — only the top-level (L1) parent is non-clickable; all deeper levels are links
+  const breadcrumbItems: BreadcrumbItem[] = [{ name: "Anasayfa", href: "/" }];
   if (product.category) {
-    if (product.category.parent) {
-      // L1 parent — non-clickable
-      breadcrumbItems.push({
-        name: product.category.parent.name,
-        href: `/urun-kategori/${product.category.parent.slug}/`,
-        noLink: true,
-      });
+    // Walk from category up to root, collect chain
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const chain: { name: string; slug: string }[] = [];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let cur: any = product.category;
+    while (cur) {
+      chain.unshift({ name: cur.name, slug: cur.slug });
+      cur = cur.parent;
     }
-    breadcrumbItems.push({
-      name: product.category.name,
-      href: product.category.parent
-        ? `/urun-kategori/${product.category.parent.slug}/${product.category.slug}/`
-        : `/urun-kategori/${product.category.slug}/`,
-      // If category itself is L1 (no parent), it's also non-clickable
-      noLink: !product.category.parent,
+    chain.forEach((node, i) => {
+      const pathSlugs = chain.slice(0, i + 1).map((n) => n.slug).join("/");
+      breadcrumbItems.push({
+        name: node.name,
+        href: `/urun-kategori/${pathSlugs}/`,
+        noLink: i === 0, // only top-level (L1) is non-clickable
+      });
     });
   }
   breadcrumbItems.push({

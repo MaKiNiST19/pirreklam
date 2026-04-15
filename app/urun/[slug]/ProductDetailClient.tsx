@@ -140,15 +140,15 @@ export default function ProductDetailClient({
           />
         </div>
 
-        {/* Curved dashed arrow pointing from Sepete Ekle button down to the OrderNotice */}
+        {/* Curved dashed arrow pointing from Sepete Ekle button down into the OrderNotice — absolute, no layout space */}
         <div
-          className={`relative h-6 -mt-3 -mb-3 pointer-events-none transition-opacity duration-200 ${sepetHover ? "opacity-100" : "opacity-30"}`}
+          className={`relative h-0 pointer-events-none transition-opacity duration-200 ${sepetHover ? "opacity-100" : "opacity-30"}`}
           aria-hidden
         >
           <svg
             viewBox="0 0 90 30"
             className="absolute"
-            style={{ left: "10%", width: "70px", height: "30px", overflow: "visible" }}
+            style={{ left: "10%", top: "-18px", width: "70px", height: "44px", overflow: "visible" }}
             fill="none"
           >
             <path

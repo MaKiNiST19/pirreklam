@@ -96,23 +96,24 @@ export default async function CategoryPage({ params }: Props) {
   const children: ChildCategory[] = (category.children || []) as ChildCategory[];
   const hasChildren = children.length > 0;
 
-  // Breadcrumb (L1 / top-level parent categories are non-clickable)
+  // Breadcrumb — only the top-level (L1) ancestor is non-clickable; all deeper levels are links
   const breadcrumbItems: BreadcrumbItem[] = [{ name: "Anasayfa", href: "/" }];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const parentCat = category.parent as any;
-  if (parentCat?.parent) {
-    // L1 ancestor — non-clickable
-    breadcrumbItems.push({ name: parentCat.parent.name, href: `/urun-kategori/${parentCat.parent.slug}/`, noLink: true });
+  const chain: { name: string; slug: string }[] = [];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let cur: any = category;
+  while (cur) {
+    chain.unshift({ name: cur.name, slug: cur.slug });
+    cur = cur.parent;
   }
-  if (parentCat) {
-    const parentPath = parentCat.parent
-      ? `/urun-kategori/${parentCat.parent.slug}/${parentCat.slug}/`
-      : `/urun-kategori/${parentCat.slug}/`;
-    // If `parentCat` is L1 (no grandparent), make non-clickable
-    breadcrumbItems.push({ name: parentCat.name, href: parentPath, noLink: !parentCat.parent });
-  }
-  // Current category. If THIS category is L1 (no parent), it's the page itself; we add it as last item which is always rendered as plain text
-  breadcrumbItems.push({ name: category.name, href: `/urun-kategori/${slugs.join("/")}/` });
+  chain.forEach((node, i) => {
+    const pathSlugs = chain.slice(0, i + 1).map((n) => n.slug).join("/");
+    breadcrumbItems.push({
+      name: node.name,
+      href: `/urun-kategori/${pathSlugs}/`,
+      noLink: i === 0, // only top-level L1 is non-clickable
+    });
+  });
 
   // JSON-LD
   const collectionLd = {
