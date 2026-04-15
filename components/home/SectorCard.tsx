@@ -19,18 +19,19 @@ export default function SectorCard({ item }: { item: SectorCardItem }) {
         sizes="(max-width: 768px) 100vw, 50vw"
       />
 
-      {/* Subtle dark overlay for legibility */}
-      <div className="absolute inset-0 bg-gradient-to-r from-black/45 via-black/15 to-transparent" />
+      {/* Bottom-left tinted overlay for sub-link legibility */}
+      <div className="absolute inset-0 bg-gradient-to-tr from-black/55 via-black/15 to-transparent" />
 
       {/* Content (top-left) */}
       <div className="relative h-full flex flex-col items-start justify-start p-4 md:p-6">
-        {/* Blurred white plaque with red bullet titles */}
-        <div className="bg-white/85 backdrop-blur-md rounded-xl px-4 py-3 shadow-sm">
+        {/* More transparent blurred plaque with red bullet titles */}
+        <div className="bg-white/40 backdrop-blur-md rounded-xl px-4 py-3 shadow-sm border border-white/30">
           <ul className="space-y-0.5">
             {item.titles.map((t, i) => (
               <li
                 key={i}
                 className="flex items-start gap-1.5 text-[15px] md:text-base font-bold text-[#cc0636] leading-snug"
+                style={{ textShadow: "0 1px 1px rgba(255,255,255,0.6)" }}
               >
                 <span className="leading-none text-lg">•</span>
                 <span>{t}</span>
@@ -46,7 +47,7 @@ export default function SectorCard({ item }: { item: SectorCardItem }) {
               key={link.href}
               href={link.href}
               className="block text-white text-sm font-medium drop-shadow hover:text-white/80 hover:translate-x-0.5 transition-all"
-              style={{ textShadow: "0 1px 3px rgba(0,0,0,0.6)" }}
+              style={{ textShadow: "0 1px 3px rgba(0,0,0,0.7)" }}
             >
               {link.name}
             </Link>

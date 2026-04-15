@@ -49,7 +49,7 @@ const SECTOR_CARDS: SectorCardItem[] = [
     ],
   },
   {
-    bgImage: "/fotograf-studyolari-fotograf-kabi.jpg",
+    bgImage: "/fotograf-studyosu-vesikalik-kabi.jpg",
     titles: ["Fotoğraf Stüdyoları"],
     links: [
       { name: "Vesikalık Kabı", href: "/urun-kategori/plastik-urunler/vesikalik-kabi/" },
@@ -133,10 +133,10 @@ export default async function HomePage() {
       {/* ═════ 2x2 SECTOR GRID ═════ */}
       <section className="container mx-auto px-4 pt-10 md:pt-14 pb-12 md:pb-16">
         <div className="text-center mb-6 md:mb-8">
-          <h2 className="text-2xl md:text-3xl font-bold uppercase tracking-wide" style={{ color: "#cc0636" }}>
+          <h2 className="text-2xl md:text-3xl font-bold uppercase tracking-wide" style={{ color: "#ffc107" }}>
             Sektörel Ürünler
           </h2>
-          <div className="w-16 h-0.5 bg-[#cc0636] rounded-full mx-auto mt-2" />
+          <div className="w-16 h-0.5 rounded-full mx-auto mt-2" style={{ backgroundColor: "#ffc107" }} />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
           {SECTOR_CARDS.map((item, i) => (

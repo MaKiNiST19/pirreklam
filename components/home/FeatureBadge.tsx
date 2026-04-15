@@ -7,7 +7,7 @@ const Wreath = (props: HTMLAttributes<HTMLOrSVGElement>) => (
     viewBox="0 0 36 81"
     fill="none"
     {...props}
-    className={["text-[#cc0636]", props.className || ""].join(" ").trim()}
+    className={["text-[#25497f]", props.className || ""].join(" ").trim()}
   >
     <path
       fillRule="evenodd"

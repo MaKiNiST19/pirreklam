@@ -24,7 +24,7 @@ export default function Header({ categoryTree }: HeaderProps) {
       <div className="relative">
         {/* ===== TOP BAR: Red ===== */}
         <div className="bg-[#cc0636] text-white">
-          <div className="w-full flex items-center justify-between px-6 h-[32px]">
+          <div className="max-w-[1320px] mx-auto flex items-center justify-between px-4 h-[32px]">
             <nav className="hidden md:flex items-center gap-0">
               <Link href="/" className="px-3 py-1 text-[12px] font-semibold hover:bg-white/10 transition-colors">ANASAYFA</Link>
               <Link href="/kurumsal/" className="px-3 py-1 text-[12px] font-semibold hover:bg-white/10 transition-colors">KURUMSAL</Link>
@@ -50,7 +50,7 @@ export default function Header({ categoryTree }: HeaderProps) {
 
         {/* ===== MAIN BAR: White ===== */}
         <div className="bg-white border-b border-gray-100">
-          <div className="w-full flex items-center justify-between px-6 py-2 gap-3">
+          <div className="max-w-[1320px] mx-auto flex items-center justify-between px-4 py-2 gap-3">
             {/* Left side: Search + Phone */}
             <div className="hidden md:flex items-center gap-6 flex-1">
               <div className="shrink-0 w-56">
@@ -116,23 +116,23 @@ export default function Header({ categoryTree }: HeaderProps) {
         {/* ===== CATEGORY BAR (navy) ===== */}
         <CategoryBar tree={categoryTree} />
 
-        {/* ===== OVERLAPPING LOGO — top edge at middle of top red bar (16px), slogan rests on bottom of navy bar ===== */}
+        {/* ===== OVERLAPPING LOGO — starts from middle of top red bar (16px), 2px gap before slogan ===== */}
         <div
           className="hidden md:flex flex-col items-center absolute left-1/2 -translate-x-1/2 z-[60] pointer-events-none"
-          style={{ width: "180px", top: "16px" }}
+          style={{ width: "150px", top: "16px" }}
         >
           <Link href="/" className="pointer-events-auto flex flex-col items-center">
             <Image
               src="/logo.webp"
               alt="Pir Reklam"
-              width={130}
-              height={130}
-              className="w-[125px] h-auto drop-shadow-lg"
+              width={95}
+              height={95}
+              className="w-[95px] h-auto drop-shadow-lg"
               priority
             />
             <span
-              className="text-[10px] font-bold whitespace-nowrap tracking-wide text-white -mt-1"
-              style={{ textShadow: "0 1px 2px rgba(0,0,0,0.5)" }}
+              className="text-[10px] font-bold whitespace-nowrap tracking-wide text-white"
+              style={{ marginTop: "2px", textShadow: "0 1px 2px rgba(0,0,0,0.5)" }}
             >
               {"1961'den Beri , Sektörün Pir'i..."}
             </span>
