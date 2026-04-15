@@ -4,7 +4,7 @@ import { prisma } from "@/lib/db";
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://pirreklam.com.tr";
 
-  // Static pages
+  // Static pages harita
   const staticPages: MetadataRoute.Sitemap = [
     { url: baseUrl, lastModified: new Date(), changeFrequency: "daily", priority: 1 },
     { url: `${baseUrl}/kurumsal/`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.5 },
