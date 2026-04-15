@@ -116,23 +116,23 @@ export default function Header({ categoryTree }: HeaderProps) {
         {/* ===== CATEGORY BAR (navy) ===== */}
         <CategoryBar tree={categoryTree} />
 
-        {/* ===== OVERLAPPING LOGO — centered, slogan aligned to bottom of navy bar ===== */}
+        {/* ===== OVERLAPPING LOGO — centered, slogan sits at bottom edge of navy bar ===== */}
         <div
-          className="hidden md:flex flex-col items-center absolute left-1/2 -translate-x-1/2 z-[60] pointer-events-none"
-          style={{ width: "140px", top: "10px" }}
+          className="hidden md:flex flex-col items-center absolute left-1/2 -translate-x-1/2 bottom-0 z-[60] pointer-events-none"
+          style={{ width: "180px" }}
         >
           <Link href="/" className="pointer-events-auto flex flex-col items-center">
             <Image
               src="/logo.webp"
               alt="Pir Reklam"
-              width={90}
-              height={90}
-              className="w-[85px] h-auto drop-shadow-lg"
+              width={120}
+              height={120}
+              className="w-[115px] h-auto drop-shadow-lg -mb-1"
               priority
             />
             <span
-              className="text-[9px] font-bold whitespace-nowrap tracking-wide"
-              style={{ color: "#cc0636", marginTop: "3px" }}
+              className="text-[10px] font-bold whitespace-nowrap tracking-wide text-white"
+              style={{ marginBottom: "6px", textShadow: "0 1px 2px rgba(0,0,0,0.5)" }}
             >
               {"1961'den Beri , Sektörün Pir'i..."}
             </span>

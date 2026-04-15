@@ -108,11 +108,13 @@ export default function VariantSelector({
   }, [selected, variants, onVariantChange]);
 
   const optionBoxClass = (isSelected: boolean, isAvailable: boolean) =>
-    `px-2 py-0.5 rounded text-[12px] font-medium cursor-pointer border transition-all select-none ${
+    `flex items-center justify-center text-center px-2 rounded text-[12px] leading-tight font-medium cursor-pointer border transition-all select-none ${
       isSelected
         ? "border-[#cc0636] text-[#cc0636] bg-red-50"
         : "border-gray-300 text-gray-700 bg-white hover:border-gray-500"
     } ${!isAvailable ? "opacity-35 cursor-not-allowed" : ""}`;
+
+  const fixedHeightStyle = { height: "40px", minHeight: "40px", maxHeight: "40px" } as const;
 
   return (
     <div className="space-y-3">
@@ -130,7 +132,8 @@ export default function VariantSelector({
                   key={opt}
                   type="button"
                   disabled={!isAvail}
-                  className={optionBoxClass(selected.baski === opt, isAvail) + " text-center"}
+                  style={fixedHeightStyle}
+                  className={optionBoxClass(selected.baski === opt, isAvail)}
                   onClick={() => isAvail && handleSelect("baski", opt)}
                 >
                   {opt}
@@ -147,7 +150,7 @@ export default function VariantSelector({
             {labels.desen}
             {selected.desen && <span className="font-normal normal-case text-[#cc0636] tracking-normal">· {selected.desen}</span>}
           </h4>
-          <div className="flex flex-wrap gap-2">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-1.5">
             {desenOptions.map((opt) => {
               const isAvail = available.availableDesen.includes(opt);
               return (
@@ -155,6 +158,7 @@ export default function VariantSelector({
                   key={opt}
                   type="button"
                   disabled={!isAvail}
+                  style={fixedHeightStyle}
                   className={optionBoxClass(selected.desen === opt, isAvail)}
                   onClick={() => isAvail && handleSelect("desen", opt)}
                 >
@@ -212,7 +216,8 @@ export default function VariantSelector({
                   key={opt}
                   type="button"
                   disabled={!isAvail}
-                  className={optionBoxClass(selected.adet === opt, isAvail) + " text-center"}
+                  style={fixedHeightStyle}
+                  className={optionBoxClass(selected.adet === opt, isAvail)}
                   onClick={() => isAvail && handleAdetSelect(opt)}
                 >
                   {opt.toLocaleString("tr-TR")} Adet

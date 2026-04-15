@@ -47,27 +47,27 @@ export default function ProductCard({ product }: ProductCardProps) {
 
       {/* Product name — fixed 2-line area */}
       <h3
-        className="font-bold leading-tight line-clamp-2 text-center shrink-0"
-        style={{ fontSize: 11, color: "#cc0636", minHeight: "28px", marginTop: "4px" }}
+        className="font-bold line-clamp-2 text-center shrink-0"
+        style={{ fontSize: 12, lineHeight: "15px", color: "#cc0636", minHeight: "30px", marginTop: "2px" }}
       >
         {product.title}
       </h3>
 
-      {/* BASKI SEÇENEKLERİ — always at same position, top-aligned */}
+      {/* BASKI SEÇENEKLERİ — center-aligned items, max 4 visible */}
       {hasBaski && (
-        <div className="shrink-0 mt-1">
-          <p className="font-bold text-[#25497f] tracking-wide mb-0.5 text-center" style={{ fontSize: 9 }}>
+        <div className="shrink-0 mt-0.5">
+          <p className="font-bold text-[#25497f] tracking-wide mb-0.5 text-center" style={{ fontSize: 10, lineHeight: "13px" }}>
             BASKI SEÇENEKLERİ
           </p>
           <ul className="flex flex-col items-center">
-            {baskiOptions.map((opt) => (
+            {baskiOptions.slice(0, 4).map((opt) => (
               <li
                 key={opt}
-                className="flex items-start gap-0.5 text-gray-600 leading-tight"
-                style={{ fontSize: 10 }}
+                className="flex items-center gap-1 text-gray-600 justify-center"
+                style={{ fontSize: 11, lineHeight: "15px" }}
               >
                 <svg
-                  className="w-2.5 h-2.5 text-green-600 shrink-0 mt-[1px]"
+                  className="w-2.5 h-2.5 text-green-600 shrink-0"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"

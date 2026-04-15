@@ -87,4 +87,6 @@ export interface CompanyInfoData {
 export interface BreadcrumbItem {
   name: string;
   href: string;
+  /** When true, render as plain text instead of a link */
+  noLink?: boolean;
 }

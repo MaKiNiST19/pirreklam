@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { cache } from "react";
 import { prisma } from "@/lib/db";
 import { getUsdTryRate } from "@/lib/exchange-rate";
 
-export const revalidate = 60; // ISR: revalidate every 60 seconds
+export const revalidate = 300; // ISR: revalidate every 5 minutes
+export const dynamicParams = true;
 import Breadcrumb from "@/components/category/Breadcrumb";
 import ProductGrid from "@/components/product/ProductGrid";
 import JsonLd from "@/components/seo/JsonLd";
@@ -15,7 +17,17 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
-async function getProduct(slug: string) {
+// Pre-build first 500 products at deploy time, the rest use ISR
+export async function generateStaticParams() {
+  const products = await prisma.product.findMany({
+    where: { isPublished: true },
+    select: { slug: true },
+    take: 500,
+  }).catch(() => []);
+  return products.map((p) => ({ slug: p.slug }));
+}
+
+const getProduct = cache(async (slug: string) => {
   return prisma.product.findUnique({
     where: { slug, isPublished: true },
     include: {
@@ -23,7 +35,7 @@ async function getProduct(slug: string) {
       category: { include: { parent: true } },
     },
   });
-}
+});
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
@@ -62,15 +74,17 @@ export default async function ProductDetailPage({ params }: Props) {
     ? (companyInfo.bankAccounts as unknown as BankAccount[])
     : [];
 
-  // Breadcrumb
+  // Breadcrumb (L1 categories non-clickable)
   const breadcrumbItems: BreadcrumbItem[] = [
     { name: "Anasayfa", href: "/" },
   ];
   if (product.category) {
     if (product.category.parent) {
+      // L1 parent — non-clickable
       breadcrumbItems.push({
         name: product.category.parent.name,
         href: `/urun-kategori/${product.category.parent.slug}/`,
+        noLink: true,
       });
     }
     breadcrumbItems.push({
@@ -78,6 +92,8 @@ export default async function ProductDetailPage({ params }: Props) {
       href: product.category.parent
         ? `/urun-kategori/${product.category.parent.slug}/${product.category.slug}/`
         : `/urun-kategori/${product.category.slug}/`,
+      // If category itself is L1 (no parent), it's also non-clickable
+      noLink: !product.category.parent,
     });
   }
   breadcrumbItems.push({
@@ -100,7 +116,7 @@ export default async function ProductDetailPage({ params }: Props) {
     image: v.image ?? null,
   }));
 
-  // Related products
+  // Related products (lighter query)
   const relatedProducts = product.categoryId
     ? ((await prisma.product.findMany({
         where: {
@@ -108,12 +124,20 @@ export default async function ProductDetailPage({ params }: Props) {
           categoryId: product.categoryId,
           id: { not: product.id },
         },
-        include: {
-          variants: { orderBy: { sortOrder: "asc" } },
-          category: { include: { parent: true } },
+        select: {
+          id: true, title: true, slug: true, images: true, categoryId: true,
+          productType: true, menuOrder: true,
+          variants: {
+            orderBy: { sortOrder: "asc" },
+            select: { id: true, sku: true, baskiOption: true, renkOption: true, desenOption: true, adet: true, priceUsd: true, image: true, isCompatible: true, stockCode: true },
+          },
         },
         orderBy: { menuOrder: "asc" },
         take: 6,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      })).map((p: any) => ({
+        ...p,
+        variants: p.variants.map((v: any) => ({ ...v, priceUsd: Number(v.priceUsd) })),
       })) as ProductWithVariants[])
     : [];
 

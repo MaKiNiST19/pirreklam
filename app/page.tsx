@@ -1,12 +1,10 @@
 import type { Metadata } from "next";
-import { prisma } from "@/lib/db";
 import JsonLd from "@/components/seo/JsonLd";
 import Image from "next/image";
 import FeatureBadge from "@/components/home/FeatureBadge";
-import SectorTabs, { type SectorTab } from "@/components/home/SectorTabs";
-import type { ProductWithVariants } from "@/types/index";
+import SectorCard, { type SectorCardItem } from "@/components/home/SectorCard";
 
-export const revalidate = 60;
+export const revalidate = 300;
 
 export const metadata: Metadata = {
   title:
@@ -16,49 +14,65 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
 };
 
-/* ───────────────────────── SECTOR DEFINITIONS ───────────────────────── */
-interface SectorDef {
-  id: string;
-  title: string;
-  description?: string;
-  keywords: string[];
-}
-
-const SECTORS: SectorDef[] = [
+/* ───────────────────────── SECTOR CARD DATA ───────────────────────── */
+const SECTOR_CARDS: SectorCardItem[] = [
   {
-    id: "sigorta-oto",
-    title: "Sigorta Acenteleri, Oto Galeri ve Servisler, Rent a Car Firmaları",
-    description:
-      "Sigorta, oto galeri, servis ve rent a car firmalarınız için ruhsat kabı, plakalık, oto kokusu ve anahtarlık gibi müşteri memnuniyetini artıran promosyon ürünleri.",
-    keywords: ["Ruhsat Kabı", "Ruhsat Kabi", "Plakalık", "Plakalik", "Oto Kokusu", "Anahtarlık", "Anahtarlik"],
+    bgImage: "/oto-galeri-ruhsat-kabi.jpg",
+    titles: [
+      "Sigorta Acenteleri",
+      "Oto Galeri ve Servisler",
+      "Rent a Car Firmaları",
+    ],
+    links: [
+      { name: "Ruhsat Kabı", href: "/urun-kategori/plastik-urunler/ruhsat-kabi/" },
+      { name: "Plakalık", href: "/urun-kategori/plastik-urunler/plakalik/" },
+      { name: "Poliçe Kabı", href: "/urun-kategori/plastik-urunler/police-kabi/" },
+      { name: "Oto Kokusu", href: "/urun-kategori/promosyon-urunleri/oto-kokusu/" },
+      { name: "Kartvizit", href: "/urun-kategori/matbaa-urunleri/kartvizit/" },
+      { name: "Anahtarlık", href: "/urun-kategori/promosyon-urunleri/anahtarlik/" },
+      { name: "Çakmak", href: "/urun-kategori/promosyon-urunleri/cakmak/" },
+    ],
   },
   {
-    id: "turizm",
-    title: "Turizm ve Seyahat Acenteleri",
-    description:
-      "Otel, tur ve seyahat acenteleriniz için pasaport kılıfı, bagaj valiz etiketliği ve konaklama promosyonları.",
-    keywords: ["Pasaport Kılıfı", "Pasaport Kilifi", "Bagaj", "Valiz Etiketliği", "Valiz Etiketligi"],
+    bgImage: "/turizm-seyahat-acente-pasaport-kilifi.jpg",
+    titles: [
+      "Turizm ve Seyahat Acenteleri",
+      "Hac ve Umre Turizm Acenteleri",
+    ],
+    links: [
+      { name: "Pasaport Kılıfı", href: "/urun-kategori/plastik-urunler/pasaport-kilifi/" },
+      { name: "Bagaj Valiz Etiketliği", href: "/urun-kategori/plastik-urunler/bagaj-etiketi/" },
+      { name: "Şeffaf Pvc Kart Kılıfı", href: "/urun-kategori/plastik-urunler/kart-kilifi/" },
+      { name: "Şeffaf Pvc İpli Yaka Kartı Kılıfı", href: "/urun-kategori/plastik-urunler/yaka-karti/" },
+      { name: "Kredi Kartlık", href: "/urun-kategori/plastik-urunler/kredi-kartlik/" },
+      { name: "Kartvizit", href: "/urun-kategori/matbaa-urunleri/kartvizit/" },
+    ],
   },
   {
-    id: "fotograf",
-    title: "Fotoğraf Stüdyoları",
-    description:
-      "Vesikalık ve portre stüdyolarınız için 6x9, 10x15, 13x18, 15x21, 18x24, 20x25 standart ebatlarda fotoğraf kabı üretimi.",
-    keywords: ["Fotoğraf Kabı", "Fotograf Kabi", "6x9", "10x15", "13x18", "15x21", "18x24", "20x25"],
+    bgImage: "/fotograf-studyolari-fotograf-kabi.jpg",
+    titles: ["Fotoğraf Stüdyoları"],
+    links: [
+      { name: "Vesikalık Kabı", href: "/urun-kategori/plastik-urunler/vesikalik-kabi/" },
+      { name: "6×9 Fotoğraf Kabı", href: "/urun-kategori/plastik-urunler/fotograf-kabi/" },
+      { name: "10x15 Fotoğraf Kabı", href: "/urun-kategori/plastik-urunler/fotograf-kabi/" },
+      { name: "13x18 Fotoğraf Kabı", href: "/urun-kategori/plastik-urunler/fotograf-kabi/" },
+      { name: "15x21 Fotoğraf Kabı", href: "/urun-kategori/plastik-urunler/fotograf-kabi/" },
+      { name: "18x24 Fotoğraf Kabı", href: "/urun-kategori/plastik-urunler/fotograf-kabi/" },
+      { name: "20x25 Fotoğraf Kabı", href: "/urun-kategori/plastik-urunler/fotograf-kabi/" },
+      { name: "Kartvizit", href: "/urun-kategori/matbaa-urunleri/kartvizit/" },
+    ],
   },
   {
-    id: "doviz",
-    title: "Döviz Büroları",
-    description:
-      "Döviz büroları için özel tasarımlı, kurumsal kimliğinize uygun döviz kabı modelleri.",
-    keywords: ["Döviz Kabı", "Doviz Kabi"],
-  },
-  {
-    id: "kuyumcu",
-    title: "Kuyumcular",
-    description:
-      "Kuyumcularımız için gramajlı ürün teslimi, altın sertifikası ve müşteri takdimi amacıyla özel kutular.",
-    keywords: ["Kuyumcu", "Altın", "Altin", "Sertifika"],
+    bgImage: "/doviz-burosu-doviz-kabi.jpg",
+    titles: [
+      "Döviz Büroları",
+      "Para Transferi Büroları",
+      "Kuyumcular",
+    ],
+    links: [
+      { name: "Döviz Kabı", href: "/urun-kategori/plastik-urunler/doviz-kabi/" },
+      { name: "Kartvizit", href: "/urun-kategori/matbaa-urunleri/kartvizit/" },
+    ],
   },
 ];
 
@@ -72,40 +86,6 @@ const BADGES = [
 
 /* ───────────────────────── COMPONENT ───────────────────────── */
 export default async function HomePage() {
-  const allProductsRaw = await prisma.product
-    .findMany({
-      where: { isPublished: true },
-      include: {
-        variants: { orderBy: { sortOrder: "asc" } },
-        category: { include: { parent: true } },
-      },
-      orderBy: { menuOrder: "asc" },
-    })
-    .catch(() => []);
-
-  /* eslint-disable @typescript-eslint/no-explicit-any */
-  const allProducts = (allProductsRaw as any[]).map((p) => ({
-    ...p,
-    variants: p.variants.map((v: any) => ({ ...v, priceUsd: Number(v.priceUsd) })),
-  })) as ProductWithVariants[];
-
-  function productsForKeywords(keywords: string[]): ProductWithVariants[] {
-    return allProducts.filter((p) =>
-      keywords.some(
-        (kw) =>
-          p.title.toLowerCase().includes(kw.toLowerCase()) ||
-          p.category?.name.toLowerCase().includes(kw.toLowerCase())
-      )
-    );
-  }
-
-  const sectorTabs: SectorTab[] = SECTORS.map((s) => ({
-    id: s.id,
-    title: s.title,
-    description: s.description,
-    products: productsForKeywords(s.keywords).slice(0, 10),
-  })).filter((t) => t.products.length > 0);
-
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebSite",
@@ -150,25 +130,20 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ═════ TABBED SECTOR SECTION ═════ */}
-      {sectorTabs.length > 0 && (
-        <section className="container mx-auto px-4 pt-10 md:pt-14 pb-12 md:pb-16">
-          <div className="mb-6 md:mb-8">
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">Sektörel Ürünler</h2>
-            <div className="w-16 h-1 bg-[#cc0636] rounded-full" />
-          </div>
-          <SectorTabs tabs={sectorTabs} />
-        </section>
-      )}
-
-      {/* Empty state */}
-      {allProducts.length === 0 && (
-        <section className="container mx-auto px-4 py-20 text-center">
-          <p className="text-gray-500 text-lg">
-            Henüz ürün eklenmemiş. Yakında burada ürünlerimizi görebileceksiniz.
-          </p>
-        </section>
-      )}
+      {/* ═════ 2x2 SECTOR GRID ═════ */}
+      <section className="container mx-auto px-4 pt-10 md:pt-14 pb-12 md:pb-16">
+        <div className="text-center mb-6 md:mb-8">
+          <h2 className="text-2xl md:text-3xl font-bold uppercase tracking-wide" style={{ color: "#cc0636" }}>
+            Sektörel Ürünler
+          </h2>
+          <div className="w-16 h-0.5 bg-[#cc0636] rounded-full mx-auto mt-2" />
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
+          {SECTOR_CARDS.map((item, i) => (
+            <SectorCard key={i} item={item} />
+          ))}
+        </div>
+      </section>
     </>
   );
 }

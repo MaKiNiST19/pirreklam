@@ -36,9 +36,11 @@ export default function CategoryBarClient({ tree }: { tree: ParentCat[] }) {
         onMouseEnter={() => setHoveredId(cat.id)}
         onMouseLeave={() => setHoveredId(null)}
       >
-        <Link
-          href={`/urun-kategori/${cat.slug}/`}
-          className={`flex items-center gap-1.5 py-3 px-5 text-[13px] font-bold uppercase tracking-wide whitespace-nowrap transition-colors ${
+        {/* L1 categories are NOT clickable — just hover trigger */}
+        <button
+          type="button"
+          tabIndex={0}
+          className={`flex items-center gap-1.5 py-3 px-5 text-[13px] font-bold uppercase tracking-wide whitespace-nowrap transition-colors cursor-default ${
             hoveredId === cat.id ? "bg-white/15 text-white" : "hover:bg-white/10"
           }`}
         >
@@ -48,7 +50,7 @@ export default function CategoryBarClient({ tree }: { tree: ParentCat[] }) {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
             </svg>
           )}
-        </Link>
+        </button>
 
         {hoveredId === cat.id && hasChildren && (
           isMega ? (
@@ -97,10 +99,11 @@ export default function CategoryBarClient({ tree }: { tree: ParentCat[] }) {
     <div className="bg-[#25497f] text-white hidden md:block">
       <div className="max-w-[1320px] mx-auto px-4">
         <div className="flex items-stretch justify-between">
+          {/* Left items hugging the left edge */}
           <div className="flex items-stretch">
             {leftCats.map(renderItem)}
           </div>
-          <div className="w-[140px] shrink-0" />
+          {/* Right items hugging the right edge — logo (absolutely positioned in Header) sits in the empty middle */}
           <div className="flex items-stretch">
             {rightCats.map(renderItem)}
           </div>

@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { cache } from "react";
 import { prisma } from "@/lib/db";
 
-export const revalidate = 60; // ISR: revalidate every 60 seconds
+export const revalidate = 300; // ISR: revalidate every 5 minutes
+export const dynamicParams = true;
 import Breadcrumb from "@/components/category/Breadcrumb";
 import TopFilter from "@/components/category/TopFilter";
 import ProductGrid from "@/components/product/ProductGrid";
 import SubCategoryCarousel from "@/components/category/SubCategoryCarousel";
-import AnchorNav from "@/components/category/AnchorNav";
 import JsonLd from "@/components/seo/JsonLd";
 import type { BreadcrumbItem, ProductWithVariants } from "@/types/index";
 
@@ -17,27 +18,46 @@ interface Props {
   searchParams: Promise<{ baski?: string; renk?: string; desen?: string }>;
 }
 
-async function resolveCategory(slugs: string[]) {
-  // Last slug is the category we want to resolve
+// Pre-build all known category slug paths at deploy time
+export async function generateStaticParams() {
+  const cats = await prisma.category.findMany({
+    select: { slug: true, parentId: true, parent: { select: { slug: true, parent: { select: { slug: true } } } } },
+  }).catch(() => []);
+
+  const paths: { slugs: string[] }[] = [];
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  for (const c of cats as any[]) {
+    if (!c.parentId) {
+      paths.push({ slugs: [c.slug] });
+    } else if (c.parent && !c.parent.parent) {
+      paths.push({ slugs: [c.parent.slug, c.slug] });
+    } else if (c.parent && c.parent.parent) {
+      paths.push({ slugs: [c.parent.parent.slug, c.parent.slug, c.slug] });
+    }
+  }
+  return paths;
+}
+
+// Cached so generateMetadata + Page share the same query
+const resolveCategory = cache(async (slugs: string[]) => {
   const targetSlug = slugs[slugs.length - 1];
 
   const category = await prisma.category.findUnique({
     where: { slug: targetSlug },
     include: {
-      children: { orderBy: { menuOrder: "asc" } },
+      children: { orderBy: { menuOrder: "asc" }, select: { id: true, name: true, slug: true, menuOrder: true } },
       parent: { include: { parent: true } },
     },
   });
 
   if (!category) return null;
 
-  // Validate slug path matches parent chain
   if (slugs.length === 1 && !category.parentId) return category;
   if (slugs.length === 2 && category.parent?.slug === slugs[0]) return category;
   if (slugs.length === 3 && category.parent?.slug === slugs[1] && category.parent?.parent?.slug === slugs[0]) return category;
 
   return null;
-}
+});
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slugs } = await params;
@@ -66,19 +86,22 @@ export default async function CategoryPage({ params, searchParams }: Props) {
   const children: ChildCategory[] = (category.children || []) as ChildCategory[];
   const hasChildren = children.length > 0;
 
-  // Breadcrumb
+  // Breadcrumb (L1 / top-level parent categories are non-clickable)
   const breadcrumbItems: BreadcrumbItem[] = [{ name: "Anasayfa", href: "/" }];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const parentCat = category.parent as any;
   if (parentCat?.parent) {
-    breadcrumbItems.push({ name: parentCat.parent.name, href: `/urun-kategori/${parentCat.parent.slug}/` });
+    // L1 ancestor — non-clickable
+    breadcrumbItems.push({ name: parentCat.parent.name, href: `/urun-kategori/${parentCat.parent.slug}/`, noLink: true });
   }
   if (parentCat) {
     const parentPath = parentCat.parent
       ? `/urun-kategori/${parentCat.parent.slug}/${parentCat.slug}/`
       : `/urun-kategori/${parentCat.slug}/`;
-    breadcrumbItems.push({ name: parentCat.name, href: parentPath });
+    // If `parentCat` is L1 (no grandparent), make non-clickable
+    breadcrumbItems.push({ name: parentCat.name, href: parentPath, noLink: !parentCat.parent });
   }
+  // Current category. If THIS category is L1 (no parent), it's the page itself; we add it as last item which is always rendered as plain text
   breadcrumbItems.push({ name: category.name, href: `/urun-kategori/${slugs.join("/")}/` });
 
   // JSON-LD
@@ -97,9 +120,13 @@ export default async function CategoryPage({ params, searchParams }: Props) {
 
     const allProducts = (await prisma.product.findMany({
       where: { isPublished: true, categoryId: { in: allCategoryIds } },
-      include: {
-        variants: { orderBy: { sortOrder: "asc" } },
-        category: { include: { parent: true } },
+      select: {
+        id: true, title: true, slug: true, images: true, categoryId: true,
+        productType: true, menuOrder: true,
+        variants: {
+          orderBy: { sortOrder: "asc" },
+          select: { id: true, sku: true, baskiOption: true, renkOption: true, desenOption: true, adet: true, priceUsd: true, image: true, isCompatible: true, stockCode: true },
+        },
       },
       orderBy: { menuOrder: "asc" },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -137,11 +164,6 @@ export default async function CategoryPage({ params, searchParams }: Props) {
       <>
         <JsonLd data={collectionLd} />
         <div className="container mx-auto px-4 py-6">
-          {/* Sticky navy anchor strip (above breadcrumb) */}
-          <AnchorNav
-            sections={sectionsWithProducts.map((c) => ({ id: c.id, name: c.name, slug: c.slug }))}
-          />
-
           <Breadcrumb items={breadcrumbItems} />
 
           <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mt-4 mb-4">
@@ -209,9 +231,13 @@ export default async function CategoryPage({ params, searchParams }: Props) {
       categoryId: category.id,
       ...(hasFilters ? { variants: { some: variantWhere } } : {}),
     },
-    include: {
-      variants: { orderBy: { sortOrder: "asc" } },
-      category: { include: { parent: true } },
+    select: {
+      id: true, title: true, slug: true, images: true, categoryId: true,
+      productType: true, menuOrder: true,
+      variants: {
+        orderBy: { sortOrder: "asc" },
+        select: { id: true, sku: true, baskiOption: true, renkOption: true, desenOption: true, adet: true, priceUsd: true, image: true, isCompatible: true, stockCode: true },
+      },
     },
     orderBy: { menuOrder: "asc" },
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

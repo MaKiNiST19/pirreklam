@@ -1,9 +1,13 @@
 import type { Metadata } from "next";
 import { Open_Sans } from "next/font/google";
+import { cache } from "react";
 import "./globals.css";
 import { CartProvider } from "@/components/cart/CartProvider";
 import LayoutShell from "@/components/layout/LayoutShell";
 import { prisma } from "@/lib/db";
+
+// Revalidate the entire layout (incl. category tree) every hour
+export const revalidate = 3600;
 
 const openSans = Open_Sans({
   variable: "--font-open-sans",
@@ -23,10 +27,11 @@ export const metadata: Metadata = {
   },
 };
 
-async function getCategoryTree() {
+const getCategoryTree = cache(async () => {
   try {
     const categories = await prisma.category.findMany({
       orderBy: { menuOrder: "asc" },
+      select: { id: true, name: true, slug: true, parentId: true, menuOrder: true },
     });
 
     type CatNode = { id: string; name: string; slug: string; parentId: string | null; menuOrder: number; children: CatNode[] };
@@ -55,7 +60,7 @@ async function getCategoryTree() {
   } catch {
     return [];
   }
-}
+});
 
 export default async function RootLayout({
   children,
