@@ -6,7 +6,12 @@ export type CategoryTreeItem = {
   id: string;
   name: string;
   slug: string;
-  children: { id: string; name: string; slug: string }[];
+  children: {
+    id: string;
+    name: string;
+    slug: string;
+    children?: { id: string; name: string; slug: string }[];
+  }[];
 };
 
 interface Props {

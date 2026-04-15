@@ -34,6 +34,7 @@ export default function ProductDetailClient({
   const { addToCart } = useCart();
   const [selectedVariant, setSelectedVariant] = useState<VariantOption | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [sepetHover, setSepetHover] = useState(false);
 
   const handleVariantChange = useCallback((variant: VariantOption | null) => {
     setSelectedVariant(variant);
@@ -114,6 +115,8 @@ export default function ProductDetailClient({
           <button
             onClick={handleAddToCart}
             disabled={!selectedVariant}
+            onMouseEnter={() => setSepetHover(true)}
+            onMouseLeave={() => setSepetHover(false)}
             className="flex-1 flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg bg-[#cc0636] hover:bg-[#a80530] active:bg-[#8a0426] text-white font-semibold text-sm transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-[#cc0636]"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
@@ -138,7 +141,10 @@ export default function ProductDetailClient({
         </div>
 
         {/* Curved dashed arrow pointing from Sepete Ekle button down to the OrderNotice */}
-        <div className="relative h-6 -my-1 pointer-events-none" aria-hidden>
+        <div
+          className={`relative h-6 -mt-3 -mb-3 pointer-events-none transition-opacity duration-200 ${sepetHover ? "opacity-100" : "opacity-30"}`}
+          aria-hidden
+        >
           <svg
             viewBox="0 0 90 30"
             className="absolute"

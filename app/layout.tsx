@@ -52,11 +52,19 @@ const getCategoryTree = cache(async () => {
     roots.sort((a, b) => a.menuOrder - b.menuOrder);
     roots.forEach((r) => r.children.sort((a, b) => a.menuOrder - b.menuOrder));
 
+    // Sort grandchildren too
+    map.forEach((node) => node.children.sort((a, b) => a.menuOrder - b.menuOrder));
+
     return roots.map((r) => ({
       id: r.id,
       name: r.name,
       slug: r.slug,
-      children: r.children.map((c) => ({ id: c.id, name: c.name, slug: c.slug })),
+      children: r.children.map((c) => ({
+        id: c.id,
+        name: c.name,
+        slug: c.slug,
+        children: c.children.map((gc) => ({ id: gc.id, name: gc.name, slug: gc.slug })),
+      })),
     }));
   } catch {
     return [];

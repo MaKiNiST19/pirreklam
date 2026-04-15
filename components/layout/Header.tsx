@@ -72,7 +72,7 @@ export default function Header({ categoryTree }: HeaderProps) {
 
             {/* Center: Logo placeholder (space reserved, actual logo is absolutely positioned) */}
             <div className="flex items-center justify-center shrink-0 w-[120px] md:w-[140px]">
-              <MobileNav />
+              <MobileNav tree={categoryTree} />
               {/* Invisible spacer for mobile */}
               <div className="md:hidden w-[70px]" />
             </div>
@@ -120,15 +120,15 @@ export default function Header({ categoryTree }: HeaderProps) {
         {/* ===== OVERLAPPING LOGO — starts from middle of top red bar (16px), 2px gap before slogan ===== */}
         <div
           className="hidden md:flex flex-col items-center absolute left-1/2 -translate-x-1/2 z-[60] pointer-events-none"
-          style={{ width: "150px", top: "16px" }}
+          style={{ width: "180px", top: "10px" }}
         >
           <Link href="/" className="pointer-events-auto flex flex-col items-center">
             <Image
               src="/logo.webp"
               alt="Pir Reklam"
-              width={95}
-              height={95}
-              className="w-[95px] h-auto drop-shadow-lg bg-white rounded-full p-[3px]"
+              width={120}
+              height={120}
+              className="w-[120px] h-[120px] object-contain drop-shadow-lg bg-white rounded-full p-[3px]"
               priority
             />
             <span
