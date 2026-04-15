@@ -19,19 +19,25 @@ export default function SectorCard({ item }: { item: SectorCardItem }) {
         sizes="(max-width: 768px) 100vw, 50vw"
       />
 
-      {/* Bottom-left tinted overlay for sub-link legibility */}
-      <div className="absolute inset-0 bg-gradient-to-tr from-black/55 via-black/15 to-transparent" />
+      {/* Dark overlay anchored at bottom-left for link legibility */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(to top right, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.55) 35%, rgba(0,0,0,0.25) 70%, rgba(0,0,0,0.05) 100%)",
+        }}
+      />
 
       {/* Content (top-left) */}
       <div className="relative h-full flex flex-col items-start justify-start p-4 md:p-6">
-        {/* More transparent blurred plaque with red bullet titles */}
+        {/* More transparent blurred plaque with yellow bullet titles */}
         <div className="bg-white/40 backdrop-blur-md rounded-xl px-4 py-3 shadow-sm border border-white/30">
           <ul className="space-y-0.5">
             {item.titles.map((t, i) => (
               <li
                 key={i}
-                className="flex items-start gap-1.5 text-[15px] md:text-base font-bold text-[#cc0636] leading-snug"
-                style={{ textShadow: "0 1px 1px rgba(255,255,255,0.6)" }}
+                className="flex items-start gap-1.5 text-[15px] md:text-base font-bold leading-snug"
+                style={{ color: "#ffc107", textShadow: "0 1px 2px rgba(0,0,0,0.45)" }}
               >
                 <span className="leading-none text-lg">•</span>
                 <span>{t}</span>
@@ -47,7 +53,7 @@ export default function SectorCard({ item }: { item: SectorCardItem }) {
               key={link.href}
               href={link.href}
               className="block text-white text-sm font-medium drop-shadow hover:text-white/80 hover:translate-x-0.5 transition-all"
-              style={{ textShadow: "0 1px 3px rgba(0,0,0,0.7)" }}
+              style={{ textShadow: "0 1px 3px rgba(0,0,0,0.85)" }}
             >
               {link.name}
             </Link>

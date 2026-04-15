@@ -8,6 +8,7 @@ import WhatsAppButton from "@/components/product/WhatsAppButton";
 import VariantSummaryModal from "@/components/product/VariantSummaryModal";
 import ProductGallery from "@/components/product/ProductGallery";
 import OrderNotice from "@/components/product/OrderNotice";
+import ProductAccordion from "@/components/product/ProductAccordion";
 import type { VariantOption } from "@/lib/variants";
 import type { BankAccount } from "@/types/index";
 
@@ -139,6 +140,11 @@ export default function ProductDetailClient({
 
         {/* Pre-add-to-cart notice */}
         <OrderNotice />
+
+        {/* Accordion: Baskı açıklaması, sipariş detayları, video, yorumlar — compact, inline under notice */}
+        <div className="mt-2">
+          <ProductAccordion />
+        </div>
 
         {selectedVariant && (
           <VariantSummaryModal

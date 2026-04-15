@@ -51,7 +51,7 @@ export default function Header({ categoryTree }: HeaderProps) {
 
         {/* ===== MAIN BAR: White ===== */}
         <div className="bg-white border-b border-gray-100">
-          <div className="max-w-[1320px] mx-auto flex items-center justify-between px-4 py-2 gap-3">
+          <div className="max-w-[1320px] mx-auto flex items-center justify-between px-4 gap-3" style={{ paddingTop: "13px", paddingBottom: "13px" }}>
             {/* Left side: Search + Phone */}
             <div className="hidden md:flex items-center gap-6 flex-1">
               <div className="shrink-0 w-56">

@@ -191,7 +191,7 @@ export default async function CategoryPage({ params }: Props) {
               return (
                 <section key={child.id} id={`cat-${child.slug}`} className="scroll-mt-24">
                   {/* Red centered title — links to child category page */}
-                  <h2 className="text-center font-bold text-lg md:text-xl mb-3">
+                  <h2 className="text-center font-bold text-lg md:text-xl" style={{ marginBottom: "4px" }}>
                     <Link
                       href={`/urun-kategori/${slugs.join("/")}/${child.slug}/`}
                       className="hover:underline"

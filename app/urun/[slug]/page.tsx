@@ -8,10 +8,9 @@ export const revalidate = 300; // ISR: revalidate every 5 minutes
 export const dynamicParams = true;
 export const fetchCache = "force-cache";
 import Breadcrumb from "@/components/category/Breadcrumb";
-import ProductGrid from "@/components/product/ProductGrid";
 import JsonLd from "@/components/seo/JsonLd";
 import ProductDetailClient from "./ProductDetailClient";
-import ProductAccordion from "@/components/product/ProductAccordion";
+import SubCategoryCarousel from "@/components/category/SubCategoryCarousel";
 import type { BreadcrumbItem, BankAccount, ProductWithVariants } from "@/types/index";
 import type { VariantOption } from "@/lib/variants";
 
@@ -188,9 +187,6 @@ export default async function ProductDetailPage({ params }: Props) {
           bankAccounts={bankAccounts}
         />
 
-        {/* Accordion: Baskı açıklaması, sipariş detayları, video, yorumlar */}
-        <ProductAccordion />
-
         {/* Description */}
         {product.description && (
           <div className="mt-12 prose prose-lg max-w-none">
@@ -201,13 +197,13 @@ export default async function ProductDetailPage({ params }: Props) {
           </div>
         )}
 
-        {/* Related Products */}
+        {/* Related Products — same carousel design as category page */}
         {relatedProducts.length > 0 && (
           <section className="mt-12">
-            <h2 className="text-xl font-bold text-gray-900 mb-6">
-              Benzer Urunler
+            <h2 className="text-center font-bold text-lg md:text-xl" style={{ color: "#cc0636", marginBottom: "4px" }}>
+              Benzer Ürünler
             </h2>
-            <ProductGrid products={relatedProducts} />
+            <SubCategoryCarousel products={relatedProducts} />
           </section>
         )}
       </div>

@@ -17,24 +17,24 @@ function AccordionItem({ icon, title, defaultOpen = false, children }: Accordion
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
-        className="w-full flex items-center gap-2 py-3 px-1 text-left hover:bg-gray-50 transition-colors"
+        className="w-full flex items-center gap-1.5 py-1.5 px-2 text-left hover:bg-gray-50 transition-colors"
       >
-        <span className="inline-flex items-center justify-center w-5 h-5 text-[#25497f] shrink-0">
+        <span className="inline-flex items-center justify-center w-4 h-4 text-[#25497f] shrink-0">
           {open ? (
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={3} className="w-3.5 h-3.5">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={3} className="w-3 h-3">
               <path strokeLinecap="round" strokeLinejoin="round" d="M18 12H6" />
             </svg>
           ) : (
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={3} className="w-3.5 h-3.5">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={3} className="w-3 h-3">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12M6 12h12" />
             </svg>
           )}
         </span>
         {icon && <span className="text-[#25497f] shrink-0">{icon}</span>}
-        <h3 className="text-[15px] md:text-base font-semibold text-gray-800 flex-1">{title}</h3>
+        <h3 className="text-[13px] font-semibold text-gray-800 flex-1">{title}</h3>
       </button>
       {open && (
-        <div className="pb-4 px-8 text-sm text-gray-700 leading-relaxed">{children}</div>
+        <div className="pb-2.5 px-6 text-[12px] text-gray-700 leading-snug">{children}</div>
       )}
     </div>
   );
@@ -42,7 +42,7 @@ function AccordionItem({ icon, title, defaultOpen = false, children }: Accordion
 
 export default function ProductAccordion() {
   return (
-    <div className="mt-10 rounded-xl bg-white border border-gray-200 shadow-sm divide-y divide-gray-100">
+    <div className="rounded-lg bg-white border border-gray-200 divide-y divide-gray-100">
       <AccordionItem title="Baskı Seçenekleri Açıklaması" defaultOpen>
         <ul className="space-y-1.5">
           <li>
