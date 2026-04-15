@@ -137,6 +137,11 @@ export default async function CategoryPage({ params, searchParams }: Props) {
       <>
         <JsonLd data={collectionLd} />
         <div className="container mx-auto px-4 py-6">
+          {/* Sticky navy anchor strip (above breadcrumb) */}
+          <AnchorNav
+            sections={sectionsWithProducts.map((c) => ({ id: c.id, name: c.name, slug: c.slug }))}
+          />
+
           <Breadcrumb items={breadcrumbItems} />
 
           <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mt-4 mb-4">
@@ -146,11 +151,6 @@ export default async function CategoryPage({ params, searchParams }: Props) {
           {category.description && (
             <p className="text-gray-600 mb-4">{category.description}</p>
           )}
-
-          {/* Anchor navigation for sub-categories */}
-          <AnchorNav
-            sections={sectionsWithProducts.map((c) => ({ id: c.id, name: c.name, slug: c.slug }))}
-          />
 
           {/* Top filters */}
           {(baskiOptions.length > 0 || renkOptions.length > 0 || desenOptions.length > 0) && (
@@ -192,10 +192,15 @@ export default async function CategoryPage({ params, searchParams }: Props) {
   }
 
   // ===== CHILD CATEGORY VIEW =====
+  const parseMulti = (v?: string) => v ? v.split(",").filter(Boolean) : [];
+  const baskiFilter = parseMulti(filters.baski);
+  const renkFilter = parseMulti(filters.renk);
+  const desenFilter = parseMulti(filters.desen);
+
   const variantWhere: Record<string, unknown> = {};
-  if (filters.baski) variantWhere.baskiOption = filters.baski;
-  if (filters.renk) variantWhere.renkOption = filters.renk;
-  if (filters.desen) variantWhere.desenOption = filters.desen;
+  if (baskiFilter.length > 0) variantWhere.baskiOption = { in: baskiFilter };
+  if (renkFilter.length > 0) variantWhere.renkOption = { in: renkFilter };
+  if (desenFilter.length > 0) variantWhere.desenOption = { in: desenFilter };
   const hasFilters = Object.keys(variantWhere).length > 0;
 
   const products = (await prisma.product.findMany({

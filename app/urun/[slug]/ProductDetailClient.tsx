@@ -70,13 +70,27 @@ export default function ProductDetailClient({
     setModalOpen(true);
   };
 
+  const displayedSku = selectedVariant?.sku || variants[0]?.sku;
+
   return (
-    <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
       {/* Left: Gallery — updates when variant changes */}
       <ProductGallery images={displayImages} title={product.title} />
 
-      {/* Right: Info + Variant selector */}
+      {/* Right: Title + SKU + Variants + Price + Actions */}
       <div className="space-y-4">
+        <div>
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-900 leading-tight mb-2">
+            {product.title}
+          </h1>
+          {displayedSku && (
+            <div className="inline-flex items-center gap-1.5 bg-gray-100 rounded px-2.5 py-1">
+              <span className="text-[11px] font-semibold text-gray-600">Stok Kodu :</span>
+              <span className="text-xs font-bold text-[#cc0636]">{displayedSku}</span>
+            </div>
+          )}
+        </div>
+
         <VariantSelector
           variants={variants}
           productType={product.productType}

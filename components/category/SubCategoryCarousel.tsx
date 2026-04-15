@@ -8,8 +8,8 @@ interface Props {
   products: ProductWithVariants[];
 }
 
-const VISIBLE_DESKTOP = 6;
-const VISIBLE_TABLET = 4;
+const VISIBLE_DESKTOP = 5;
+const VISIBLE_TABLET = 3;
 const VISIBLE_MOBILE = 2;
 const GAP = 4;
 

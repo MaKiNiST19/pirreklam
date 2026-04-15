@@ -145,22 +145,10 @@ export default async function ProductDetailPage({ params }: Props) {
       <JsonLd data={productLd} />
 
       <div className="container mx-auto px-4 py-6">
+        {/* Breadcrumb at the very top */}
         <Breadcrumb items={breadcrumbItems} />
 
-        {/* Title + SKU above the two-column layout */}
-        <div className="mt-6">
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
-            {product.title}
-          </h1>
-          {variants.length > 0 && (
-            <div className="mb-4 inline-flex items-center gap-1.5 bg-gray-100 rounded px-2.5 py-1">
-              <span className="text-[11px] font-semibold text-gray-600">Stok Kodu :</span>
-              <span className="text-xs font-bold text-[#cc0636]">{variants[0].sku}</span>
-            </div>
-          )}
-        </div>
-
-        {/* Two-column layout (gallery + variants) is now managed inside ProductDetailClient */}
+        {/* Two-column layout with title/sku moved inside (next to gallery at the top) */}
         <ProductDetailClient
           product={{
             id: product.id,

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 
 interface TopFilterProps {
   baskiOptions: string[];
@@ -9,11 +9,38 @@ interface TopFilterProps {
   desenOptions: string[];
 }
 
+const COLOR_MAP: Record<string, string> = {
+  siyah: "#1a1a1a", beyaz: "#ffffff", kırmızı: "#e02020", kirmizi: "#e02020",
+  mavi: "#1e6bb8", lacivert: "#1b2f6e", yeşil: "#2e7d32", yesil: "#2e7d32",
+  sarı: "#f9c400", sari: "#f9c400", turuncu: "#f57c00", mor: "#7b1fa2",
+  pembe: "#e91e8c", gri: "#9e9e9e", kahverengi: "#6d4c41", kahve: "#6d4c41",
+  bej: "#d7ccc8", krem: "#f5f0e8", bordo: "#880e4f", haki: "#8d8d3a",
+  füme: "#607d8b", fume: "#607d8b", altın: "#c8960c", altin: "#c8960c",
+  gümüş: "#bdbdbd", gumus: "#bdbdbd", bronz: "#cd7f32", krom: "#c0c0c0",
+  şeffaf: "rgba(200,200,200,0.25)", seffaf: "rgba(200,200,200,0.25)",
+  "açık gri": "#d4d4d4", "acik gri": "#d4d4d4",
+  "koyu gri": "#616161",
+  "siyah deri": "#1a1a1a", "kahve deri": "#6d4c41",
+  "lacivert deri": "#1b2f6e", "bordo deri": "#880e4f",
+};
+
 export default function TopFilter({ baskiOptions, renkOptions, desenOptions }: TopFilterProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [openGroup, setOpenGroup] = useState<string | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setOpenGroup(null);
+      }
+    }
+    if (openGroup) document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, [openGroup]);
 
   const getSelected = (key: string): string[] => {
     const val = searchParams.get(key);
@@ -29,14 +56,15 @@ export default function TopFilter({ baskiOptions, renkOptions, desenOptions }: T
         : [...current, value];
       if (next.length > 0) params.set(key, next.join(","));
       else params.delete(key);
-      router.push(`${pathname}?${params.toString()}`, { scroll: false });
+      const qs = params.toString();
+      router.push(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
     },
     [router, pathname, searchParams]
   );
 
   const clearAll = () => router.push(pathname, { scroll: false });
 
-  const hasFilters = !!searchParams.toString();
+  const hasFilters = Array.from(searchParams.keys()).length > 0;
 
   const groups = [
     { label: "Baskı Seçeneği", key: "baski", options: baskiOptions },
@@ -47,9 +75,9 @@ export default function TopFilter({ baskiOptions, renkOptions, desenOptions }: T
   if (groups.length === 0) return null;
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-100 mb-6 p-4">
-      <div className="flex flex-wrap items-center gap-3">
-        <span className="text-sm font-semibold text-gray-700">Filtrele:</span>
+    <div ref={containerRef} className="bg-white rounded-xl shadow-sm border border-gray-100 mb-6 p-3">
+      <div className="flex flex-wrap items-center gap-2">
+        <span className="text-[11px] font-semibold text-gray-700 uppercase tracking-wide">Filtrele:</span>
 
         {groups.map((group) => {
           const selected = getSelected(group.key);
@@ -59,7 +87,7 @@ export default function TopFilter({ baskiOptions, renkOptions, desenOptions }: T
               <button
                 type="button"
                 onClick={() => setOpenGroup(isOpen ? null : group.key)}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-sm font-medium transition-colors ${
+                className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg border text-[11px] font-medium transition-colors ${
                   selected.length > 0
                     ? "border-[#cc0636] bg-[#cc0636] text-white"
                     : "border-gray-300 bg-white text-gray-700 hover:border-gray-400"
@@ -67,29 +95,43 @@ export default function TopFilter({ baskiOptions, renkOptions, desenOptions }: T
               >
                 {group.label}
                 {selected.length > 0 && (
-                  <span className="bg-white text-[#cc0636] text-xs rounded-full w-4 h-4 flex items-center justify-center font-bold">
+                  <span className="bg-white text-[#cc0636] text-[10px] rounded-full w-4 h-4 flex items-center justify-center font-bold">
                     {selected.length}
                   </span>
                 )}
-                <svg className={`w-3.5 h-3.5 transition-transform ${isOpen ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className={`w-3 h-3 transition-transform ${isOpen ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
 
               {isOpen && (
-                <div className="absolute top-full left-0 mt-1 z-20 bg-white border border-gray-200 rounded-xl shadow-lg p-3 min-w-[180px] max-h-64 overflow-y-auto">
-                  <div className="space-y-1.5">
-                    {group.options.map((opt) => (
-                      <label key={opt} className="flex items-center gap-2 text-sm text-gray-700 cursor-pointer hover:text-[#cc0636]">
-                        <input
-                          type="checkbox"
-                          checked={selected.includes(opt)}
-                          onChange={() => toggleOption(group.key, opt)}
-                          className="rounded border-gray-300 text-[#cc0636] focus:ring-[#cc0636]"
-                        />
-                        {opt}
-                      </label>
-                    ))}
+                <div className="absolute top-full left-0 mt-1 z-20 bg-white border border-gray-200 rounded-xl shadow-lg p-3 min-w-[200px] max-h-64 overflow-y-auto">
+                  <div className="space-y-1">
+                    {group.options.map((opt) => {
+                      const isSelected = selected.includes(opt);
+                      const isColor = group.key === "renk";
+                      const cssColor = isColor ? (COLOR_MAP[opt.toLowerCase()] ?? "#cccccc") : null;
+                      return (
+                        <label
+                          key={opt}
+                          className="flex items-center gap-2 text-[11px] text-gray-700 cursor-pointer hover:bg-gray-50 rounded px-1.5 py-1"
+                        >
+                          <input
+                            type="checkbox"
+                            checked={isSelected}
+                            onChange={() => toggleOption(group.key, opt)}
+                            className="rounded border-gray-300 text-[#cc0636] focus:ring-[#cc0636] w-3.5 h-3.5"
+                          />
+                          {isColor && (
+                            <span
+                              className="w-4 h-4 rounded-sm border border-gray-300 shrink-0"
+                              style={{ backgroundColor: cssColor! }}
+                            />
+                          )}
+                          <span className={isSelected ? "text-[#cc0636] font-medium" : ""}>{opt}</span>
+                        </label>
+                      );
+                    })}
                   </div>
                 </div>
               )}
@@ -101,7 +143,7 @@ export default function TopFilter({ baskiOptions, renkOptions, desenOptions }: T
           <button
             type="button"
             onClick={clearAll}
-            className="text-sm text-gray-500 hover:text-[#cc0636] underline ml-2 transition-colors"
+            className="text-[11px] text-gray-500 hover:text-[#cc0636] underline ml-1 transition-colors"
           >
             Temizle
           </button>

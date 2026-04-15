@@ -122,7 +122,7 @@ export default function VariantSelector({
             {labels.baski}
             {selected.baski && <span className="font-normal normal-case text-[#cc0636] tracking-normal">· {selected.baski}</span>}
           </h4>
-          <div className="flex flex-wrap gap-2">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-1.5">
             {baskiOptions.map((opt) => {
               const isAvail = available.availableBaski.includes(opt);
               return (
@@ -130,7 +130,7 @@ export default function VariantSelector({
                   key={opt}
                   type="button"
                   disabled={!isAvail}
-                  className={optionBoxClass(selected.baski === opt, isAvail)}
+                  className={optionBoxClass(selected.baski === opt, isAvail) + " text-center"}
                   onClick={() => isAvail && handleSelect("baski", opt)}
                 >
                   {opt}
@@ -204,7 +204,7 @@ export default function VariantSelector({
             {labels.adet}
             {selected.adet && <span className="font-normal normal-case text-[#cc0636] tracking-normal">· {selected.adet.toLocaleString("tr-TR")} Adet</span>}
           </h4>
-          <div className="flex flex-wrap gap-2">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-1.5">
             {adetOptions.map((opt) => {
               const isAvail = available.availableAdet.includes(opt);
               return (
@@ -212,7 +212,7 @@ export default function VariantSelector({
                   key={opt}
                   type="button"
                   disabled={!isAvail}
-                  className={optionBoxClass(selected.adet === opt, isAvail)}
+                  className={optionBoxClass(selected.adet === opt, isAvail) + " text-center"}
                   onClick={() => isAvail && handleAdetSelect(opt)}
                 >
                   {opt.toLocaleString("tr-TR")} Adet
