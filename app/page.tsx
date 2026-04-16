@@ -134,7 +134,9 @@ export default async function HomePage() {
             fill
             className="object-cover"
             priority
-            sizes="100vw"
+            fetchPriority="high"
+            quality={72}
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 100vw, 1200px"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
         </div>

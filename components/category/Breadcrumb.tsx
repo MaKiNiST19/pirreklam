@@ -21,17 +21,17 @@ export default function Breadcrumb({ items }: BreadcrumbProps) {
   return (
     <>
       <JsonLd data={jsonLd} />
-      <nav aria-label="Breadcrumb" className="text-[12px] text-gray-500">
+      <nav aria-label="Breadcrumb" className="text-[12px] text-gray-700 font-medium">
         <ol className="flex flex-wrap items-center gap-1">
           {items.map((item, i) => {
             const isLast = i === items.length - 1;
             return (
               <li key={`${item.href}-${i}`} className="flex items-center gap-1">
-                {i > 0 && <span className="text-gray-300">&gt;</span>}
+                {i > 0 && <span className="text-gray-500">&gt;</span>}
                 {isLast ? (
-                  <span className="text-gray-700 font-medium">{item.name}</span>
+                  <span className="text-gray-900 font-semibold">{item.name}</span>
                 ) : item.noLink ? (
-                  <span className="text-gray-500">{item.name}</span>
+                  <span className="text-gray-700">{item.name}</span>
                 ) : (
                   <Link href={item.href} className="hover:text-[#cc0636] transition-colors">
                     {item.name}

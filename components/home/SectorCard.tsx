@@ -15,6 +15,8 @@ export default function SectorCard({ item }: { item: SectorCardItem }) {
         src={item.bgImage}
         alt={item.titles.join(" — ")}
         fill
+        quality={72}
+        loading="lazy"
         className="object-cover transition-transform duration-500 group-hover:scale-105"
         sizes="(max-width: 768px) 100vw, 50vw"
       />
