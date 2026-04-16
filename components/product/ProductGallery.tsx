@@ -30,7 +30,7 @@ export default function ProductGallery({ images, title }: ProductGalleryProps) {
       <div
         ref={containerRef}
         className="relative w-full aspect-square rounded-xl overflow-hidden cursor-zoom-in"
-        style={{ boxShadow: "0 8px 30px rgba(0,0,0,0.12)" }}
+        style={{ boxShadow: "0 8px 30px rgba(0,0,0,0.12)", backgroundColor: "rgb(255,255,255)" }}
         onMouseMove={handleMouseMove}
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => {
@@ -65,6 +65,7 @@ export default function ProductGallery({ images, title }: ProductGalleryProps) {
                   ? "border-[#cc0636]"
                   : "border-gray-200 hover:border-gray-400"
               }`}
+              style={{ backgroundColor: "rgb(255,255,255)" }}
             >
               <Image
                 src={img}

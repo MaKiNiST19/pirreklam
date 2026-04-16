@@ -36,8 +36,8 @@ export default function ProductCard({ product }: ProductCardProps) {
     >
       {/* Image area — white bg, 190px tall, image scaled 1.25x without quality loss (rendered at 2x width) */}
       <div
-        className="relative w-full shrink-0 overflow-hidden rounded bg-white"
-        style={{ height: "190px" }}
+        className="relative w-full shrink-0 overflow-hidden rounded"
+        style={{ height: "190px", backgroundColor: "rgb(255,255,255)" }}
       >
         <div className="absolute inset-0 transition-transform duration-300 group-hover:scale-[1.05]" style={{ transform: "scale(1.25)" }}>
           <Image
