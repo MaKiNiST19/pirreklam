@@ -21,11 +21,38 @@ import { sayisalLotoKabiSeo } from "./content/sayisal-loto-kabi";
 import { uzunYukBayragiSeo } from "./content/uzun-yuk-bayragi";
 import { veterinerAsiKarnesiKabiSeo } from "./content/veteriner-asi-karnesi-kabi";
 
+// L2 — Matbaa Ürünleri
+import { kartvizitSeo } from "./content/kartvizit";
+import { elIlaniSeo } from "./content/el-ilani";
+import { magnetSeo } from "./content/magnet";
+import { stickerSeo } from "./content/sticker";
+import { kupBlokNotSeo } from "./content/kup-blok-not";
+import { takvimlerSeo } from "./content/takvimler";
+
+// L2 — Promosyon Ürünler
+import { anahtarlikSeo } from "./content/anahtarlik";
+import { kalemSeo } from "./content/kalem";
+import { cakmakSeo } from "./content/cakmak";
+import { otoKokusuSeo } from "./content/oto-kokusu";
+import { ajandaSeo } from "./content/ajanda";
+import { defterlerSeo } from "./content/defterler";
+import { bardakAltligiSeo } from "./content/bardak-altligi";
+import { mousePadSeo } from "./content/mouse-pad";
+import { duvarSaatleriSeo } from "./content/duvar-saatleri";
+import { bozukParaCuzdaniSeo } from "./content/bozuk-para-cuzdani";
+
+// L2 — Çanta
+import { promosyonCantaSeo } from "./content/promosyon-canta";
+import { elbiseKiliflariSeo } from "./content/elbise-kiliflari";
+import { laptopCantalariSeo } from "./content/laptop-cantalari";
+import { sporVeSeyahatCantalariSeo } from "./content/spor-ve-seyahat-cantalari";
+
 /**
  * Map: category slug → SeoPackage
  *
- * Add new entries as each category content file is created.
- * The category page will check this map and render <CategorySeoSection /> + JSON-LD if found.
+ * The category page checks this map and renders <CategorySeoSection />
+ * with auto-injected Product + FAQPage + BreadcrumbList JSON-LD
+ * when a match is found.
  */
 export const seoRegistry: Record<string, SeoPackage> = {
   // L1
@@ -48,6 +75,32 @@ export const seoRegistry: Record<string, SeoPackage> = {
   [sayisalLotoKabiSeo.slug]: sayisalLotoKabiSeo,
   [uzunYukBayragiSeo.slug]: uzunYukBayragiSeo,
   [veterinerAsiKarnesiKabiSeo.slug]: veterinerAsiKarnesiKabiSeo,
+
+  // L2 — Matbaa Ürünleri
+  [kartvizitSeo.slug]: kartvizitSeo,
+  [elIlaniSeo.slug]: elIlaniSeo,
+  [magnetSeo.slug]: magnetSeo,
+  [stickerSeo.slug]: stickerSeo,
+  [kupBlokNotSeo.slug]: kupBlokNotSeo,
+  [takvimlerSeo.slug]: takvimlerSeo,
+
+  // L2 — Promosyon Ürünler
+  [anahtarlikSeo.slug]: anahtarlikSeo,
+  [kalemSeo.slug]: kalemSeo,
+  [cakmakSeo.slug]: cakmakSeo,
+  [otoKokusuSeo.slug]: otoKokusuSeo,
+  [ajandaSeo.slug]: ajandaSeo,
+  [defterlerSeo.slug]: defterlerSeo,
+  [bardakAltligiSeo.slug]: bardakAltligiSeo,
+  [mousePadSeo.slug]: mousePadSeo,
+  [duvarSaatleriSeo.slug]: duvarSaatleriSeo,
+  [bozukParaCuzdaniSeo.slug]: bozukParaCuzdaniSeo,
+
+  // L2 — Çanta
+  [promosyonCantaSeo.slug]: promosyonCantaSeo,
+  [elbiseKiliflariSeo.slug]: elbiseKiliflariSeo,
+  [laptopCantalariSeo.slug]: laptopCantalariSeo,
+  [sporVeSeyahatCantalariSeo.slug]: sporVeSeyahatCantalariSeo,
 };
 
 export function getSeoForSlug(slug: string): SeoPackage | null {
