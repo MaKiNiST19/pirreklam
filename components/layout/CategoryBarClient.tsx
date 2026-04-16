@@ -57,12 +57,12 @@ export default function CategoryBarClient({ tree }: { tree: ParentCat[] }) {
               style={{ boxShadow: "0 15px 50px 5px rgba(207,207,207,1)", top: "100%", width: "420px" }}
             >
               <div className="px-5 py-4">
-                <div className="grid grid-cols-2 gap-x-6 gap-y-0.5">
+                <div className="columns-2 gap-x-6">
                   {cat.children.map((child) => (
                     <Link
                       key={child.id}
                       href={`/urun-kategori/${cat.slug}/${child.slug}/`}
-                      className="block text-[13px] text-gray-700 py-1.5 border-b border-gray-100 hover:text-[#cc0636] hover:pl-1 transition-all font-medium"
+                      className="block text-[13px] text-gray-700 py-1.5 border-b border-gray-100 hover:text-[#cc0636] hover:pl-1 transition-all font-medium break-inside-avoid"
                     >
                       {child.name}
                     </Link>
