@@ -3,6 +3,8 @@ import type { SeoPackage } from "@/lib/seo/types";
 export const promosyonUrunlerSeo: SeoPackage = {
   slug: "promosyon-urunler",
   h1: "Promosyon Ürünleri | Anahtarlık, Kalem, Çakmak, Oto Kokusu Toptan Üretici",
+  definition:
+    "Promosyon ürünleri, markanın günlük hayatın içine gömülen fiziksel temas noktalarıdır: cebe giren çakmak ve anahtarlık, masada kullanılan kalem ve ajanda, araçta asılı oto kokusu. Pir Reklam olarak anahtarlık, kalem, çakmak, oto kokusu, ajanda, defter, bardak altlığı, mouse pad ve duvar saati gibi 10+ klasik promosyon kalemini lazer kazıma, gofre kabartma ve serigrafi teknikleriyle toptan üretiyoruz.",
   meta: {
     title: "Promosyon Ürünleri Toptan Üretici | Pir Reklam",
     description:

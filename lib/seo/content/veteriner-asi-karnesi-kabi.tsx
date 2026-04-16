@@ -3,6 +3,8 @@ import type { SeoPackage } from "@/lib/seo/types";
 export const veterinerAsiKarnesiKabiSeo: SeoPackage = {
   slug: "veteriner-asi-karnesi-kabi",
   h1: "Veteriner Aşı Karnesi Kabı | Veteriner Klinikleri Toptan Üretici",
+  definition:
+    "Veteriner aşı karnesi kabı, evcil hayvanların kuduz, karma aşı, parazit kontrolü gibi sağlık kayıtlarını düzenli saklamak için kullanılan özel belge kabıdır. Veteriner klinikleri, hayvan hastaneleri, pet shop zincirleri ve evcil hayvan mama markaları için biala PVC, dikişli suni deri, termo deri ve ofset baskı modellerinde toptan üretilir.",
   meta: {
     title: "Veteriner Aşı Karnesi Kabı Toptan Üretici | Pir Reklam",
     description:

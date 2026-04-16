@@ -3,6 +3,8 @@ import type { SeoPackage } from "@/lib/seo/types";
 export const otoKokusuSeo: SeoPackage = {
   slug: "oto-kokusu",
   h1: "Oto Kokusu | Kurumsal Baskılı Araç Kokusu Toptan Üretici",
+  definition:
+    "Oto kokusu, araç iç atmosferini tazelemenin yanında sürüş süresince markanın kokuyla ve görselle müşteriye eşlik ettiği nadir bir promosyon kalemidir. Yaprak askılı klasik model (10–15 gün etki) ile kapaklı reservoir premium model (30–90 gün ayarlanabilir etki) üretilir; yeni araç, okyanus, vanilya, lavanta gibi 7+ koku seçeneği ile oto galeriler ve rent a car için standarttır.",
   meta: {
     title: "Oto Kokusu Toptan Üretici | Pir Reklam",
     description:

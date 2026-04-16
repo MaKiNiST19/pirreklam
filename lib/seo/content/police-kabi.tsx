@@ -3,6 +3,8 @@ import type { SeoPackage } from "@/lib/seo/types";
 export const policeKabiSeo: SeoPackage = {
   slug: "police-kabi",
   h1: "Poliçe Kabı | Sigorta Acenteleri İçin Kurumsal Baskılı Üretim",
+  definition:
+    "Poliçe kabı, sigorta acentelerinin trafik, kasko, DASK, sağlık ve hayat poliçelerini müşteriye profesyonel bir pakette teslim etmek için kullandığı A4 veya A5 boyutunda PVC veya suni deri belge kabıdır. Kapak üzerindeki acente telefonu, poliçe yenileme döneminde müşteriyi aynı acenteye yönlendiren kritik hatırlatıcıdır.",
   meta: {
     title: "Poliçe Kabı Toptan Fiyat ve Üretici | Pir Reklam",
     description:

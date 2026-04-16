@@ -3,6 +3,8 @@ import type { SeoPackage } from "@/lib/seo/types";
 export const stickerSeo: SeoPackage = {
   slug: "sticker",
   h1: "Sticker Baskı | Şeffaf, Vinyl ve Etiket Toptan Üretici",
+  definition:
+    "Sticker, ürün ambalajına, vitrine, araca veya etkinlik alanına yapıştırılarak markanın görsel iletişimini güçlendiren yapışkanlı etiket ürünüdür. Şeffaf, mat, parlak, vinyl, holografik ve metalik malzemelerde; dikdörtgen, yuvarlak ve özel kesim formlarında; kiss-cut, die-cut, rulo ve yaprak olarak UV dijital veya ofset baskıyla üretilir.",
   meta: {
     title: "Sticker Baskı Toptan Fiyat | Pir Reklam",
     description:

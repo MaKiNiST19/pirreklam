@@ -15,6 +15,12 @@ export interface SeoPackage {
     title?: string;
     description?: string;
   };
+  /**
+   * Featured Snippet definition: 40–60 word sharp definitional answer shown in a
+   * highlighted box at the top of the SEO section. Targets Google Featured Snippets
+   * and AI Overview quoting. When absent, the Featured Snippet box is not rendered.
+   */
+  definition?: string;
   /** JSX body of the SEO article (h2/h3/p/ul/ol/strong allowed). */
   content: ReactNode;
   /** Frequently Asked Questions for schema.org FAQPage. */

@@ -3,6 +3,8 @@ import type { SeoPackage } from "@/lib/seo/types";
 export const mousePadSeo: SeoPackage = {
   slug: "mouse-pad",
   h1: "Mouse Pad | Neopren Tabanlı Özel Baskılı Toptan Üretici",
+  definition:
+    "Mouse pad, ofis masasında günde 8+ saat görünür kalan, her fare hareketinde kullanıcının gözüne değen bir kurumsal reklam yüzeyidir. Neopren tabanlı, kumaş kaplı üst yüzeyli; standart dikdörtgen (22×18 cm), yuvarlak, oyuncu büyük boy (80×30 cm) ve özel kesim die-cut modelleri tam yüzey UV dijital baskıyla üretilir.",
   meta: {
     title: "Mouse Pad Toptan Baskı ve Üretici | Pir Reklam",
     description:

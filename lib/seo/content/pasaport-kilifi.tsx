@@ -3,6 +3,8 @@ import type { SeoPackage } from "@/lib/seo/types";
 export const pasaportKilifiSeo: SeoPackage = {
   slug: "pasaport-kilifi",
   h1: "Pasaport Kılıfı | Seyahat Acenteleri İçin Toptan Üretici Fiyatları",
+  definition:
+    "Pasaport kılıfı, çipli Türkiye Cumhuriyeti pasaportunun fiziksel koruması ve turizm/hac-umre acentelerinin marka görünürlüğü için üretilen 88×125 mm uyumlu koruma ürünüdür. Biala PVC, şeffaf PVC, dikişli suni deri, termo deri, hakiki deri, ofset baskılı ve kişiye özel olmak üzere 8 farklı modeli mevcuttur.",
   meta: {
     title: "Pasaport Kılıfı Toptan Fiyat ve Üretici | Pir Reklam",
     description:

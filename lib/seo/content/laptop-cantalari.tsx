@@ -3,6 +3,8 @@ import type { SeoPackage } from "@/lib/seo/types";
 export const laptopCantalariSeo: SeoPackage = {
   slug: "laptop-cantalari",
   h1: "Laptop Çantası | Kurumsal Baskılı 13-17 inç Toptan Üretici",
+  definition:
+    "Laptop çantası, profesyonelin her gün ofise veya toplantıya giderken yanında taşıdığı, haftanın 5 günü kurumsal kimliğin görünür olduğu dayanıklı bir promosyon kalemidir. 13, 14, 15, 16, 17 inç laptop ebatlarına uygun portföy, messenger, sırt çantası (backpack) ve premium hakiki deri modellerimiz polyester, nylon, suni deri ve hakiki deri malzemelerinde üretilir.",
   meta: {
     title: "Kurumsal Laptop Çantası Toptan Üretici | Pir Reklam",
     description:

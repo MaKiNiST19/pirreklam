@@ -3,6 +3,8 @@ import type { SeoPackage } from "@/lib/seo/types";
 export const cakmakSeo: SeoPackage = {
   slug: "cakmak",
   h1: "Çakmak | Plastik ve Metal Kurumsal Baskılı Toptan Üretici",
+  definition:
+    "Promosyon çakmak, sigara içen yetişkin kullanıcının günde 10–20 kez ele aldığı ve her kullanımda marka logosunu gördüğü yüksek sıklıklı bir promosyon ürünüdür. Plastik gövdeli ekonomik (Bic tipi) serigrafi baskılı, metal gövdeli premium (Zippo tarzı flip-top ve slim torch) lazer kazımalı modellerimiz cafe-restoran, benzin istasyonları ve tütün sektörü için toptan üretilir.",
   meta: {
     title: "Promosyon Çakmak Toptan Üretici | Pir Reklam",
     description:

@@ -3,6 +3,8 @@ import type { SeoPackage } from "@/lib/seo/types";
 export const krediKartlikSeo: SeoPackage = {
   slug: "kredi-kartlik",
   h1: "Kredi Kartlık | Çoklu Kart Cüzdan Kılıfı Toptan Üretici",
+  definition:
+    "Kredi kartlık, birden fazla banka kartını, kimlik kartını, ulaşım kartını ve sadakat kartını tek kompakt kılıfta taşımak için tasarlanmış çoklu kart cüzdanıdır. 14 kartlı biala PVC, 14 kartlı dikişli suni deri ve termo deri, çıt çıt kapaklı ve tekli U model olmak üzere 5 modeli vardır. Bankalar, kurumsal hediyelik paketler ve VIP müşteri segmenti için yüksek hacimli üretilir.",
   meta: {
     title: "Kredi Kartlık Toptan Fiyat ve Üretici | Pir Reklam",
     description:

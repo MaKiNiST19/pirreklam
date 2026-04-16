@@ -3,6 +3,8 @@ import type { SeoPackage } from "@/lib/seo/types";
 export const magnetSeo: SeoPackage = {
   slug: "magnet",
   h1: "Magnet Baskı | Buzdolabı Magneti Toptan Üretici Fiyatları",
+  definition:
+    "Magnet, buzdolabı kapısında, ofis panosunda veya araç metalik yüzeyinde 6–36 ay görünür kalan manyetik yüzeyli baskılı reklam ürünüdür. Standart dikdörtgen, kartvizit ebatlı, özel şekilli die-cut ve büyük boy araç magneti çeşitlerimiz pizzacılar, nakliye firmaları, acil servisler ve tamir sektörü için en uzun ömürlü reklam mecrasıdır.",
   meta: {
     title: "Buzdolabı Magneti Toptan Baskı | Pir Reklam",
     description:

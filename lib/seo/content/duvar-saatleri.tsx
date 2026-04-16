@@ -3,6 +3,8 @@ import type { SeoPackage } from "@/lib/seo/types";
 export const duvarSaatleriSeo: SeoPackage = {
   slug: "duvar-saatleri",
   h1: "Duvar Saati | Kurumsal Logolu Analog ve Dijital Toptan Üretici",
+  definition:
+    "Kurumsal duvar saati, bir ofis duvarında 3–5 yıl boyunca asılı kalabilen, her saate bakışta firma logosunun görünmesini sağlayan nadir uzun ömürlü promosyon ürünüdür. Analog yuvarlak (25/30/40 cm), kare-dikdörtgen, dijital LED ekranlı ve özel şekilli die-cut modellerimiz sessiz Quartz mekanizma ve 1 yıl garanti ile üretilir.",
   meta: {
     title: "Kurumsal Duvar Saati Toptan Üretici | Pir Reklam",
     description:

@@ -3,6 +3,8 @@ import type { SeoPackage } from "@/lib/seo/types";
 export const anahtarlikSeo: SeoPackage = {
   slug: "anahtarlik",
   h1: "Anahtarlık | Metal, Deri, Silikon Toptan Üretici Fiyatları",
+  definition:
+    "Anahtarlık, sahibi tarafından her gün eve girerken, aracı çalıştırırken, iş yerine ulaşırken defalarca ele alınan ve her kullanımda markayı görünür kılan promosyon ürünüdür. Metal, hakiki deri, suni deri, silikon kauçuk ve puf PVC olmak üzere 5 model; lazer kazıma, gofre kabartma, serigrafi, sıcak varak yaldız ve özel 3D silikon kalıp teknikleriyle üretilir.",
   meta: {
     title: "Promosyon Anahtarlık Toptan Üretici | Pir Reklam",
     description:

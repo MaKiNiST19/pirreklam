@@ -3,6 +3,8 @@ import type { SeoPackage } from "@/lib/seo/types";
 export const ajandaSeo: SeoPackage = {
   slug: "ajanda",
   h1: "Kurumsal Ajanda | Yıllık Ajanda Toptan Üretici Fiyatları",
+  definition:
+    "Kurumsal ajanda, yönetici ve çalışanların 12 ay boyunca günlük planlama aracı olarak kullandığı, her açılışta ön kapaktaki şirket logosunu görünür kılan yılbaşı hediyelik klasiğidir. Suni deri, termo deri ve PVC kapaklı modellerimiz; günlük (1 gün/sayfa), haftalık (2 sayfa/hafta) ve aylık-haftalık kombine iç sayfa formatlarıyla 100 adetten başlayarak üretilir.",
   meta: {
     title: "Kurumsal Yıllık Ajanda Toptan Üretimi | Pir Reklam",
     description:

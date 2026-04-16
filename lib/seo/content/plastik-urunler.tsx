@@ -3,6 +3,8 @@ import type { SeoPackage } from "@/lib/seo/types";
 export const plastikUrunlerSeo: SeoPackage = {
   slug: "plastik-urunler",
   h1: "Plastik Promosyon Ürünleri | Toptan PVC Belge Kabı Üreticisi",
+  definition:
+    "Plastik promosyon ürünleri, kurumsal markaların müşteri teslim süreçlerini profesyonelleştiren biala PVC, suni deri ve termo deri tabanlı belge ve belge koruma ürünlerinin oluşturduğu geniş bir ürün ailesidir. Ruhsat kabı, pasaport kılıfı, vesikalık kabı, döviz kabı, poliçe kabı, kredi kartlık gibi 12+ ürünü sigorta, turizm, fotoğraf, döviz, veteriner, belediye ve lojistik sektörleri için toptan üretiriz.",
   meta: {
     title: "Plastik Promosyon Ürünleri | Toptan Üretici | Pir Reklam",
     description:

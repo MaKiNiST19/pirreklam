@@ -3,6 +3,8 @@ import type { SeoPackage } from "@/lib/seo/types";
 export const bozukParaCuzdaniSeo: SeoPackage = {
   slug: "bozuk-para-cuzdani",
   h1: "Bozuk Para Cüzdanı | Toptan Baskılı Promosyon Üretici",
+  definition:
+    "Bozuk para cüzdanı, günlük nakit sirkülasyonu yüksek sektörlerde bozuk paranın düzenli taşınması için pratik bir çözümdür. PVC ve suni deri malzemede, fermuarlı veya çıt çıt kapaklı modellerimiz benzin istasyonları, toplu taşıma şoförleri, mahalle marketi, pazar satıcıları ve otopark-vale operasyonları için serigrafi, gofre kabartma ve UV dijital baskıyla üretilir.",
   meta: {
     title: "Bozuk Para Cüzdanı Toptan Üretici | Pir Reklam",
     description:

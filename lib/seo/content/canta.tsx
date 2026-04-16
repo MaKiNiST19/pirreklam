@@ -3,6 +3,8 @@ import type { SeoPackage } from "@/lib/seo/types";
 export const cantaSeo: SeoPackage = {
   slug: "canta",
   h1: "Çanta Üretimi | Promosyon Çantası, Laptop Çantası, Elbise Kılıfı Toptan",
+  definition:
+    "Kurumsal çanta, markanın teslim ve taşıma deneyimini şekillendiren, müşterinin günlerce yanında taşıdığı en dayanıklı promosyon kalemidir. Promosyon çantası, laptop çantası, elbise kılıfları, gelinlik kılıfları, okul ve sırt çantaları, spor ve seyahat çantaları ile özel üretim çantalar; pamuk bez, non-woven, kraft, polyester ve PU deri malzemelerinde kurumsal baskılı toptan üretilir.",
   meta: {
     title: "Promosyon Çantası ve Özel Üretim Çanta | Pir Reklam",
     description:

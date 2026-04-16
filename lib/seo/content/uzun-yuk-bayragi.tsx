@@ -3,6 +3,8 @@ import type { SeoPackage } from "@/lib/seo/types";
 export const uzunYukBayragiSeo: SeoPackage = {
   slug: "uzun-yuk-bayragi",
   h1: "Uzun Yük Bayrağı | Lojistik ve Nakliye Firmaları İçin Toptan Üretici",
+  definition:
+    "Uzun yük bayrağı, Karayolları Trafik Yönetmeliği Madde 128 uyarınca araç arkasından 1 metre veya daha fazla taşan yükler için zorunlu kullanılan yüksek görünürlüklü kırmızı uyarı bayrağıdır. 50×50 cm standart ve 40×40 cm kompakt ebatlarda, UV stabilizatörlü PVC veya su itici polyester malzemeden, plastik/ahşap/metal saplı olarak üretilir.",
   meta: {
     title: "Uzun Yük Bayrağı Toptan Fiyat ve Üretici | Pir Reklam",
     description:

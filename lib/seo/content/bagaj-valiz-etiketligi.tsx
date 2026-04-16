@@ -3,6 +3,8 @@ import type { SeoPackage } from "@/lib/seo/types";
 export const bagajValizEtiketligiSeo: SeoPackage = {
   slug: "bagaj-valiz-etiketligi",
   h1: "Bagaj Valiz Etiketliği | Seyahat Acenteleri İçin Toptan Üretim",
+  definition:
+    "Bagaj valiz etiketliği, havalimanı transferlerinde ve uzun yolculuklarda bagajın sahibini tanımlayan, kaybolma durumunda iletişim bilgisine hızlı erişim sağlayan PVC etikettir. Turizm acenteleri, havayolu VIP yolcu kulüpleri, otel zincirleri ve kurumsal iş seyahati bölümleri tarafından büyük ve küçük boy olmak üzere iki standart ebatta tercih edilir.",
   meta: {
     title: "Bagaj Valiz Etiketliği Toptan Fiyat | Pir Reklam",
     description:

@@ -3,6 +3,8 @@ import type { SeoPackage } from "@/lib/seo/types";
 export const sayisalLotoKabiSeo: SeoPackage = {
   slug: "sayisal-loto-kabi",
   h1: "Sayısal Loto Kabı | Milli Piyango Bayileri Toptan Üretici",
+  definition:
+    "Sayısal loto kabı, Milli Piyango sayısal loto, şans topu, süper loto, iddaa ve ganyan bayilerinin kuponu müşteriye teslim ederken kullandığı özel PVC kupon kabıdır. Tekli biala, çiftli kapaklı biala, ganyan biala ve çiftli ofset baskı olmak üzere dört farklı modeli mevcuttur; bayi logosu serigrafi veya ofset baskıyla işlenir.",
   meta: {
     title: "Sayısal Loto Kabı Toptan Fiyat ve Üretici | Pir Reklam",
     description:

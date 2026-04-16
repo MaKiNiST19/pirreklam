@@ -3,6 +3,8 @@ import type { SeoPackage } from "@/lib/seo/types";
 export const dovizKabiSeo: SeoPackage = {
   slug: "doviz-kabi",
   h1: "Döviz Kabı | Döviz Büroları İçin Toptan Baskılı Üretici",
+  definition:
+    "Döviz kabı, döviz bürolarının, para transferi firmalarının ve kuyumcuların nakit banknotları düzenli ve kurumsal şekilde müşteriye sunmak için kullandığı fermuarlı veya kapaklı PVC teslimat kabıdır. Fermuarlı lüks, kapaklı 0,25 micron, extra büyük boy 10×19,5 cm ve standart küçük boy 9×18,5 cm olmak üzere 4 model üretilir.",
   meta: {
     title: "Döviz Kabı Toptan Fiyat ve Üretici | Pir Reklam",
     description:

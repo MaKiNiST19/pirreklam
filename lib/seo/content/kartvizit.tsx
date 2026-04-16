@@ -3,6 +3,8 @@ import type { SeoPackage } from "@/lib/seo/types";
 export const kartvizitSeo: SeoPackage = {
   slug: "kartvizit",
   h1: "Kartvizit Baskı | Ofset, Dijital, Selefonlu ve Gofre Toptan Üretici",
+  definition:
+    "Kartvizit, 85×55 mm standart ebatta basılan, profesyonel ilk temasta markanın ve kişisel unvanın paylaşıldığı en stratejik matbaa ürünüdür. Ofset 4+4 renk, dijital tek isim, mat/parlak selefon, spot UV, gofre kabartma, sıcak varak yaldız ve özel die-cut kesim tekniklerimizle 100 adetten başlayan siparişlerle kurumsal ve bireysel kartvizit ihtiyacı karşılanır.",
   meta: {
     title: "Kartvizit Baskı ve Tasarım | Toptan Matbaa | Pir Reklam",
     description:

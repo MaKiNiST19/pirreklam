@@ -3,6 +3,8 @@ import type { SeoPackage } from "@/lib/seo/types";
 export const vesikalikKabiSeo: SeoPackage = {
   slug: "vesikalik-kabi",
   h1: "Vesikalık Kabı | Fotoğraf Stüdyoları İçin Toptan Baskılı Üretim",
+  definition:
+    "Vesikalık kabı, fotoğraf stüdyolarının 3,5×4,5 cm biyometrik fotoğraf ile 5×6 cm pasaport ve ehliyet fotoğraflarını kıvrılmadan teslim etmek için kullandığı tekli veya çiftli bölmeli küçük PVC belge kabıdır. Stüdyo logolu baskı, müşteri cüzdanında aylarca görünür kalan sessiz bir reklam mecrasıdır.",
   meta: {
     title: "Vesikalık Kabı Toptan Fiyat ve Üretici | Pir Reklam",
     description:

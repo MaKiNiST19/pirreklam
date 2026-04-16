@@ -3,6 +3,8 @@ import type { SeoPackage } from "@/lib/seo/types";
 export const kalemSeo: SeoPackage = {
   slug: "kalem",
   h1: "Promosyon Kalem | Metal ve Plastik Tükenmez Kalem Toptan Üretici",
+  definition:
+    "Promosyon kalem, iş toplantısı imzalarında, poliçe tesliminde ve müşteri etkileşiminde markanın adını görünür kılan en temel kurumsal hediyelik kalemidir. Metal gövdeli premium (lazer kazıma), plastik gövdeli ekonomik (serigrafi) ve jel tükenmez seçeneklerimiz; sigorta acenteleri, bankalar, fuarlar, oteller ve yılbaşı hediyelik setleri için toptan üretilir.",
   meta: {
     title: "Promosyon Kalem Toptan Üretici | Pir Reklam",
     description:

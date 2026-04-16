@@ -3,6 +3,8 @@ import type { SeoPackage } from "@/lib/seo/types";
 export const evlilikCuzdaniKilifiSeo: SeoPackage = {
   slug: "evlilik-cuzdani-kilifi",
   h1: "Evlilik Cüzdanı Kılıfı | Nikâh Salonları Toptan Üretici Fiyatları",
+  definition:
+    "Evlilik cüzdanı kılıfı, yeni evli çiftlere nikâh memurluğu veya belediye tarafından verilen evlilik cüzdanı belgesinin ömür boyu saklanması için üretilen özel belge kabıdır. Biala PVC ekonomik, dikişli suni deri orta ve termo deri premium segment modellerimizle belediyelerin ilçe nikâh daireleri ve özel nikâh salonları için toptan üretilir.",
   meta: {
     title: "Evlilik Cüzdanı Kılıfı Toptan Üretici | Pir Reklam",
     description:

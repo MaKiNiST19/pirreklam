@@ -3,6 +3,8 @@ import type { SeoPackage } from "@/lib/seo/types";
 export const defterlerSeo: SeoPackage = {
   slug: "defterler",
   h1: "Kurumsal Defter | Spiralli, Ciltli ve Yumuşak Kapak Defter Toptan Üretici",
+  definition:
+    "Kurumsal defter, ajandadan daha esnek bir yapıda, tarih zorunluluğu olmadan not tutma ihtiyacına yönelik özel üretilen promosyon kalemidir. Spiralli (metal/plastik), sert kapak ciltli ve yumuşak kapak seçeneklerimiz çizgili, kareli, noktalı (dot grid), boş ve karışık iç sayfa tipleriyle okul hediyelikleri ve yaratıcı meslek sahipleri için üretilir.",
   meta: {
     title: "Kurumsal Defter Toptan Üretici | Pir Reklam",
     description:

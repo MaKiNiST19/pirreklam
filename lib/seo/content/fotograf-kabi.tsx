@@ -3,6 +3,8 @@ import type { SeoPackage } from "@/lib/seo/types";
 export const fotografKabiSeo: SeoPackage = {
   slug: "fotograf-kabi",
   h1: "Fotoğraf Kabı | Fotoğraf Stüdyoları İçin Toptan Baskılı Üretici",
+  definition:
+    "Fotoğraf kabı, fotoğraf stüdyolarının aile, okul, düğün ve nişan fotoğraflarını müşteriye dayanıklı ve prestijli bir ambalajla teslim etmek için kullandığı PVC koruma ürünüdür. 6×9, 10×15, 13×18, 15×21, 18×24 ve 20×25 cm olmak üzere 6 standart boyutta üretilir; okul fotoğrafçılığı ve düğün stüdyolarının standart teslim paketidir.",
   meta: {
     title: "Fotoğraf Kabı Toptan Fiyat ve Üretici | Pir Reklam",
     description:

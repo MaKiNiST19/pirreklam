@@ -3,6 +3,8 @@ import type { SeoPackage } from "@/lib/seo/types";
 export const takvimlerSeo: SeoPackage = {
   slug: "takvimler",
   h1: "Takvim Baskı | Duvar Takvimi, Masa Takvimi Toptan Üretici",
+  definition:
+    "Takvim, 12 ay boyunca duvarda veya masa üstünde aktif olarak kullanılan, kurumsal firmanın logosunu günün her anında görünür kılan nadir promosyon mecrasıdır. Duvar takvimi (A2/A3), masa takvimi, ajanda takvim, spiralli takvim ve cep takvimi çeşitlerimiz yılbaşı hediyelik paketlerinin ana kalemi olarak kurumsal müşterilere toptan üretilir.",
   meta: {
     title: "Duvar Takvimi ve Masa Takvimi Toptan Baskı | Pir Reklam",
     description:

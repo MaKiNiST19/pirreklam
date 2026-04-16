@@ -3,6 +3,8 @@ import type { SeoPackage } from "@/lib/seo/types";
 export const sporVeSeyahatCantalariSeo: SeoPackage = {
   slug: "spor-ve-seyahat-cantalari",
   h1: "Spor ve Seyahat Çantaları | Toptan Baskılı Kurumsal Üretici",
+  definition:
+    "Spor ve seyahat çantaları, kurumsal segmentte en yüksek değer algısı yaratan hediyelik kalemlerinden biridir; 3–5 yıl kullanım ömrü boyunca markayı görünür kılar. Silindirik duffel bag, hafta sonu weekend bag, havalandırma bölmeli gym bag ve uzun mesafe tekerlekli seyahat çantalarımız polyester, nylon, canvas ve PU deri malzemelerde nakış, serigrafi, transfer ve gofre kabartma ile üretilir.",
   meta: {
     title: "Spor ve Seyahat Çantaları Toptan Üretici | Pir Reklam",
     description:

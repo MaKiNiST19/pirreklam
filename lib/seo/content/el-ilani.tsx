@@ -3,6 +3,8 @@ import type { SeoPackage } from "@/lib/seo/types";
 export const elIlaniSeo: SeoPackage = {
   slug: "el-ilani",
   h1: "El İlanı Baskı | Broşür ve Flyer Toptan Üretici Fiyatları",
+  definition:
+    "El ilanı, yerel kampanyaların, lansman etkinliklerinin ve mahalle dağıtımlarının en ekonomik ve en doğrudan reklam aracıdır. A4, A5 ve A6 ebatlarında, 90–300 gr kağıt seçeneklerinde, tek ya da çift yön ofset/dijital baskıyla üretilir. Restoran menüleri, emlakçı tanıtımları, perakende kampanyaları ve siyasi broşürler için en uygun maliyetli reklam mecrasıdır.",
   meta: {
     title: "El İlanı Baskı Toptan Fiyat | Broşür Flyer | Pir Reklam",
     description:

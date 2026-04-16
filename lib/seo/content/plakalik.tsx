@@ -3,6 +3,8 @@ import type { SeoPackage } from "@/lib/seo/types";
 export const plakalikSeo: SeoPackage = {
   slug: "plakalik",
   h1: "Plakalık | Oto Galeri ve Sigorta Acentesi Baskılı Toptan Üretici",
+  definition:
+    "Plakalık, araç plakasının etrafına monte edilerek galerinin, sigorta acentesinin veya rent a car firmasının markasını araç sürekli yolda iken görünür kılan PVC çerçeveleme ürünüdür. 52×11 cm standart otomobil plakasına uyumlu çıtalı model ile motosiklet-bisiklet için kare model olmak üzere iki ebatta, UV stabilizatörlü 2–3 yıl dayanıklılıkta üretilir.",
   meta: {
     title: "Plakalık Toptan Fiyat ve Üretici | Pir Reklam",
     description:

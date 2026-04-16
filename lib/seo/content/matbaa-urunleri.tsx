@@ -3,6 +3,8 @@ import type { SeoPackage } from "@/lib/seo/types";
 export const matbaaUrunleriSeo: SeoPackage = {
   slug: "matbaa-urunleri",
   h1: "Matbaa Ürünleri | Kartvizit, El İlanı, Magnet, Sticker Toptan Baskı",
+  definition:
+    "Matbaa ürünleri, bir markanın günlük iletişiminde en sık temas noktası oluşturan kartvizit, el ilanı, magnet, sticker, küp blok not ve takvim gibi ofset ve dijital baskı kalemlerinin oluşturduğu kategoridir. Selefon, spot UV, gofre kabartma ve sıcak varak yaldız gibi premium bitirme teknikleriyle kurumsal firmaların düşük maliyetli ve uzun ömürlü reklam ihtiyacını karşılar.",
   meta: {
     title: "Matbaa Ürünleri Toptan Baskı | Pir Reklam",
     description:

@@ -3,6 +3,8 @@ import type { SeoPackage } from "@/lib/seo/types";
 export const ruhsatKabiSeo: SeoPackage = {
   slug: "ruhsat-kabi",
   h1: "Ruhsat Kabı | Toptan Üretici Fiyatları ve Kurumsal Baskılı Çözümler",
+  definition:
+    "Ruhsat kabı, araç ruhsatı ile trafik poliçesi, kasko belgesi ve muayene raporu gibi evrakları korumalı şekilde taşımak için üretilen biala PVC, suni deri, termo deri veya hakiki deri tabanlı resmî belge kabıdır. Sigorta acenteleri, oto galeriler ve rent a car firmaları kurumsal logolu modelleri müşteri teslim paketinin standart parçası olarak kullanır.",
   meta: {
     title: "Ruhsat Kabı Toptan Fiyat ve Üretici | Pir Reklam",
     description:

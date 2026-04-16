@@ -3,6 +3,8 @@ import type { SeoPackage } from "@/lib/seo/types";
 export const bardakAltligiSeo: SeoPackage = {
   slug: "bardak-altligi",
   h1: "Bardak Altlığı | PVC, Silikon ve Neopren Toptan Üretici",
+  definition:
+    "Bardak altlığı, masa yüzeyini sıcak ve soğuk içecek lekesinden koruyan, aynı zamanda üzerindeki logoyla dikkat çeken küçük ama yüksek etkili bir promosyon ürünüdür. PVC, silikon, neopren ve doğal mantar malzemelerinde; dikdörtgen, yuvarlak ve özel kesim formlarında; serigrafi, UV dijital ve 3D silikon kabartma teknikleriyle üretilir.",
   meta: {
     title: "Bardak Altlığı Toptan Üretici | Pir Reklam",
     description:

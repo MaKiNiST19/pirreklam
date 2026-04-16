@@ -3,6 +3,8 @@ import type { SeoPackage } from "@/lib/seo/types";
 export const elbiseKiliflariSeo: SeoPackage = {
   slug: "elbise-kiliflari",
   h1: "Elbise Kılıfı | Dikim ve Kuru Temizleme İçin Toptan Üretici",
+  definition:
+    "Elbise kılıfı, takım elbise, ceket, gömlek ve özel giysilerin taşıma ve saklama sürecinde korunması için kullanılan uzun torba tipi PVC veya non-woven üründür. Naylon şeffaf/opak ekonomik segment ve non-woven kumaşımsı premium segment; standart ceket boyu (90–100 cm), elbise boyu (120–140 cm) ve uzun palto boyu (150–180 cm) ebatlarında özel logolu üretilir.",
   meta: {
     title: "Elbise Kılıfı Toptan Üretici | Pir Reklam",
     description:

@@ -3,6 +3,8 @@ import type { SeoPackage } from "@/lib/seo/types";
 export const kupBlokNotSeo: SeoPackage = {
   slug: "kup-blok-not",
   h1: "Küp Blok Not | Kurumsal Masaüstü Logolu Baskı Üretimi",
+  definition:
+    "Küp blok not, ofis masa üstünde 3–6 ay boyunca aktif olarak kullanılan, her sayfasında şirket logosu basılı bir kurumsal promosyon kalemidir. 7×7 cm standart, 9×9 cm büyük boy ve özel ebatlı dikdörtgen blok notlarımız 500–1.000 sayfa yüksekliğinde, tüm sayfa aynı veya farklı tasarımlı olarak ofset baskıyla üretilir.",
   meta: {
     title: "Küp Blok Not Toptan Üretici | Pir Reklam",
     description:

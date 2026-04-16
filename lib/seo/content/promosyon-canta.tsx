@@ -3,6 +3,8 @@ import type { SeoPackage } from "@/lib/seo/types";
 export const promosyonCantaSeo: SeoPackage = {
   slug: "promosyon-canta",
   h1: "Promosyon Çanta | Bez, Kraft, Non-Woven Toptan Üretici",
+  definition:
+    "Promosyon çantası, etkinlik katılımcısının veya mağaza müşterisinin günlük kullanım eşyası haline gelerek markayı aylarca taşıyan uzun ömürlü bir reklam mecrasıdır. Pamuk bez (cotton tote), non-woven polipropilen, kraft kağıt ve polipropilen (PP) malzemelerde; serigrafi, transfer ve UV dijital baskı teknikleriyle 500 adetten başlayan toptan üretim yapılır.",
   meta: {
     title: "Promosyon Çanta Toptan Üretici | Pir Reklam",
     description:
