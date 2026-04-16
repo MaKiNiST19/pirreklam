@@ -88,13 +88,13 @@ const socialLinks = [
 
 export default function Footer() {
   return (
-    <footer style={{ background: "#3a3a3a" }} className="mt-auto text-white">
+    <footer style={{ background: "#f5f5f5" }} className="mt-auto text-gray-800">
       <div className="max-w-[1320px] mx-auto px-4 pt-10 pb-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8">
 
           {/* Col 1: Popüler Ürünler */}
           <div>
-            <h3 className="text-[13px] font-bold text-white uppercase tracking-wider mb-4">
+            <h3 className="text-[13px] font-bold text-gray-900 uppercase tracking-wider mb-4">
               Popüler Ürünler
             </h3>
             <ul className="space-y-2">
@@ -102,7 +102,7 @@ export default function Footer() {
                 <li key={p.href}>
                   <Link
                     href={p.href}
-                    className="text-[13px] text-gray-300 hover:text-white transition-colors"
+                    className="text-[13px] text-gray-600 hover:text-[#cc0636] transition-colors"
                   >
                     {p.name}
                   </Link>
@@ -113,7 +113,7 @@ export default function Footer() {
 
           {/* Col 2: Kurumsal */}
           <div>
-            <h3 className="text-[13px] font-bold text-white uppercase tracking-wider mb-4">
+            <h3 className="text-[13px] font-bold text-gray-900 uppercase tracking-wider mb-4">
               Kurumsal
             </h3>
             <ul className="space-y-2">
@@ -121,7 +121,7 @@ export default function Footer() {
                 <li key={p.href}>
                   <Link
                     href={p.href}
-                    className="text-[13px] text-gray-300 hover:text-white transition-colors"
+                    className="text-[13px] text-gray-600 hover:text-[#cc0636] transition-colors"
                   >
                     {p.name}
                   </Link>
@@ -132,7 +132,7 @@ export default function Footer() {
 
           {/* Col 3: Müşteri Hizmetleri */}
           <div>
-            <h3 className="text-[13px] font-bold text-white uppercase tracking-wider mb-4">
+            <h3 className="text-[13px] font-bold text-gray-900 uppercase tracking-wider mb-4">
               Müşteri Hizmetleri
             </h3>
             <ul className="space-y-2">
@@ -140,7 +140,7 @@ export default function Footer() {
                 <li key={p.href}>
                   <Link
                     href={p.href}
-                    className="text-[13px] text-gray-300 hover:text-white transition-colors"
+                    className="text-[13px] text-gray-600 hover:text-[#cc0636] transition-colors"
                   >
                     {p.name}
                   </Link>
@@ -170,7 +170,7 @@ export default function Footer() {
 
           {/* Col 5: Social */}
           <div>
-            <h3 className="text-[13px] font-semibold text-white mb-2">
+            <h3 className="text-[13px] font-semibold text-gray-900 mb-2">
               Bizi Sosyal Medyada Takip Edin
             </h3>
             <p className="text-[14px] font-semibold mb-3" style={{ color: "#cc0636" }}>
@@ -184,7 +184,7 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={s.name}
-                  className="w-[28px] h-[28px] rounded-full bg-white/10 text-white flex items-center justify-center hover:bg-white/20 transition-colors"
+                  className="w-[28px] h-[28px] rounded-full bg-gray-200 text-gray-600 flex items-center justify-center hover:bg-gray-300 hover:text-[#cc0636] transition-colors"
                 >
                   {s.icon}
                 </a>
@@ -194,7 +194,7 @@ export default function Footer() {
               href="https://g.page/pirreklam/review"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block px-4 py-2 text-[12px] font-bold uppercase tracking-wide transition-colors"
+              className="inline-block px-4 py-2 text-[12px] font-bold uppercase transition-colors"
               style={{
                 border: "1px solid #cc0636",
                 color: "#cc0636",
@@ -210,10 +210,10 @@ export default function Footer() {
       </div>
 
       {/* Bottom bar */}
-      <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}>
+      <div style={{ borderTop: "1px solid rgba(0,0,0,0.08)" }}>
         <div className="max-w-[1320px] mx-auto px-4 py-5 text-center">
-          <p className="text-[13px] text-gray-300">
-            1961 & {new Date().getFullYear()} <strong className="text-white font-bold">Pir Reklam Ltd. Şti.</strong> Tüm Hakları Saklıdır.
+          <p className="text-[13px] text-gray-600">
+            1961 &amp; {new Date().getFullYear()} <strong className="text-gray-900 font-bold">Pir Reklam Ltd. Şti.</strong> Tüm Hakları Saklıdır.
           </p>
         </div>
       </div>

@@ -43,7 +43,7 @@ function AccordionItem({ icon, title, defaultOpen = false, children }: Accordion
 export default function ProductAccordion() {
   return (
     <div className="rounded-lg bg-white border border-gray-200 divide-y divide-gray-100">
-      <AccordionItem title="Baskı Seçenekleri Açıklaması" defaultOpen>
+      <AccordionItem title="Baskı Seçenekleri Açıklaması">
         <ul className="space-y-1.5">
           <li>
             – Gofre kabartmalı ürünlerde <strong>ilk siparişinizde</strong> toplam bakiyeye{" "}

@@ -128,7 +128,7 @@ export default function Header({ categoryTree }: HeaderProps) {
               alt="Pir Reklam"
               width={95}
               height={95}
-              className="w-[95px] h-[95px] object-contain drop-shadow-lg bg-white rounded-full p-0 overflow-hidden"
+              className="w-[95px] h-[95px] object-contain drop-shadow-lg"
               priority
             />
             <span

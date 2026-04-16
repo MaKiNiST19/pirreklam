@@ -3,6 +3,7 @@ import JsonLd from "@/components/seo/JsonLd";
 import Image from "next/image";
 import FeatureBadge from "@/components/home/FeatureBadge";
 import SectorCard, { type SectorCardItem } from "@/components/home/SectorCard";
+import SeoContent from "@/components/home/SeoContent";
 
 export const revalidate = 300;
 
@@ -98,9 +99,31 @@ export default async function HomePage() {
     },
   };
 
+  const organizationJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "Pir Reklam",
+    url: "https://pirreklam.com.tr",
+    logo: "https://pirreklam.com.tr/pirreklam-logo.jpg",
+    description:
+      "Ruhsat kabı, vesikalık kabı, poliçe kabı ve promosyon ürünlerinde toptan üretim ve uygun fiyat çözümleri sunan üretici firma.",
+    sameAs: [],
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: "Promosyon Ürünleri",
+      itemListElement: [
+        { "@type": "Offer", itemOffered: { "@type": "Product", name: "Ruhsat Kabı", category: "Promosyon Ürünleri" } },
+        { "@type": "Offer", itemOffered: { "@type": "Product", name: "Vesikalık Kabı" } },
+        { "@type": "Offer", itemOffered: { "@type": "Product", name: "Poliçe Kabı" } },
+        { "@type": "Offer", itemOffered: { "@type": "Product", name: "Döviz Kabı" } },
+      ],
+    },
+  };
+
   return (
     <>
       <JsonLd data={jsonLd} />
+      <JsonLd data={organizationJsonLd} />
 
       {/* ═════ HERO ═════ */}
       <section className="relative w-full">
@@ -144,6 +167,9 @@ export default async function HomePage() {
           ))}
         </div>
       </section>
+
+      {/* ═════ SEO CONTENT (collapsible, above footer) ═════ */}
+      <SeoContent />
     </>
   );
 }
