@@ -124,7 +124,7 @@ export default function Header({ categoryTree }: HeaderProps) {
         >
           <Link href="/" className="pointer-events-auto flex flex-col items-center">
             <Image
-              src="/logo.webp"
+              src="/pirreklam-logo.jpg"
               alt="Pir Reklam"
               width={95}
               height={95}
