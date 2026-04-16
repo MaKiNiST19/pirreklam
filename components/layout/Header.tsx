@@ -123,14 +123,16 @@ export default function Header({ categoryTree }: HeaderProps) {
           style={{ width: "150px", top: "16px" }}
         >
           <Link href="/" className="pointer-events-auto flex flex-col items-center">
-            <Image
-              src="/pirreklam-logo.jpg"
-              alt="Pir Reklam"
-              width={95}
-              height={95}
-              className="w-[95px] h-[95px] object-contain drop-shadow-lg"
-              priority
-            />
+            <div className="w-[95px] h-[95px] rounded-full bg-white drop-shadow-lg flex items-center justify-center p-2 overflow-hidden">
+              <Image
+                src="/pirreklam-logo.jpg"
+                alt="Pir Reklam"
+                width={95}
+                height={95}
+                className="w-full h-full object-contain"
+                priority
+              />
+            </div>
             <span
               className="text-[12px] font-bold whitespace-nowrap tracking-wide text-white"
               style={{ marginTop: "2px", textShadow: "0 1px 2px rgba(0,0,0,0.5)" }}
