@@ -71,7 +71,7 @@ export default function Header({ categoryTree }: HeaderProps) {
             </div>
 
             {/* Center: Logo placeholder (space reserved, actual logo is absolutely positioned) */}
-            <div className="flex items-center justify-center shrink-0 w-[120px] md:w-[140px]">
+            <div className="flex items-center justify-center shrink-0 w-[120px] md:w-[110px]">
               <MobileNav tree={categoryTree} />
               {/* Invisible spacer for mobile */}
               <div className="md:hidden w-[70px]" />

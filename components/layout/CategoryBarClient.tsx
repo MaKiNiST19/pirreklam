@@ -40,7 +40,7 @@ export default function CategoryBarClient({ tree }: { tree: ParentCat[] }) {
         <button
           type="button"
           tabIndex={0}
-          className="flex items-center gap-1.5 h-[32px] px-5 text-[12px] font-bold uppercase tracking-wide whitespace-nowrap cursor-default text-white hover:bg-white/10 transition-colors"
+          className="flex items-center gap-1.5 h-[32px] px-5 text-[12px] font-bold uppercase tracking-wide whitespace-nowrap cursor-pointer text-white hover:bg-white/10 transition-colors"
         >
           {cat.name}
           {hasChildren && (
@@ -95,8 +95,8 @@ export default function CategoryBarClient({ tree }: { tree: ParentCat[] }) {
 
   return (
     <div className="bg-[#cc0636] text-white hidden md:block">
-      <div className="max-w-[1320px] mx-auto px-4">
-        <div className="flex items-stretch justify-between">
+      <div className="max-w-[1320px] mx-auto px-4 h-[32px]">
+        <div className="flex items-stretch justify-between h-full">
           <div className="flex items-stretch">
             {leftCats.map((c) => renderItem(c))}
           </div>
