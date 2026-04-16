@@ -10,7 +10,57 @@ export const fetchCache = "force-cache";
 import Breadcrumb from "@/components/category/Breadcrumb";
 import SubCategoryCarousel from "@/components/category/SubCategoryCarousel";
 import JsonLd from "@/components/seo/JsonLd";
+import CategorySeoSection from "@/components/seo/CategorySeoSection";
+import { getSeoForSlug } from "@/lib/seo/registry";
+import type { SeoPackage } from "@/lib/seo/types";
 import type { BreadcrumbItem, ProductWithVariants } from "@/types/index";
+
+function buildSeoJsonLd(
+  seo: SeoPackage,
+  breadcrumbItems: BreadcrumbItem[],
+  slugs: string[],
+) {
+  const schemas: Record<string, unknown>[] = [];
+
+  if (seo.product) {
+    schemas.push({
+      "@context": "https://schema.org",
+      "@type": "Product",
+      name: seo.product.name,
+      description: seo.product.description,
+      category: seo.product.category,
+      brand: seo.product.brand
+        ? { "@type": "Brand", name: seo.product.brand }
+        : undefined,
+      url: `https://pirreklam.com.tr/urun-kategori/${slugs.join("/")}/`,
+    });
+  }
+
+  if (seo.faq.length > 0) {
+    schemas.push({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: seo.faq.map((f) => ({
+        "@type": "Question",
+        name: f.q,
+        acceptedAnswer: { "@type": "Answer", text: f.a },
+      })),
+    });
+  }
+
+  schemas.push({
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: breadcrumbItems.map((b, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: b.name,
+      item: `https://pirreklam.com.tr${b.href}`,
+    })),
+  });
+
+  return schemas;
+}
 
 interface Props {
   params: Promise<{ slugs: string[] }>;
@@ -74,9 +124,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const category = await resolveCategory(slugs);
   if (!category) return { title: "Kategori Bulunamadi" };
 
+  const seo = getSeoForSlug(slugs[slugs.length - 1]);
+
   return {
-    title: category.seoTitle || `${category.name} - Pir Reklam`,
+    title:
+      seo?.meta?.title ||
+      category.seoTitle ||
+      `${category.name} - Pir Reklam`,
     description:
+      seo?.meta?.description ||
       category.seoDescription ||
       `${category.name} ürünleri. Pir Reklam kurumsal promosyon ürünleri.`,
     alternates: {
@@ -123,6 +179,11 @@ export default async function CategoryPage({ params }: Props) {
     url: `https://pirreklam.com.tr/urun-kategori/${slugs.join("/")}/`,
     description: category.description || category.name,
   };
+
+  const seoPackage = getSeoForSlug(slugs[slugs.length - 1]);
+  const seoJsonLdList = seoPackage
+    ? buildSeoJsonLd(seoPackage, breadcrumbItems, slugs)
+    : [];
 
   // ===== CATEGORY WITH CHILDREN VIEW (sections with carousels) =====
   if (hasChildren) {
@@ -173,6 +234,9 @@ export default async function CategoryPage({ params }: Props) {
     return (
       <>
         <JsonLd data={collectionLd} />
+        {seoJsonLdList.map((ld, i) => (
+          <JsonLd key={i} data={ld} />
+        ))}
         <div className="container mx-auto px-4 pt-2 pb-6">
           <Breadcrumb items={breadcrumbItems} />
 
@@ -209,6 +273,8 @@ export default async function CategoryPage({ params }: Props) {
               );
             })}
           </div>
+
+          {seoPackage && <CategorySeoSection data={seoPackage} />}
         </div>
       </>
     );
@@ -241,6 +307,9 @@ export default async function CategoryPage({ params }: Props) {
   return (
     <>
       <JsonLd data={collectionLd} />
+      {seoJsonLdList.map((ld, i) => (
+        <JsonLd key={i} data={ld} />
+      ))}
       <div className="container mx-auto px-4 pt-2 pb-6">
         <Breadcrumb items={breadcrumbItems} />
 
@@ -259,6 +328,8 @@ export default async function CategoryPage({ params }: Props) {
             Bu kategoride ürün bulunamadı.
           </p>
         )}
+
+        {seoPackage && <CategorySeoSection data={seoPackage} />}
       </div>
     </>
   );
