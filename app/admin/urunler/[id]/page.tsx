@@ -23,6 +23,42 @@ interface Variant {
   stockCode: string;
 }
 
+const ADET_OPTIONS = [2, 5, 50, 100, 200, 500, 1000, 2000, 5000, 10000];
+
+const BASKI_OPTIONS = [
+  "1 Renk Boya",
+  "2 Renk Boya",
+  "3 Renk Boya",
+  "UV Çok Renkli",
+  "Gofre Kabartma",
+  "1 Renk Boya + Gofre Kabartma",
+  "2 Renk Boya + Gofre Kabartma",
+  "Sıcak Varak Yaldız",
+  "Lazer Kazıma",
+];
+
+const RENK_OPTIONS_BY_TYPE: Record<string, string[]> = {
+  "Mat Biala": [
+    "Mavi",
+    "Sax Mavi",
+    "Lacivert",
+    "Kırmızı",
+    "Fuşya",
+    "Lila",
+    "Mor",
+    "Bordo",
+    "Turkuaz",
+    "Fıstık Yeşil",
+    "Yeşil",
+    "Haki Yeşil",
+    "Sarı",
+    "Turuncu",
+    "Siyah",
+    "Gri",
+    "Beyaz",
+  ],
+};
+
 export default function EditProductPage() {
   const router = useRouter();
   const params = useParams();
@@ -328,50 +364,94 @@ export default function EditProductPage() {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b text-left text-gray-500">
-                  <th className="pb-2 pr-2">SKU</th>
-                  <th className="pb-2 pr-2">Baski</th>
-                  <th className="pb-2 pr-2">Renk</th>
-                  <th className="pb-2 pr-2">Desen</th>
-                  <th className="pb-2 pr-2">Adet</th>
-                  <th className="pb-2 pr-2">Fiyat (USD)</th>
-                  <th className="pb-2 pr-2">Uyumlu</th>
-                  <th className="pb-2 pr-2">Stok Kodu</th>
+                <tr className="border-b text-left text-gray-500 text-xs">
+                  <th className="pb-2 pr-2 whitespace-nowrap">SKU</th>
+                  <th className="pb-2 pr-2 whitespace-nowrap">Baskı</th>
+                  <th className="pb-2 pr-2 whitespace-nowrap">Renk</th>
+                  <th className="pb-2 pr-2 whitespace-nowrap">Desen</th>
+                  <th className="pb-2 pr-2 whitespace-nowrap">Adet</th>
+                  <th className="pb-2 pr-2 whitespace-nowrap">Fiyat (USD)</th>
+                  <th className="pb-2 pr-2 whitespace-nowrap">Uyumlu</th>
+                  <th className="pb-2 pr-2 whitespace-nowrap">Stok Kodu</th>
                   <th className="pb-2"></th>
                 </tr>
               </thead>
               <tbody>
-                {variants.map((v, i) => (
-                  <tr key={i} className="border-b last:border-0">
-                    <td className="py-1 pr-2">
-                      <input value={v.sku} onChange={(e) => updateVariant(i, "sku", e.target.value)} className="w-24 px-2 py-1 border rounded text-xs" />
-                    </td>
-                    <td className="py-1 pr-2">
-                      <input value={v.baskiOption} onChange={(e) => updateVariant(i, "baskiOption", e.target.value)} className="w-20 px-2 py-1 border rounded text-xs" />
-                    </td>
-                    <td className="py-1 pr-2">
-                      <input value={v.renkOption} onChange={(e) => updateVariant(i, "renkOption", e.target.value)} className="w-20 px-2 py-1 border rounded text-xs" />
-                    </td>
-                    <td className="py-1 pr-2">
-                      <input value={v.desenOption} onChange={(e) => updateVariant(i, "desenOption", e.target.value)} className="w-20 px-2 py-1 border rounded text-xs" />
-                    </td>
-                    <td className="py-1 pr-2">
-                      <input type="number" value={v.adet} onChange={(e) => updateVariant(i, "adet", parseInt(e.target.value) || 0)} className="w-16 px-2 py-1 border rounded text-xs" />
-                    </td>
-                    <td className="py-1 pr-2">
-                      <input value={v.priceUsd} onChange={(e) => updateVariant(i, "priceUsd", e.target.value)} className="w-20 px-2 py-1 border rounded text-xs" />
-                    </td>
-                    <td className="py-1 pr-2">
-                      <input type="checkbox" checked={v.isCompatible} onChange={(e) => updateVariant(i, "isCompatible", e.target.checked)} />
-                    </td>
-                    <td className="py-1 pr-2">
-                      <input value={v.stockCode} onChange={(e) => updateVariant(i, "stockCode", e.target.value)} className="w-20 px-2 py-1 border rounded text-xs" />
-                    </td>
-                    <td className="py-1">
-                      <button onClick={() => removeVariant(i)} className="text-red-500 hover:underline text-xs">Sil</button>
-                    </td>
-                  </tr>
-                ))}
+                {variants.map((v, i) => {
+                  const renkList = RENK_OPTIONS_BY_TYPE[form.productType] ?? [];
+                  return (
+                    <tr key={i} className="border-b last:border-0">
+                      <td className="py-1 pr-2">
+                        <input value={v.sku} onChange={(e) => updateVariant(i, "sku", e.target.value)} className="w-24 px-2 py-1 border rounded text-xs" />
+                      </td>
+                      <td className="py-1 pr-2">
+                        <select
+                          value={v.baskiOption}
+                          onChange={(e) => updateVariant(i, "baskiOption", e.target.value)}
+                          className="w-44 px-2 py-1 border rounded text-xs"
+                        >
+                          <option value="">— Seçin —</option>
+                          {BASKI_OPTIONS.map((opt) => (
+                            <option key={opt} value={opt}>{opt}</option>
+                          ))}
+                          {/* Mevcut değer listede yoksa göster */}
+                          {v.baskiOption && !BASKI_OPTIONS.includes(v.baskiOption) && (
+                            <option value={v.baskiOption}>{v.baskiOption}</option>
+                          )}
+                        </select>
+                      </td>
+                      <td className="py-1 pr-2">
+                        {renkList.length > 0 ? (
+                          <select
+                            value={v.renkOption}
+                            onChange={(e) => updateVariant(i, "renkOption", e.target.value)}
+                            className="w-32 px-2 py-1 border rounded text-xs"
+                          >
+                            <option value="">— Seçin —</option>
+                            {renkList.map((opt) => (
+                              <option key={opt} value={opt}>{opt}</option>
+                            ))}
+                            {v.renkOption && !renkList.includes(v.renkOption) && (
+                              <option value={v.renkOption}>{v.renkOption}</option>
+                            )}
+                          </select>
+                        ) : (
+                          <input value={v.renkOption} onChange={(e) => updateVariant(i, "renkOption", e.target.value)} className="w-24 px-2 py-1 border rounded text-xs" />
+                        )}
+                      </td>
+                      <td className="py-1 pr-2">
+                        <input value={v.desenOption} onChange={(e) => updateVariant(i, "desenOption", e.target.value)} className="w-24 px-2 py-1 border rounded text-xs" />
+                      </td>
+                      <td className="py-1 pr-2">
+                        <select
+                          value={v.adet}
+                          onChange={(e) => updateVariant(i, "adet", parseInt(e.target.value) || 0)}
+                          className="w-24 px-2 py-1 border rounded text-xs"
+                        >
+                          <option value={0}>— Seçin —</option>
+                          {ADET_OPTIONS.map((opt) => (
+                            <option key={opt} value={opt}>{opt.toLocaleString("tr-TR")} Adet</option>
+                          ))}
+                          {v.adet > 0 && !ADET_OPTIONS.includes(v.adet) && (
+                            <option value={v.adet}>{v.adet.toLocaleString("tr-TR")} Adet</option>
+                          )}
+                        </select>
+                      </td>
+                      <td className="py-1 pr-2">
+                        <input value={v.priceUsd} onChange={(e) => updateVariant(i, "priceUsd", e.target.value)} className="w-20 px-2 py-1 border rounded text-xs" />
+                      </td>
+                      <td className="py-1 pr-2 text-center">
+                        <input type="checkbox" checked={v.isCompatible} onChange={(e) => updateVariant(i, "isCompatible", e.target.checked)} />
+                      </td>
+                      <td className="py-1 pr-2">
+                        <input value={v.stockCode} onChange={(e) => updateVariant(i, "stockCode", e.target.value)} className="w-20 px-2 py-1 border rounded text-xs" />
+                      </td>
+                      <td className="py-1">
+                        <button onClick={() => removeVariant(i)} className="text-red-500 hover:underline text-xs">Sil</button>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
