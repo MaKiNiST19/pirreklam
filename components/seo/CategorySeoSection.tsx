@@ -25,32 +25,28 @@ export default function CategorySeoSection({ data }: Props) {
         <div className="prose prose-sm md:prose-base max-w-none text-gray-700 leading-relaxed [&_h1]:text-[22px] md:[&_h1]:text-[26px] [&_h1]:font-bold [&_h1]:text-[#25497f] [&_h1]:mb-4 [&_h2]:text-[18px] md:[&_h2]:text-[20px] [&_h2]:font-bold [&_h2]:text-[#25497f] [&_h2]:mt-6 [&_h2]:mb-3 [&_h3]:text-[15px] md:[&_h3]:text-[17px] [&_h3]:font-semibold [&_h3]:text-[#cc0636] [&_h3]:mt-4 [&_h3]:mb-2 [&_h4]:text-[14px] md:[&_h4]:text-[15px] [&_h4]:font-semibold [&_h4]:text-gray-800 [&_h4]:mt-3 [&_h4]:mb-2 [&_p]:mb-3 [&_p]:text-[14px] [&_ul]:mb-3 [&_ul]:ml-5 [&_ul]:list-disc [&_ol]:mb-3 [&_ol]:ml-5 [&_ol]:list-decimal [&_li]:mb-1 [&_li]:text-[14px] [&_strong]:text-gray-900 [&_a]:text-[#cc0636] [&_a]:underline hover:[&_a]:text-[#a80530]">
           <h1>{data.h1}</h1>
 
-          {/* ═════ FEATURED SNIPPET BOX (rendered when `definition` is set) ═════ */}
+          {/* Kısa tanım — yan çizgiyle vurgulanmış, definitional paragraph */}
           {data.definition && (
             <div
               className="not-prose my-4 border-l-4 rounded-r-lg p-4"
               style={{ background: "#f8f9fb", borderColor: "#25497f" }}
             >
-              <p className="text-[11px] font-bold uppercase tracking-wider text-[#25497f] mb-2">
-                FEATURED SNIPPET
-              </p>
               <p className="text-[14px] text-gray-800 leading-relaxed m-0">
                 {data.definition}
               </p>
             </div>
           )}
 
-          {/* ═════ AI OVERVIEW BLOCK (uses the first 4 FAQ items for extraction) ═════ */}
+          {/* Hızlı bilgiler — ilk 4 FAQ sorusu Q&A formatında */}
           {aiOverviewFaq.length > 0 && (
             <div
               className="not-prose my-5 rounded-lg p-4 border"
               style={{ background: "#fff9e6", borderColor: "#ffc107" }}
             >
               <p
-                className="text-[11px] font-bold uppercase tracking-wider mb-3"
-                style={{ color: "#b38800" }}
+                className="text-[13px] font-bold mb-3 text-gray-900"
               >
-                AI OVERVIEW · HIZLI CEVAP BLOĞU
+                Hızlı Bilgiler
               </p>
               <div className="space-y-3 text-[13px] text-gray-800">
                 {aiOverviewFaq.map((f, i) => (

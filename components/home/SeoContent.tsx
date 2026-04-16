@@ -20,7 +20,7 @@ export default function SeoContent() {
               Ruhsat Kabı, Vesikalık Kabı, Döviz Kabı ve Promosyon Ürünleri — Toptan Üretici Rehberi
             </h1>
 
-            {/* ═════ FEATURED SNIPPET ═════ */}
+            {/* Kısa tanım — definitional paragraph, yan çizgili vurgu */}
             <div
               className="not-prose my-4 border-l-4 rounded-r-lg p-4"
               style={{
@@ -28,9 +28,6 @@ export default function SeoContent() {
                 borderColor: "#25497f",
               }}
             >
-              <p className="text-[11px] font-bold uppercase tracking-wider text-[#25497f] mb-2">
-                FEATURED SNIPPET
-              </p>
               <p className="text-[14px] text-gray-800 leading-relaxed m-0">
                 <strong>Ruhsat kabı</strong>, araç ruhsatı ile sigorta poliçesi ve muayene belgelerini
                 düzenli taşımak için üretilen PVC, biala veya deri tabanlı resmî belge kabıdır. Sigorta
@@ -42,7 +39,7 @@ export default function SeoContent() {
               </p>
             </div>
 
-            {/* ═════ AI OVERVIEW OPTIMIZATION BLOCK ═════ */}
+            {/* Hızlı bilgiler — ana soruların kısa cevapları */}
             <div
               className="not-prose my-5 rounded-lg p-4 border"
               style={{
@@ -50,8 +47,8 @@ export default function SeoContent() {
                 borderColor: "#ffc107",
               }}
             >
-              <p className="text-[11px] font-bold uppercase tracking-wider mb-3" style={{ color: "#b38800" }}>
-                AI OVERVIEW · HIZLI CEVAP BLOĞU
+              <p className="text-[13px] font-bold mb-3 text-gray-900">
+                Hızlı Bilgiler
               </p>
 
               <div className="space-y-3 text-[13px] text-gray-800">
@@ -111,8 +108,8 @@ export default function SeoContent() {
               sorulan sorular o sayfalarda yer alır.
             </p>
 
-            {/* ═════ CLUSTER 1: BELGE KABI GRUBU ═════ */}
-            <h2>Cluster 1: Resmî Belge Koruma Ürünleri</h2>
+            {/* Belge kabı grubu */}
+            <h2>Resmî Belge Koruma Ürünleri</h2>
             <p>
               Türkiye&apos;de her gün milyonlarca resmî belge (ruhsat, pasaport, vesikalık, poliçe,
               döviz bordrosu, cüzdan) el değiştirir. Bu belgelerin ömrü boyunca düzenli, temiz ve
@@ -425,8 +422,8 @@ export default function SeoContent() {
               acenteleri ve hac-umre firmaları pasaport kılıfı ile birlikte set hâlinde tedarik eder.
             </p>
 
-            {/* ═════ CLUSTER 2: MATBAA ═════ */}
-            <h2>Cluster 2: Matbaa Ürünleri</h2>
+            {/* Matbaa grubu */}
+            <h2>Matbaa Ürünleri</h2>
             <p>
               <Link href="/urun-kategori/matbaa-urunleri/">Matbaa ürünleri</Link> kategorisi, bir
               markanın en düşük maliyetli ve en uzun ömürlü reklam mecrasıdır. 1.000 adet kartvizit
@@ -480,8 +477,8 @@ export default function SeoContent() {
               , kalem ve küp blok not kurumsal yılbaşı hediyelik setinin klasik üçlüsüdür.
             </p>
 
-            {/* ═════ CLUSTER 3: PROMOSYON ═════ */}
-            <h2>Cluster 3: Klasik Promosyon Kalemleri</h2>
+            {/* Promosyon grubu */}
+            <h2>Klasik Promosyon Kalemleri</h2>
             <p>
               <Link href="/urun-kategori/promosyon-urunler/">Promosyon ürünleri</Link>, günlük
               hayatın içine gömülerek markayı sessizce taşıyan kalemler: cepte çakmak, masada
@@ -546,8 +543,8 @@ export default function SeoContent() {
               üretilir.
             </p>
 
-            {/* ═════ CLUSTER 4: ÇANTA ═════ */}
-            <h2>Cluster 4: Kurumsal Çanta Yelpazesi</h2>
+            {/* Çanta grubu */}
+            <h2>Kurumsal Çanta Yelpazesi</h2>
             <p>
               <Link href="/urun-kategori/canta/">Çanta</Link> kategorisi, müşterinin markayı
               günlerce yanında taşımasını sağlayan en dayanıklı promosyon ürünüdür. Fuar çantası
@@ -589,8 +586,8 @@ export default function SeoContent() {
               fitness merkezleri, otel zincirleri ve kurumsal VIP hediye setleri.
             </p>
 
-            {/* ═════ SECTOR CLUSTER ═════ */}
-            <h2>Cluster 5: Sektörel Kullanım Kılavuzu</h2>
+            {/* Sektörel kullanım */}
+            <h2>Sektörel Kullanım Kılavuzu</h2>
             <p>
               Her sektörün kendine özgü teslim ambalajı ve promosyon seti vardır. Aşağıda
               Türkiye&apos;nin 7 farklı sektörü için pratik tedarik listesini bulacaksınız.
@@ -719,8 +716,8 @@ export default function SeoContent() {
               </li>
             </ul>
 
-            {/* ═════ PRICE & PRODUCTION CLUSTER ═════ */}
-            <h2>Cluster 6: Fiyatlandırma, Baskı Teknikleri ve Üretim Süreci</h2>
+            {/* Fiyatlandırma & üretim */}
+            <h2>Fiyatlandırma, Baskı Teknikleri ve Üretim Süreci</h2>
 
             <h3>Fiyatı Etkileyen 5 Faktör</h3>
             <ol>
