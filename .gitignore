@@ -47,3 +47,4 @@ next-env.d.ts
 
 # Audit reports (local-only)
 audit-report.json
+variants-report.json
