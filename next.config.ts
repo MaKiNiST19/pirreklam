@@ -2,9 +2,15 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    // Serve AVIF first, then WebP, then the original format. Both formats
-    // reduce payload by ~30-50% vs JPG/PNG with zero visual difference.
-    formats: ["image/avif", "image/webp"],
+    // WebP only. AVIF at the same nominal quality is more aggressive on
+    // flat product photography (subtle gradients get smoothed) and users
+    // reported product images looking blurrier than the old WordPress site.
+    // WebP is closer to the old JPEG fidelity at q>=90.
+    formats: ["image/webp"],
+    // Next.js 16 requires explicit `qualities` allowlist; default is [75]
+    // only, which silently downgrades any <Image quality={...}> value.
+    // Allow 75 (low-priority/lazy), 90 (cards), 95 (hero/gallery).
+    qualities: [75, 90, 95],
     // Cache optimised image responses for 60 days on Vercel's edge.
     minimumCacheTTL: 60 * 60 * 24 * 60,
     remotePatterns: [

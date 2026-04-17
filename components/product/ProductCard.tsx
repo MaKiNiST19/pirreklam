@@ -45,7 +45,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             alt={product.title}
             fill
             className="object-contain"
-            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
             quality={90}
             loading="lazy"
           />

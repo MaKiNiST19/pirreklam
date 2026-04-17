@@ -47,7 +47,8 @@ export default function ProductGallery({ images, title }: ProductGalleryProps) {
             transformOrigin: zoomOrigin,
             transform: isHovering ? "scale(1.5)" : "scale(1)",
           }}
-          sizes="(max-width: 768px) 100vw, 500px"
+          sizes="(max-width: 768px) 100vw, (max-width: 1280px) 600px, 800px"
+          quality={95}
           priority
         />
       </div>
@@ -73,6 +74,7 @@ export default function ProductGallery({ images, title }: ProductGalleryProps) {
                 fill
                 className="object-cover"
                 sizes="64px"
+                quality={90}
               />
             </button>
           ))}
