@@ -1,50 +1,41 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# Claude Code local settings (may contain sensitive data)
-.claude/settings.local.json
-
-# dependencies
-/node_modules
-/.pnp
-.pnp.*
-.yarn/*
 !.yarn/patches
 !.yarn/plugins
 !.yarn/releases
 !.yarn/versions
-
-# testing
-/coverage
-
-# next.js
-/.next/
-/out/
-
-# production
-/build
-
-# misc
-.DS_Store
-*.pem
-
+# Audit reports (local-only)
+# Claude Code local settings (may contain sensitive data)
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 # debug
+# dependencies
+# env files (can opt-in for committing if needed)
+# misc
+# next.js
+# production
+# testing
+# typescript
+# vercel
+*.pem
+*.tsbuildinfo
+.DS_Store
+.claude/settings.local.json
+.env*
+.pnp.*
+.pnpm-debug.log*
+.vercel
+.yarn/*
+/.next/
+/.pnp
+/app/generated/prisma
+/build
+/coverage
+/node_modules
+/out/
+audit-report*.json
+audit-report.json
+next-env.d.ts
 npm-debug.log*
+variants-report*.json
+variants-report.json
 yarn-debug.log*
 yarn-error.log*
-.pnpm-debug.log*
-
-# env files (can opt-in for committing if needed)
-.env*
-
-# vercel
-.vercel
-
-# typescript
-*.tsbuildinfo
-next-env.d.ts
-
-/app/generated/prisma
-
-# Audit reports (local-only)
-audit-report.json
-variants-report.json
